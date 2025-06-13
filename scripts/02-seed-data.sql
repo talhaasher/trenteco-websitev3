@@ -1,0 +1,25 @@
+-- Insert sample products
+INSERT INTO public.products (name, category, price, size, material, image_url, description, sku, stock_quantity, is_featured) VALUES
+('Standard Kraft Paper Bag', 'retail', 0.45, 'medium', 'kraft', '/placeholder.svg?height=300&width=300', 'Durable kraft paper bag with twisted paper handles. Perfect for retail stores.', 'SKU-001', 100, true),
+('White Paper Bag with Flat Handles', 'retail', 0.55, 'large', 'white', '/placeholder.svg?height=300&width=300', 'Elegant white paper bag with flat handles, ideal for clothing and accessories.', 'SKU-002', 75, false),
+('Food Delivery Bag', 'food', 0.35, 'small', 'kraft', '/placeholder.svg?height=300&width=300', 'Grease-resistant paper bag designed for takeaway food items.', 'SKU-003', 200, true),
+('Luxury Boutique Bag', 'luxury', 0.95, 'medium', 'premium', '/placeholder.svg?height=300&width=300', 'Premium quality paper bag with ribbon handles and gold foil printing.', 'SKU-004', 50, true),
+('Bakery Paper Bag', 'food', 0.25, 'small', 'kraft', '/placeholder.svg?height=300&width=300', 'Food-safe paper bag perfect for bakery items and pastries.', 'SKU-005', 150, false),
+('Gift Bag with Rope Handles', 'luxury', 0.85, 'medium', 'premium', '/placeholder.svg?height=300&width=300', 'Elegant gift bag with rope handles and matte finish.', 'SKU-006', 60, false),
+('Grocery Paper Bag', 'retail', 0.65, 'large', 'kraft', '/placeholder.svg?height=300&width=300', 'Strong kraft paper bag with reinforced bottom, ideal for groceries.', 'SKU-007', 120, false),
+('Pharmacy Paper Bag', 'retail', 0.4, 'small', 'white', '/placeholder.svg?height=300&width=300', 'Clean white paper bag suitable for pharmacies and healthcare products.', 'SKU-008', 90, false),
+('Wine Bottle Bag', 'luxury', 0.75, 'medium', 'premium', '/placeholder.svg?height=300&width=300', 'Specialized paper bag designed to hold wine bottles securely.', 'SKU-009', 40, false),
+('Custom Printed Bag', 'retail', 0.85, 'large', 'kraft', '/placeholder.svg?height=300&width=300', 'Customizable kraft paper bag with your logo and branding.', 'SKU-010', 80, true);
+
+-- Insert sample blog posts
+INSERT INTO public.blog_posts (title, slug, excerpt, content, author, category, tags, image_url, read_time, published) VALUES
+('The Future of Sustainable Packaging', 'future-sustainable-packaging', 'Exploring innovative approaches to eco-friendly packaging solutions that benefit both businesses and the environment.', 'In today''s world, sustainable packaging is no longer just a trend—it''s a necessity. As consumers become increasingly environmentally conscious, businesses must adapt their packaging strategies to meet these evolving demands...', 'Sarah Johnson', 'sustainability', ARRAY['sustainability', 'packaging', 'environment'], '/placeholder.svg?height=400&width=600', '5 min read', true),
+('Paper vs Plastic: Making the Right Choice', 'paper-vs-plastic-choice', 'A comprehensive comparison of paper and plastic packaging options for modern businesses.', 'The debate between paper and plastic packaging has been ongoing for decades. Each material has its advantages and disadvantages, and the right choice depends on various factors...', 'Mike Chen', 'materials', ARRAY['paper', 'plastic', 'comparison'], '/placeholder.svg?height=400&width=600', '7 min read', true),
+('Custom Branding on Paper Bags: Best Practices', 'custom-branding-paper-bags', 'Learn how to effectively brand your paper bags to enhance your business identity and customer experience.', 'Custom branding on paper bags is an excellent way to promote your business while providing customers with a functional and attractive packaging solution...', 'Emma Davis', 'branding', ARRAY['branding', 'design', 'marketing'], '/placeholder.svg?height=400&width=600', '4 min read', true),
+('The Economics of Bulk Paper Bag Orders', 'economics-bulk-paper-bag-orders', 'Understanding the cost benefits and considerations when ordering paper bags in bulk quantities.', 'When it comes to purchasing paper bags for your business, ordering in bulk can provide significant cost savings and operational benefits...', 'David Wilson', 'business', ARRAY['bulk', 'economics', 'cost-saving'], '/placeholder.svg?height=400&width=600', '6 min read', true);
+
+-- Insert sample enquiries
+INSERT INTO public.enquiries (name, email, company, phone, enquiry_type, message, newsletter_subscription, status, priority) VALUES
+('John Smith', 'john.smith@example.com', 'Smith Retail Ltd', '+44 20 1234 5678', 'bulk-order', 'I am interested in ordering 5000 kraft paper bags with custom printing. Could you please provide a quote?', true, 'unread', 'high'),
+('Lisa Brown', 'lisa@brownbakery.com', 'Brown''s Bakery', '+44 161 987 6543', 'product-inquiry', 'Do you have food-safe paper bags suitable for pastries and baked goods?', false, 'unread', 'medium'),
+('Tom Wilson', 'tom.wilson@greenstore.co.uk', 'Green Store', '+44 113 456 7890', 'custom-design', 'We need eco-friendly bags with our logo. What are the minimum order quantities?', true, 'unread', 'medium');
