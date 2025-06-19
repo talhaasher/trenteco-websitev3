@@ -96,17 +96,18 @@ export default function Footer() {
           <div>
             <h3 className="text-md font-bold mb-4">Contact</h3>
             <address className="not-italic text-sm text-gray-600 space-y-2">
-              <p>123 Eco Way</p>
-              <p>Trentham, Stoke-on-Trent</p>
-              <p>ST4 8JB, United Kingdom</p>
+              <p> Unit 32 Reddicap Trading Estate</p>
+              <p>The Royal Town of Sutton Coldfield, \n Birmingham</p>
+              <p>B75 7BU, United Kingdom</p>
               <p className="pt-2">
                 <a href="tel:+441782123456" className="hover:text-teal-600">
-                  +44 (0) 1782 123 456
+                  +44 7301 028484
                 </a>
               </p>
               <p>
                 <a href="mailto:info@trenteco.co.uk" className="hover:text-teal-600">
-                  info@trenteco.co.uk
+                   info@trenteco.co.uk
+
                 </a>
               </p>
             </address>

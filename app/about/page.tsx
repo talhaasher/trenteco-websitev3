@@ -3,7 +3,49 @@ import { Button } from "@/components/ui/button"
 import { CheckCircle, Factory, Leaf, Recycle } from "lucide-react"
 
 export default function AboutPage() {
-  return (
+  const ourstory=[                "TrentEco was founded in January 2025 as the specialist paper bag division of Imperial Packaging Solution — a trusted name in fast food packaging in the UK. While our parent company is known for rice bowls, food boxes, and trays, TrentEco focuses exclusively on UK-manufactured kraft paper bags for restaurants and takeaways.",
+                "With local production facilities in Sutton Coldfield, we eliminate the need for bulk storage by offering flexible monthly ordering and paper bag bulk orders in the UK with rapid turnaround times."];
+  const profuction = [
+  {
+    title: "High-Volume Output:",
+    description: "Over 2 million bags per month"
+  },
+  {
+    title: "Custom Printing:",
+    description: "High-resolution printing for branded paper bags"
+  },
+  {
+    title: "Quality Control:",
+    description: "Each batch is rigorously tested"
+  },
+  {
+    title: "Materials:",
+    description: "White and recycled kraft paper options available"
+  }
+];
+const teamMembers = [
+  {
+    name: "Asel",
+    role: "Business Development Manager",
+    image: "" // Add image URL or leave empty for now
+  },
+  {
+    name: "Zunair Asher",
+    role: "Supply Chain Manager",
+    image: ""
+  },
+  {
+    name: "Asher Hafeez",
+    role: "Director, Sales & Production",
+    image: ""
+  },
+  {
+    name: "Khurram Cheema",
+    role: "Director, Sales & Accounts",
+    image: ""
+  }
+];
+                return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-cream-50 to-cream-100 py-16 md:py-24">
@@ -34,18 +76,14 @@ export default function AboutPage() {
             </div>
             <div>
               <h2 className="text-3xl font-bold mb-6">Our Story</h2>
-              <p className="text-gray-600 mb-4">
-                Founded in 2015 in Stoke-on-Trent, TrentEco began with a simple mission: to provide businesses with
-                sustainable packaging alternatives without compromising on quality or aesthetics.
-              </p>
-              <p className="text-gray-600 mb-4">
-                What started as a small operation has grown into one of the UK's leading manufacturers of eco-friendly
-                paper bags, serving clients across retail, food service, and luxury sectors.
-              </p>
-              <p className="text-gray-600">
-                Today, we continue to innovate and expand our product range, always staying true to our core values of
-                sustainability, quality, and exceptional service.
-              </p>
+
+              {/* Mapping over an array of paragraph texts */}
+              {ourstory.map((text, idx) => (
+                <p className="text-gray-600 mb-4" key={idx}>
+                  {text}
+                </p>
+              ))}
+
             </div>
           </div>
         </div>
@@ -57,45 +95,11 @@ export default function AboutPage() {
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
             <p className="text-gray-600">
-              At TrentEco, we're committed to creating a more sustainable future through innovative packaging solutions
-              that reduce environmental impact without sacrificing functionality or design.
+To redefine fast food and custom takeaway packaging in the UK through flexible solutions, UK production, and unmatched customer care.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="bg-cream-100 p-4 rounded-full inline-flex mb-4">
-                <Leaf className="h-6 w-6 text-teal-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Sustainability</h3>
-              <p className="text-gray-600">
-                We use responsibly sourced materials and sustainable manufacturing processes to minimize our
-                environmental footprint.
-              </p>
-            </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="bg-cream-100 p-4 rounded-full inline-flex mb-4">
-                <Factory className="h-6 w-6 text-teal-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">UK Manufacturing</h3>
-              <p className="text-gray-600">
-                By manufacturing in the UK, we support local jobs, reduce transportation emissions, and ensure the
-                highest quality standards.
-              </p>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <div className="bg-cream-100 p-4 rounded-full inline-flex mb-4">
-                <Recycle className="h-6 w-6 text-teal-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Innovation</h3>
-              <p className="text-gray-600">
-                We continuously research and develop new materials and techniques to improve the sustainability and
-                performance of our products.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -106,45 +110,21 @@ export default function AboutPage() {
             <div>
               <h2 className="text-3xl font-bold mb-6">Production Capabilities</h2>
               <p className="text-gray-600 mb-6">
-                Our state-of-the-art manufacturing facility in Stoke-on-Trent is equipped with the latest technology to
-                produce high-quality paper bags at scale.
+                
+Our modern facility is equipped to handle large volumes without compromising quality — ideal for businesses looking for where to buy custom takeaway paper bags in the UK.
+
               </p>
 
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-teal-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>
-                    <span className="font-bold">High-Volume Production:</span> Capacity to produce over 1 million bags
-                    per month
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-teal-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>
-                    <span className="font-bold">Custom Printing:</span> Advanced printing capabilities for high-quality
-                    branding
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-teal-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>
-                    <span className="font-bold">Diverse Sizes:</span> From small jewelry bags to large shopping bags
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-teal-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>
-                    <span className="font-bold">Quality Control:</span> Rigorous testing to ensure durability and
-                    consistency
-                  </span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-teal-600 mr-2 flex-shrink-0 mt-0.5" />
-                  <span>
-                    <span className="font-bold">Sustainable Materials:</span> FSC-certified papers and water-based inks
-                  </span>
-                </li>
-              </ul>
+        <ul className="space-y-4">
+          {profuction.map((feature, idx) => (
+            <li className="flex items-start" key={idx}>
+              <CheckCircle className="h-6 w-6 text-teal-600 mr-2 flex-shrink-0 mt-0.5" />
+              <span>
+                <span className="font-bold">{feature.title}</span> {feature.description}
+              </span>
+            </li>
+          ))}
+        </ul>
             </div>
             <div className="relative h-[400px]">
               <Image
@@ -168,40 +148,19 @@ export default function AboutPage() {
               solutions.
             </p>
           </div>
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+  {teamMembers.map((member, idx) => (
+    <div key={idx} className="flex flex-col items-center text-center">
+      <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center">
+        {/* Placeholder for picture */}
+        {/* <img src={member.image} alt={member.name} className="w-full h-full object-cover rounded-full" /> */}
+      </div>
+      <div className="font-bold">{member.name}</div>
+      <div className="text-gray-600">{member.role}</div>
+    </div>
+  ))}
+</div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="relative h-64 mb-4 rounded-lg overflow-hidden">
-                <Image src="/images/team-sarah.png" alt="Sarah Johnson" fill className="object-cover" />
-              </div>
-              <h3 className="text-xl font-bold">Sarah Johnson</h3>
-              <p className="text-teal-600">CEO & Founder</p>
-            </div>
-
-            <div className="text-center">
-              <div className="relative h-64 mb-4 rounded-lg overflow-hidden">
-                <Image src="/images/team-david.png" alt="David Chen" fill className="object-cover" />
-              </div>
-              <h3 className="text-xl font-bold">David Chen</h3>
-              <p className="text-teal-600">Head of Production</p>
-            </div>
-
-            <div className="text-center">
-              <div className="relative h-64 mb-4 rounded-lg overflow-hidden">
-                <Image src="/placeholder.svg?height=300&width=300" alt="Emma Williams" fill className="object-cover" />
-              </div>
-              <h3 className="text-xl font-bold">Emma Williams</h3>
-              <p className="text-teal-600">Sustainability Director</p>
-            </div>
-
-            <div className="text-center">
-              <div className="relative h-64 mb-4 rounded-lg overflow-hidden">
-                <Image src="/placeholder.svg?height=300&width=300" alt="James Taylor" fill className="object-cover" />
-              </div>
-              <h3 className="text-xl font-bold">James Taylor</h3>
-              <p className="text-teal-600">Design Manager</p>
-            </div>
-          </div>
         </div>
       </section>
 

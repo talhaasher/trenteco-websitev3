@@ -24,6 +24,78 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState("")
+const contactDetails = [
+  {
+    icon: <MapPin className="h-6 w-6 text-teal-600" />,
+    title: "Visit Us",
+    content: (
+      <>
+        TrentEco Packaging Ltd<br />
+        Unit 32 Reddicap Trading Estate, Sutton Coldfield<br />
+        B75 7BU, Birmingham, UK
+      </>
+    ),
+  },
+  {
+    icon: <Phone className="h-6 w-6 text-teal-600" />,
+    title: "Call Us",
+    content: (
+      <>
+        <a href="tel:+447301028484" className="hover:text-teal-600">
+          +44 7301 028484
+        </a>
+        <br />
+        <span className="text-sm">Mon-Fri: 9AM–5PM</span>
+      </>
+    ),
+  },
+  {
+    icon: <Mail className="h-6 w-6 text-teal-600" />,
+    title: "Email Us",
+    content: (
+      <>
+        <a href="mailto:info@trenteco.co.uk" className="hover:text-teal-600">
+          info@trenteco.co.uk
+        </a>
+        <br />
+        <a href="mailto:asel@thepackagingsolutions.co.uk" className="hover:text-teal-600 text-sm">
+          asel@thepackagingsolutions.co.uk
+        </a>
+      </>
+    ),
+  },
+];
+const faqs = [
+  {
+    question: "What is the minimum order quantity?",
+    answer: (
+      <ul className="list-disc pl-5 text-gray-600">
+        <li>SOS / Flat Bags: 10,000 units</li>
+        <li>Satchel Bags: 50,000 to 100,000 units based on specs</li>
+      </ul>
+    ),
+  },
+  {
+    question: "How long does production take?",
+    answer:
+      "Typically 2–4 weeks depending on volume and customisation. We’ll confirm your delivery window at the time of order.",
+  },
+  {
+    question: "Do you offer bulk order discounts?",
+    answer:
+      "Yes! We specialise in paper bag bulk orders (UK-wide) with cost-effective pricing for wholesale quantities.",
+  },
+  {
+    question: "What payment terms do you offer?",
+    answer:
+      "We require a 50% pre-payment to begin production and 50% upon delivery.",
+  },
+  {
+    question: "What payment methods are accepted?",
+    answer:
+      "We accept cash, card, and bank transfers for your convenience.",
+  },
+];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -89,67 +161,25 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Information */}
-      <section className="py-12 bg-white">
-        <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <Card className="text-center">
-              <CardHeader>
-                <div className="mx-auto w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mb-4">
-                  <MapPin className="h-6 w-6 text-teal-600" />
-                </div>
-                <CardTitle className="text-lg">Visit Us</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  123 Eco Way
-                  <br />
-                  Trentham, Stoke-on-Trent
-                  <br />
-                  ST4 8JB, United Kingdom
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardHeader>
-                <div className="mx-auto w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mb-4">
-                  <Phone className="h-6 w-6 text-teal-600" />
-                </div>
-                <CardTitle className="text-lg">Call Us</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  <a href="tel:+441782123456" className="hover:text-teal-600">
-                    +44 (0) 1782 123 456
-                  </a>
-                  <br />
-                  <span className="text-sm">Mon-Fri: 9AM-5PM</span>
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center">
-              <CardHeader>
-                <div className="mx-auto w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mb-4">
-                  <Mail className="h-6 w-6 text-teal-600" />
-                </div>
-                <CardTitle className="text-lg">Email Us</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  <a href="mailto:info@trenteco.co.uk" className="hover:text-teal-600">
-                    info@trenteco.co.uk
-                  </a>
-                  <br />
-                  <a href="mailto:sales@trenteco.co.uk" className="hover:text-teal-600 text-sm">
-                    sales@trenteco.co.uk
-                  </a>
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+<section className="py-12 bg-white">
+  <div className="container">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      {contactDetails.map((detail, idx) => (
+        <Card className="text-center" key={idx}>
+          <CardHeader>
+            <div className="mx-auto w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mb-4">
+              {detail.icon}
+            </div>
+            <CardTitle className="text-lg">{detail.title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-600">{detail.content}</p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Contact Form and Map */}
       <section className="py-12 bg-cream-50">
@@ -316,14 +346,7 @@ export default function ContactPage() {
                       <span>Monday - Friday</span>
                       <span className="font-medium">9:00 AM - 5:00 PM</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>Saturday</span>
-                      <span className="font-medium">9:00 AM - 1:00 PM</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Sunday</span>
-                      <span className="font-medium">Closed</span>
-                    </div>
+
                   </div>
                   <div className="mt-4 p-3 bg-teal-50 rounded-lg">
                     <p className="text-sm text-teal-800">
@@ -366,63 +389,25 @@ export default function ContactPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-12 bg-white">
-        <div className="container">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">What's your minimum order quantity?</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    Our minimum order quantity varies by product type. For standard bags, it's typically 1,000 units.
-                    For custom printed bags, the minimum is usually 5,000 units. Contact us for specific requirements.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">How long does production take?</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    Standard bags are usually available within 5-7 business days. Custom printed bags typically take 2-3
-                    weeks from artwork approval. Rush orders may be available for an additional fee.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Do you offer samples?</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    Yes! We provide free samples of our standard products. For custom printed samples, there may be a
-                    small fee which is refunded with your first order. Samples typically arrive within 2-3 business
-                    days.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">What payment methods do you accept?</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    We accept bank transfers, credit cards, and for established customers, we offer 30-day payment
-                    terms. All major credit cards are accepted through our secure payment gateway.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
+<section className="py-12 bg-white">
+  <div className="container">
+    <div className="max-w-3xl mx-auto">
+      <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+      <div className="space-y-6">
+        {faqs.map((faq, idx) => (
+          <Card key={idx}>
+            <CardHeader>
+              <CardTitle className="text-lg">{faq.question}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600">{faq.answer}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section className="py-16 bg-teal-600 text-white">
@@ -436,9 +421,11 @@ export default function ContactPage() {
               <Button size="lg" variant="secondary">
                 Request a Quote
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-teal-700">
-                Download Catalog
-              </Button>
+    <a href="/catalog.pdf" download>
+  <Button size="lg" variant="outline" className="border-white text-black hover:bg-teal-700">
+    Download Catalog
+  </Button>
+</a>
             </div>
           </div>
         </div>

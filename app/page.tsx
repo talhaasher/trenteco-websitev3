@@ -9,6 +9,28 @@ import ProductSuggestions from "@/components/product-suggestions"
 
 export default function Home() {
   const router = useRouter()
+  const features = [
+  {
+    icon: <Leaf className="h-8 w-8 text-teal-600" />,
+    title: "Eco-Friendly",
+    description: "Our recyclable kraft paper bags are strong, high-quality, and sustainably sourced.",
+  },
+  {
+    icon: <Package className="h-8 w-8 text-teal-600" />,
+    title: "UK Manufactured",
+    description: "Made locally in Sutton Coldfield, Birmingham — cutting lead times and carbon emissions.",
+  },
+  {
+    icon: <TrendingUp className="h-8 w-8 text-teal-600" />,
+    title: "Custom Solutions",
+    description: "Get printed food packaging in the UK that’s branded to reflect your identity.",
+  },
+  {
+    icon: <Recycle className="h-8 w-8 text-teal-600" />,
+    title: "Sustainable",
+    description: "We use eco-friendly materials and methods — ideal for brands seeking eco-friendly paper bags in the UK.",
+  },
+];
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section with Video Background */}
@@ -41,11 +63,10 @@ export default function Home() {
         <div className="container relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-white drop-shadow-lg">
-              UK-Made, <span className="text-cream-200">Eco-Smart</span> Bags
+              Eco-Friendly, UK Paper Bag Manufacturer for Food and Retail Businesses
             </h1>
             <p className="text-lg text-cream-100 mb-8 drop-shadow">
-              Sustainable paper packaging solutions manufactured in the UK. Eco-friendly, customizable, and perfect for
-              your brand.
+              Smart, Sustainable packaging solutions - proudly manufactured in the UK and tailored to your business.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
@@ -58,7 +79,7 @@ export default function Home() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-white hover:text-teal-600 shadow-lg backdrop-blur-sm"
+                className="border-white text-black hover:bg-white hover:text-teal-600 shadow-lg backdrop-blur-sm"
                 onClick={() => router.push("/contact")}
               >
                 Request a Quote
@@ -81,48 +102,21 @@ export default function Home() {
       <section className="py-16 bg-white">
         <div className="container">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Choose TrentEco?</h2>
+            <h2 className="text-3xl font-bold mb-4">Why Choose TrentEco - A Leading UK Paper Bag Manufacturer</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              We're committed to providing sustainable packaging solutions without compromising on quality or style.
-            </p>
+At TrentEco, we deliver fast food packaging in the UK that combines speed, quality, and customisation with the convenience of UK-based production. As a trusted name in sustainable packaging in the UK, our eco-conscious approach ensures that your packaging supports both your brand and the planet.            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-cream-100 p-4 rounded-full mb-4">
-                <Leaf className="h-8 w-8 text-teal-600" />
+            {features.map((feature, idx) => (
+              <div key={idx} className="flex flex-col items-center text-center">
+                <div className="bg-cream-100 p-4 rounded-full mb-4">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
               </div>
-              <h3 className="text-xl font-bold mb-2">Eco-Friendly</h3>
-              <p className="text-gray-600">
-                All our products are made from sustainable materials and are fully recyclable.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-cream-100 p-4 rounded-full mb-4">
-                <Package className="h-8 w-8 text-teal-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">UK Manufactured</h3>
-              <p className="text-gray-600">
-                Proudly made in the UK, supporting local economy and reducing carbon footprint.
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-cream-100 p-4 rounded-full mb-4">
-                <TrendingUp className="h-8 w-8 text-teal-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Custom Solutions</h3>
-              <p className="text-gray-600">Tailored packaging solutions to meet your specific brand requirements.</p>
-            </div>
-
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-cream-100 p-4 rounded-full mb-4">
-                <Recycle className="h-8 w-8 text-teal-600" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Sustainable</h3>
-              <p className="text-gray-600">Committed to reducing environmental impact through sustainable practices.</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -323,7 +317,7 @@ export default function Home() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-white text-white hover:bg-teal-700"
+                className="border-white text-black hover:bg-teal-700"
                 onClick={() => router.push("/contact")}
               >
                 Request a Sample

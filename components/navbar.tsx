@@ -43,10 +43,7 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <CartSidebar />
-          <Button variant="outline" className="border-teal-600 text-teal-600 hover:bg-teal-50">
-            Log In
-          </Button>
+        
           <Button className="bg-teal-600 hover:bg-teal-700">Request Quote</Button>
         </div>
 
@@ -88,12 +85,6 @@ export default function Navbar() {
               Contact
             </Link>
             <div className="flex flex-col gap-2 mt-2">
-              <div className="flex justify-center mb-2">
-                <CartSidebar />
-              </div>
-              <Button variant="outline" className="border-teal-600 text-teal-600 w-full">
-                Log In
-              </Button>
               <Button className="bg-teal-600 hover:bg-teal-700 w-full">Request Quote</Button>
             </div>
           </div>
