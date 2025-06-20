@@ -6,7 +6,6 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowRight, Leaf, Package, Recycle, TrendingUp } from "lucide-react"
-import ProductSuggestions from "@/components/product-suggestions"
 import { productData,features,articles } from './data/data';
 
 export default function Home() {
@@ -157,12 +156,7 @@ UK paper bag specialists delivering fast, sustainable packaging with custom opti
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="py-16 bg-white">
-        <div className="container">
-          <ProductSuggestions title="Featured Products" limit={3} />
-        </div>
-      </section>
+
 
       {/* Blog Teaser */}
  <section className="py-16 bg-cream-50">

@@ -11,13 +11,10 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ShoppingCart, Filter, Search } from "lucide-react"
-import { useCart } from "@/components/cart-provider"
-import ProductSuggestions from "@/components/product-suggestions"
 import { productData } from '../data/data';
 
 export default function ProductsPage() {
   
-  const { dispatch } = useCart()
   const [allProducts, setAllProducts] = useState(() => [...productData])
   const [filteredProducts, setFilteredProducts] = useState(() => [...productData])
   const [loading, setLoading] = useState(false)
@@ -355,12 +352,7 @@ export default function ProductsPage() {
                 </div>
               )}
 
-              {/* Product Suggestions
-              {filteredProducts.length > 0 && (
-                <div className="mt-12 border-t pt-8">
-                  <ProductSuggestions category={selectedCategory} limit={3} title="You Might Also Like" />
-                </div>
-              )} */}
+   
             </div>
           </div>
         </div>
