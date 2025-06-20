@@ -16,28 +16,7 @@ export default function Home() {
   TrendingUp,
   Recycle,
 };
-  const features = [
-  {
-    icon: <Leaf className="h-8 w-8 text-teal-600" />,
-    title: "Eco-Friendly",
-    description: "Our recyclable kraft paper bags are strong, high-quality, and sustainably sourced.",
-  },
-  {
-    icon: <Package className="h-8 w-8 text-teal-600" />,
-    title: "UK Manufactured",
-    description: "Made locally in Sutton Coldfield, Birmingham — cutting lead times and carbon emissions.",
-  },
-  {
-    icon: <TrendingUp className="h-8 w-8 text-teal-600" />,
-    title: "Custom Solutions",
-    description: "Get printed food packaging in the UK that’s branded to reflect your identity.",
-  },
-  {
-    icon: <Recycle className="h-8 w-8 text-teal-600" />,
-    title: "Sustainable",
-    description: "We use eco-friendly materials and methods — ideal for brands seeking eco-friendly paper bags in the UK.",
-  },
-];
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section with Video Background */}
@@ -70,11 +49,9 @@ export default function Home() {
         <div className="container relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-white drop-shadow-lg">
-              Eco-Friendly, UK Paper Bag Manufacturer for Food and Retail Businesses
-            </h1>
+Eco-Friendly Bags That Deliver — Fast, Custom & UK-Made for Food and Retail Businesses</h1>
             <p className="text-lg text-cream-100 mb-8 drop-shadow">
-              Smart, Sustainable packaging solutions - proudly manufactured in the UK and tailored to your business.
-            </p>
+Smart, sustainable packaging solutions — proudly manufactured in the UK and tailored to your business. </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 size="lg"
@@ -139,62 +116,31 @@ At TrentEco, we deliver fast food packaging in the UK that combines speed, quali
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="overflow-hidden">
-              <div className="relative h-48">
-                <Image src="/placeholder.svg?height=200&width=400" alt="Retail Bags" fill className="object-cover" />
-              </div>
-              <CardHeader>
-                <CardTitle>Retail Bags</CardTitle>
-                <CardDescription>Stylish and durable bags for retail businesses of all sizes.</CardDescription>
-              </CardHeader>
-              <CardFooter>
-                <Button
-                  variant="outline"
-                  className="w-full border-teal-600 text-teal-600 hover:bg-teal-50"
-                  onClick={() => router.push("/products")}
-                >
-                  View Collection
-                </Button>
-              </CardFooter>
-            </Card>
-
-            <Card className="overflow-hidden">
-              <div className="relative h-48">
-                <Image src="/placeholder.svg?height=200&width=400" alt="Food Packaging" fill className="object-cover" />
-              </div>
-              <CardHeader>
-                <CardTitle>Food Packaging</CardTitle>
-                <CardDescription>Safe and eco-friendly packaging solutions for the food industry.</CardDescription>
-              </CardHeader>
-              <CardFooter>
-                <Button
-                  variant="outline"
-                  className="w-full border-teal-600 text-teal-600 hover:bg-teal-50"
-                  onClick={() => router.push("/products")}
-                >
-                  View Collection
-                </Button>
-              </CardFooter>
-            </Card>
-
-            <Card className="overflow-hidden">
-              <div className="relative h-48">
-                <Image src="/placeholder.svg?height=200&width=400" alt="Luxury Bags" fill className="object-cover" />
-              </div>
-              <CardHeader>
-                <CardTitle>Luxury Bags</CardTitle>
-                <CardDescription>Premium paper bags for high-end brands and special occasions.</CardDescription>
-              </CardHeader>
-              <CardFooter>
-                <Button
-                  variant="outline"
-                  className="w-full border-teal-600 text-teal-600 hover:bg-teal-50"
-                  onClick={() => router.push("/products")}
-                >
-                  View Collection
-                </Button>
-              </CardFooter>
-            </Card>
+            {productData.slice(0, 3).map((product) => (
+              <Card className="overflow-hidden" key={product.id}>
+                <div className="relative h-48">
+                  <Image
+                    src={product.image_url || "/placeholder.svg?height=200&width=400"}
+                    alt={product.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <CardHeader>
+                  <CardTitle>{product.name}</CardTitle>
+                  <CardDescription>{product.description}</CardDescription>
+                </CardHeader>
+                <CardFooter>
+                  <Button
+                    variant="outline"
+                    className="w-full border-teal-600 text-teal-600 hover:bg-teal-50"
+                    onClick={() => router.push("/products")}
+                  >
+                    View Collection
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
           </div>
 
           <div className="text-center mt-8">
