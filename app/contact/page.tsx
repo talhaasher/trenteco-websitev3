@@ -10,7 +10,15 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react"
+import { MapPin, Phone, Mail } from "lucide-react";
+import { contactDetails, faqs } from "@/public/data";
+import { Send,Clock } from "lucide-react";
+
+const iconMap = {
+  map: <MapPin className="h-6 w-6 text-teal-600" />,
+  phone: <Phone className="h-6 w-6 text-teal-600" />,
+  mail: <Mail className="h-6 w-6 text-teal-600" />,
+};
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -24,78 +32,12 @@ export default function ContactPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitMessage, setSubmitMessage] = useState("")
-const contactDetails = [
-  {
-    icon: <MapPin className="h-6 w-6 text-teal-600" />,
-    title: "Visit Us",
-    content: (
-      <>
-        TrentEco Packaging Ltd<br />
-        Unit 32 Reddicap Trading Estate, Sutton Coldfield<br />
-        B75 7BU, Birmingham, UK
-      </>
-    ),
-  },
-  {
-    icon: <Phone className="h-6 w-6 text-teal-600" />,
-    title: "Call Us",
-    content: (
-      <>
-        <a href="tel:+447301028484" className="hover:text-teal-600">
-          +44 7301 028484
-        </a>
-        <br />
-        <span className="text-sm">Mon-Fri: 9AM–5PM</span>
-      </>
-    ),
-  },
-  {
-    icon: <Mail className="h-6 w-6 text-teal-600" />,
-    title: "Email Us",
-    content: (
-      <>
-        <a href="mailto:info@trenteco.co.uk" className="hover:text-teal-600">
-          info@trenteco.co.uk
-        </a>
-        <br />
-        <a href="mailto:asel@thepackagingsolutions.co.uk" className="hover:text-teal-600 text-sm">
-          asel@thepackagingsolutions.co.uk
-        </a>
-      </>
-    ),
-  },
-];
-const faqs = [
-  {
-    question: "What is the minimum order quantity?",
-    answer: (
-      <ul className="list-disc pl-5 text-gray-600">
-        <li>SOS / Flat Bags: 10,000 units</li>
-        <li>Satchel Bags: 50,000 to 100,000 units based on specs</li>
-      </ul>
-    ),
-  },
-  {
-    question: "How long does production take?",
-    answer:
-      "Typically 2–4 weeks depending on volume and customisation. We’ll confirm your delivery window at the time of order.",
-  },
-  {
-    question: "Do you offer bulk order discounts?",
-    answer:
-      "Yes! We specialise in paper bag bulk orders (UK-wide) with cost-effective pricing for wholesale quantities.",
-  },
-  {
-    question: "What payment terms do you offer?",
-    answer:
-      "We require a 50% pre-payment to begin production and 50% upon delivery.",
-  },
-  {
-    question: "What payment methods are accepted?",
-    answer:
-      "We accept cash, card, and bank transfers for your convenience.",
-  },
-];
+const iconMap = {
+  map: <MapPin className="h-6 w-6 text-teal-600" />,
+  phone: <Phone className="h-6 w-6 text-teal-600" />,
+  mail: <Mail className="h-6 w-6 text-teal-600" />,
+};
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -168,19 +110,40 @@ const faqs = [
         <Card className="text-center" key={idx}>
           <CardHeader>
             <div className="mx-auto w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mb-4">
-              {detail.icon}
+              {iconMap[detail.icon as keyof typeof iconMap]}
             </div>
             <CardTitle className="text-lg">{detail.title}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">{detail.content}</p>
+            <div className="text-gray-600">
+              {detail.lines &&
+                detail.lines.map((line, i) => (
+                  <div key={i}>{line}</div>
+                ))}
+              {detail.phone && (
+                <>
+                  <a href={`tel:${detail.phone}`} className="hover:text-teal-600">
+                    {detail.phone}
+                  </a>
+                  <br />
+                  <span className="text-sm">{detail.note}</span>
+                </>
+              )}
+              {detail.emails &&
+                detail.emails.map((email, i) => (
+                  <div key={i}>
+                    <a href={`mailto:${email}`} className="hover:text-teal-600">
+                      {email}
+                    </a>
+                  </div>
+                ))}
+            </div>
           </CardContent>
         </Card>
       ))}
     </div>
   </div>
 </section>
-
       {/* Contact Form and Map */}
       <section className="py-12 bg-cream-50">
         <div className="container">
@@ -400,7 +363,17 @@ const faqs = [
               <CardTitle className="text-lg">{faq.question}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">{faq.answer}</p>
+              <div className="text-gray-600">
+                {faq.answerList ? (
+                  <ul className="list-disc pl-5">
+                    {faq.answerList.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>{faq.answer}</p>
+                )}
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -408,7 +381,6 @@ const faqs = [
     </div>
   </div>
 </section>
-
       {/* CTA Section */}
       <section className="py-16 bg-teal-600 text-white">
         <div className="container">

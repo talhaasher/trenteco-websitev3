@@ -323,3 +323,62 @@ export function searchProducts(query: string) {
   );
 }
 
+
+
+
+// coentact page
+export const contactDetails = [
+  {
+    icon: "map", // Use a string or key for the icon
+    title: "Visit Us",
+    lines: [
+      "TrentEco Packaging Ltd",
+      "Unit 32 Reddicap Trading Estate, Sutton Coldfield",
+      "B75 7BU, Birmingham, UK",
+    ],
+  },
+  {
+    icon: "phone",
+    title: "Call Us",
+    phone: "+44 7301 028484",
+    note: "Mon-Fri: 9AM–5PM",
+  },
+  {
+    icon: "mail",
+    title: "Email Us",
+    emails: [
+      "info@trenteco.co.uk",
+      "asel@thepackagingsolutions.co.uk",
+    ],
+  },
+];
+
+export const faqs = [
+  {
+    question: "What is the minimum order quantity?",
+    answerList: [
+      "SOS / Flat Bags: 10,000 units",
+      "Satchel Bags: 50,000 to 100,000 units based on specs",
+    ],
+  },
+  {
+    question: "How long does production take?",
+    answer:
+      "Typically 2–4 weeks depending on volume and customisation. We’ll confirm your delivery window at the time of order.",
+  },
+  {
+    question: "Do you offer bulk order discounts?",
+    answer:
+      "Yes! We specialise in paper bag bulk orders (UK-wide) with cost-effective pricing for wholesale quantities.",
+  },
+  {
+    question: "What payment terms do you offer?",
+    answer:
+      "We require a 50% pre-payment to begin production and 50% upon delivery.",
+  },
+  {
+    question: "What payment methods are accepted?",
+    answer:
+      "We accept cash, card, and bank transfers for your convenience.",
+  },
+];
