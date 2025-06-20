@@ -77,7 +77,7 @@ export default function BlogPage() {
           <h2 className="text-2xl font-bold mb-8">Latest Articles</h2>
           {otherPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {otherPosts.map((post) => (
+              {filteredPosts.map((post) => (
                 <Card key={post.id} className="overflow-hidden">
                   <div className="relative h-48">
                     <Image src={post.image_url || "/placeholder.svg"} alt={post.title} fill className="object-cover" />
