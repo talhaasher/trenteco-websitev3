@@ -199,7 +199,7 @@ export default function ProductsPage() {
                 <h2 className="text-xl font-bold mb-6">Filters</h2>
 
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <h3 className="font-medium mb-3">Category</h3>
                   <div className="space-y-2">
                     {categories.map((category) => (
@@ -233,7 +233,7 @@ export default function ProductsPage() {
                       </div>
                     ))}
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mb-6">
                   <h3 className="font-medium mb-3">Material</h3>
@@ -296,7 +296,6 @@ export default function ProductsPage() {
                       <SelectValue placeholder="Sort by" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="featured">Featured</SelectItem>
                       <SelectItem value="name">Name</SelectItem>
                     </SelectContent>
                   </Select>
