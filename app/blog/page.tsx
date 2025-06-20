@@ -8,29 +8,25 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Search, Calendar, User, Tag } from "lucide-react"
-import { articles } from "@/public/data"
-// const categories = ["All", "Industry Trends", "Manufacturing", "Branding", "Sustainability", "Small Business", "Design"]
+import { articles, searchArticles } from "@/public/data" // <-- use searchArticles
 
 export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
 
-  const filteredPosts = articles.filter((post) => {
-    const q = searchTerm.toLowerCase();
-    // Check category (array or string)
-    const categoryMatch =
-      selectedCategory === "All" ||
-      (Array.isArray(post.category)
-        ? post.category.some((cat) => cat.toLowerCase() === selectedCategory.toLowerCase())
-        : typeof post.category === "string" &&
-          post.category.toLowerCase() === selectedCategory.toLowerCase());
+  // Use the enhanced search function
+  const searchedArticles = searchArticles(searchTerm);
 
-    // Check search term in title, excerpt, tags, or
-    return (
-      categoryMatch &&
-      (post.title.toLowerCase().includes(q) ||
-        (post.excerpt && post.excerpt.toLowerCase().includes(q)))
-    );
+  const filteredPosts = searchedArticles.filter((post) => {
+    // Category match (array or string)
+    if (selectedCategory === "All") return true;
+
+    if (Array.isArray(post.category)) {
+      return post.category.some((cat: string) => cat.toLowerCase() === selectedCategory.toLowerCase());
+    } else if (typeof post.category === "string") {
+      return post.category.toLowerCase() === selectedCategory.toLowerCase();
+    }
+    return false;
   });
 
   const filteredArticles = articles.filter((article) => {

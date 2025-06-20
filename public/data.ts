@@ -301,3 +301,25 @@ export const articles = [
     updated_at: "2024-06-06T12:00:00.000Z",
   },
 ];
+
+// Enhanced article search: search by title, excerpt, content, or tags
+export function searchArticles(query: string) {
+  const q = query.trim().toLowerCase();
+  return articles.filter(article =>
+    article.title.toLowerCase().includes(q) ||
+    article.excerpt.toLowerCase().includes(q) ||
+    article.tags.some(tag => tag.toLowerCase().includes(q))
+  );
+}
+
+// Product search: search by name, description, material, or category
+export function searchProducts(query: string) {
+  const q = query.trim().toLowerCase();
+  return productData.filter(product =>
+    product.name.toLowerCase().includes(q) ||
+    product.description.toLowerCase().includes(q) ||
+    product.material.toLowerCase().includes(q) ||
+    (product.category && product.category.toLowerCase().includes(q))
+  );
+}
+
