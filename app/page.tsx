@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowRight, Leaf, Package, Recycle, TrendingUp } from "lucide-react"
 import ProductSuggestions from "@/components/product-suggestions"
-import { productData,features,articles } from '../public/data';
+import { productData,features,articles } from './data/data';
 
 export default function Home() {
   const router = useRouter()

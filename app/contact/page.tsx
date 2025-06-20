@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { MapPin, Phone, Mail } from "lucide-react";
-import { contactDetails, faqs } from "@/public/data";
+import { contactDetails, faqs } from "@/app/data/data";
 import { Send,Clock } from "lucide-react";
 
 const iconMap = {

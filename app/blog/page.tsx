@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Search, Calendar, User, Tag } from "lucide-react"
-import { articles, searchArticles } from "@/public/data" // <-- use searchArticles
+import { articles, searchArticles } from "@/app/data/data" // <-- use searchArticles
 
 export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("")

@@ -13,7 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ShoppingCart, Filter, Search } from "lucide-react"
 import { useCart } from "@/components/cart-provider"
 import ProductSuggestions from "@/components/product-suggestions"
-import { productData } from '../../public/data';
+import { productData } from '../data/data';
 
 export default function ProductsPage() {
   

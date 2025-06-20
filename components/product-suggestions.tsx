@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ShoppingCart } from "lucide-react"
 import { useCart } from "./cart-provider"
-import { productData } from '../public/data'; // Make sure the path is correct
+import { productData } from '../app/data/data'; // Make sure the path is correct
 
 interface ProductSuggestionsProps {
   currentProductId?: number

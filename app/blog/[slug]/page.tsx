@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Calendar, User, Tag, Clock, Share2, Facebook, Twitter, Linkedin } from "lucide-react"
-import { articles } from "../../../public/data"
+import { articles } from "../../data/data"
 
 export default function BlogPostPage() {
   const params = useParams()

@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Factory, Leaf, Recycle } from "lucide-react"
-import {ourstory, profuction, teamMembers} from "../../public/data" // Assuming you have this data in a separate file
+import {ourstory, profuction, teamMembers} from "../data/data" // Assuming you have this data in a separate file
 export default function AboutPage() {
   
 

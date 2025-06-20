@@ -1,4 +1,4 @@
-import { articles } from '../../public/data';
+import { articles } from '../../app/data/data';
 
 export default function ArticlesPage() {
   return (
