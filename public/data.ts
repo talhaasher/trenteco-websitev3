@@ -56,7 +56,7 @@ export const productData = [
   {
     id: 5,
     name: "White Paper Bag with Flat Handles",
-    category: "",
+    category: "unfeatured",
     size: "large",
     material: "white",
     image_url: null,
@@ -69,7 +69,7 @@ export const productData = [
   {
     id: 6,
     name: "Bakery Paper Bag",
-    category: "",
+    category: "unfeatured",
     size: "small",
     material: "kraft",
     image_url: null,
@@ -82,7 +82,7 @@ export const productData = [
   {
     id: 7,
     name: "Gift Bag with Rope Handles",
-    category: "",
+    category: "unfeatured",
     size: "medium",
     material: "premium",
     image_url: null,
@@ -95,7 +95,7 @@ export const productData = [
   {
     id: 8,
     name: "Grocery Paper Bag",
-    category: "",
+    category: "unfeatured",
     size: "large",
     material: "kraft",
     image_url: null,
@@ -108,7 +108,7 @@ export const productData = [
   {
     id: 9,
     name: "Pharmacy Paper Bag",
-    category: "",
+    category: "unfeatured",
     size: "small",
     material: "white",
     image_url: null,
@@ -121,7 +121,7 @@ export const productData = [
   {
     id: 10,
     name: "Wine Bottle Bag",
-    category: "",
+    category: "unfeatured",
     size: "medium",
     material: "premium",
     image_url: null,
