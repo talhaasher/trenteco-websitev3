@@ -6,9 +6,16 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowRight, Leaf, Package, Recycle, TrendingUp } from "lucide-react"
 import ProductSuggestions from "@/components/product-suggestions"
+import { productData,features,articles } from '../public/data';
 
 export default function Home() {
   const router = useRouter()
+  const iconMap = {
+  Leaf,
+  Package,
+  TrendingUp,
+  Recycle,
+};
   const features = [
   {
     icon: <Leaf className="h-8 w-8 text-teal-600" />,
@@ -206,103 +213,63 @@ At TrentEco, we deliver fast food packaging in the UK that combines speed, quali
       </section>
 
       {/* Blog Teaser */}
-      <section className="py-16 bg-cream-50">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Latest from Our Blog</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Stay updated with the latest trends and insights in sustainable packaging.
-            </p>
-          </div>
+ <section className="py-16 bg-cream-50">
+  <div className="container">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl font-bold mb-4">Latest from Our Blog</h2>
+      <p className="text-gray-600 max-w-2xl mx-auto">
+        Stay updated with the latest trends and insights in sustainable packaging.
+      </p>
+    </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card>
-              <CardHeader>
-                <div className="relative h-48 -mx-6 -mt-6 mb-4">
-                  <Image
-                    src="/placeholder.svg?height=200&width=400"
-                    alt="The Future of Eco Packaging"
-                    fill
-                    className="object-cover rounded-t-lg"
-                  />
-                </div>
-                <CardTitle>The Future of Eco Packaging</CardTitle>
-                <CardDescription>May 15, 2025</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Exploring the latest innovations and trends in sustainable packaging solutions.
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Link href="/blog/future-of-eco-packaging" className="text-teal-600 hover:underline flex items-center">
-                  Read More <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </CardFooter>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <div className="relative h-48 -mx-6 -mt-6 mb-4">
-                  <Image
-                    src="/placeholder.svg?height=200&width=400"
-                    alt="Why UK Manufacturing Matters"
-                    fill
-                    className="object-cover rounded-t-lg"
-                  />
-                </div>
-                <CardTitle>Why UK Manufacturing Matters</CardTitle>
-                <CardDescription>April 28, 2025</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  The benefits of choosing locally manufactured packaging for your business.
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Link href="/blog/uk-manufacturing" className="text-teal-600 hover:underline flex items-center">
-                  Read More <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </CardFooter>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <div className="relative h-48 -mx-6 -mt-6 mb-4">
-                  <Image
-                    src="/placeholder.svg?height=200&width=400"
-                    alt="Sustainable Branding Tips"
-                    fill
-                    className="object-cover rounded-t-lg"
-                  />
-                </div>
-                <CardTitle>Sustainable Branding Tips</CardTitle>
-                <CardDescription>April 10, 2025</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  How to incorporate sustainability into your brand identity and packaging.
-                </p>
-              </CardContent>
-              <CardFooter>
-                <Link href="/blog/sustainable-branding" className="text-teal-600 hover:underline flex items-center">
-                  Read More <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </CardFooter>
-            </Card>
-          </div>
-
-          <div className="text-center mt-8">
-            <Button
-              variant="outline"
-              className="border-teal-600 text-teal-600 hover:bg-teal-50"
-              onClick={() => router.push("/blog")}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {articles.slice(0, 3).map((article) => (
+        <Card key={article.id}>
+          <CardHeader>
+            <div className="relative h-48 -mx-6 -mt-6 mb-4">
+              <Image
+                src={article.image_url || "/placeholder.svg?height=200&width=400"}
+                alt={article.title}
+                fill
+                className="object-cover rounded-t-lg"
+              />
+            </div>
+            <CardTitle>{article.title}</CardTitle>
+            <CardDescription>
+              {/* Format date if needed */}
+              {new Date(article.created_at).toLocaleDateString("en-GB", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-600">{article.excerpt}</p>
+          </CardContent>
+          <CardFooter>
+            <Link
+              href={`/blog/${article.slug}`}
+              className="text-teal-600 hover:underline flex items-center"
             >
-              View All Articles <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </section>
+              Read More <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
+
+    <div className="text-center mt-8">
+      <Button
+        variant="outline"
+        className="border-teal-600 text-teal-600 hover:bg-teal-50"
+        onClick={() => router.push("/blog")}
+      >
+        View All Articles <ArrowRight className="ml-2 h-4 w-4" />
+      </Button>
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section className="py-16 bg-teal-600 text-white">

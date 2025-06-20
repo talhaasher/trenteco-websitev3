@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ShoppingCart } from "lucide-react"
 import { useCart } from "./cart-provider"
-import type { Product } from "@/lib/supabase/types"
+import { productData } from '../public/data'; // Make sure the path is correct
 
 interface ProductSuggestionsProps {
   currentProductId?: number
@@ -22,7 +22,7 @@ export default function ProductSuggestions({
   title = "You Might Also Like",
 }: ProductSuggestionsProps) {
   const { dispatch } = useCart()
-  const [suggestions, setSuggestions] = useState<Product[]>([])
+  const [suggestions, setSuggestions] = useState(productData);
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -44,12 +44,11 @@ export default function ProductSuggestions({
           return
         }
 
-        const products: Product[] = await response.json()
 
         // Filter out the current product and shuffle
         const filteredProducts = currentProductId
-          ? products.filter((product) => product.id !== currentProductId)
-          : products
+          ? productData.filter((product) => product.id !== currentProductId)
+          : productData
 
         // Shuffle the array for randomness
         const shuffled = [...filteredProducts].sort(() => 0.5 - Math.random())
@@ -67,18 +66,7 @@ export default function ProductSuggestions({
     fetchSuggestions()
   }, [currentProductId, category, limit])
 
-  const addToCart = (product: Product) => {
-    dispatch({
-      type: "ADD_ITEM",
-      payload: {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image_url || "/placeholder.svg",
-        sku: product.sku,
-      },
-    })
-  }
+  
 
   if (loading) {
     return (
@@ -126,18 +114,13 @@ export default function ProductSuggestions({
             <CardContent>
               <p className="text-gray-600 mb-2 line-clamp-2">{product.description}</p>
               <div className="flex justify-between items-center">
-                <span className="text-lg font-bold">£{product.price.toFixed(2)}</span>
                 <div className="flex items-center gap-2">
                   <span className="text-xs bg-cream-100 px-2 py-1 rounded-full">{product.size}</span>
                   <span className="text-xs bg-cream-100 px-2 py-1 rounded-full">{product.material}</span>
                 </div>
               </div>
             </CardContent>
-            <CardFooter>
-              <Button className="w-full bg-teal-600 hover:bg-teal-700" onClick={() => addToCart(product)}>
-                <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-              </Button>
-            </CardFooter>
+
           </Card>
         ))}
       </div>

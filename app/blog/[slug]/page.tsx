@@ -1,6 +1,5 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
@@ -8,73 +7,19 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Calendar, User, Tag, Clock, Share2, Facebook, Twitter, Linkedin } from "lucide-react"
-import type { BlogPost } from "@/lib/supabase/types"
+import { articles } from "../../../public/data"
 
 export default function BlogPostPage() {
   const params = useParams()
   const slug = params.slug as string
-  const [post, setPost] = useState<BlogPost | null>(null)
-  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([])
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setLoading(true)
-
-        // Fetch all blog posts and find the one with matching slug
-        const response = await fetch("/api/blog")
-        if (!response.ok) {
-          console.log("API response not ok")
-          return
-        }
-
-        const posts: BlogPost[] = await response.json()
-        const foundPost = posts.find((p) => p.slug === slug)
-
-        if (foundPost) {
-          setPost(foundPost)
-
-          // Get related posts from the same category
-          const related = posts.filter((p) => p.id !== foundPost.id && p.category === foundPost.category).slice(0, 3)
-          setRelatedPosts(related)
-        }
-      } catch (error) {
-        console.log("Error fetching blog post:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    if (slug) {
-      fetchPost()
-    }
-  }, [slug])
+  const post = articles.find((p) => p.slug === slug) || null
+  const relatedPosts = post
+    ? articles.filter((p) => p.id !== post.id && p.category === post.category).slice(0, 3)
+    : []
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : ""
   const shareTitle = post?.title || ""
-
-  if (loading) {
-    return (
-      <div className="flex flex-col min-h-screen">
-        <div className="container py-12">
-          <div className="max-w-4xl mx-auto">
-            <div className="animate-pulse">
-              <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
-              <div className="h-64 bg-gray-200 rounded mb-8"></div>
-              <div className="h-12 bg-gray-200 rounded w-3/4 mb-4"></div>
-              <div className="h-6 bg-gray-200 rounded w-1/2 mb-8"></div>
-              <div className="space-y-4">
-                <div className="h-4 bg-gray-200 rounded"></div>
-                <div className="h-4 bg-gray-200 rounded"></div>
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   if (!post) {
     return (

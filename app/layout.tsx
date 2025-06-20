@@ -21,10 +21,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <CartProvider>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+    <>
+      <html
+  lang="en"
+  className="light"
+  style={{ colorScheme: "light" }}
+  suppressHydrationWarning
+>
+        <body className={inter.className}>
+          <CartProvider>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
             <div className="flex min-h-screen flex-col">
               <Navbar />
               <main className="flex-1">{children}</main>
@@ -34,5 +40,7 @@ export default function RootLayout({
         </CartProvider>
       </body>
     </html>
+    </>
+  
   )
 }

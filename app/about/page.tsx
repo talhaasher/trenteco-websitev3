@@ -1,50 +1,10 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Factory, Leaf, Recycle } from "lucide-react"
-
+import {ourstory, profuction, teamMembers} from "../../public/data" // Assuming you have this data in a separate file
 export default function AboutPage() {
-  const ourstory=[                "TrentEco was founded in January 2025 as the specialist paper bag division of Imperial Packaging Solution — a trusted name in fast food packaging in the UK. While our parent company is known for rice bowls, food boxes, and trays, TrentEco focuses exclusively on UK-manufactured kraft paper bags for restaurants and takeaways.",
-                "With local production facilities in Sutton Coldfield, we eliminate the need for bulk storage by offering flexible monthly ordering and paper bag bulk orders in the UK with rapid turnaround times."];
-  const profuction = [
-  {
-    title: "High-Volume Output:",
-    description: "Over 2 million bags per month"
-  },
-  {
-    title: "Custom Printing:",
-    description: "High-resolution printing for branded paper bags"
-  },
-  {
-    title: "Quality Control:",
-    description: "Each batch is rigorously tested"
-  },
-  {
-    title: "Materials:",
-    description: "White and recycled kraft paper options available"
-  }
-];
-const teamMembers = [
-  {
-    name: "Asel",
-    role: "Business Development Manager",
-    image: "" // Add image URL or leave empty for now
-  },
-  {
-    name: "Zunair Asher",
-    role: "Supply Chain Manager",
-    image: ""
-  },
-  {
-    name: "Asher Hafeez",
-    role: "Director, Sales & Production",
-    image: ""
-  },
-  {
-    name: "Khurram Cheema",
-    role: "Director, Sales & Accounts",
-    image: ""
-  }
-];
+  
+
                 return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}

@@ -13,13 +13,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ShoppingCart, Filter, Search } from "lucide-react"
 import { useCart } from "@/components/cart-provider"
 import ProductSuggestions from "@/components/product-suggestions"
-import type { Product } from "@/lib/supabase/types"
+import { productData } from '../../public/data';
 
 export default function ProductsPage() {
+  
   const { dispatch } = useCart()
-  const [allProducts, setAllProducts] = useState<Product[]>([])
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
+  const [allProducts, setAllProducts] = useState(() => [...productData])
+  const [filteredProducts, setFilteredProducts] = useState(() => [...productData])
+  const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [priceRange, setPriceRange] = useState([0, 1])
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
@@ -29,42 +30,7 @@ export default function ProductsPage() {
   const [showFilters, setShowFilters] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined)
 
-  // Fetch products from API
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true)
-        const response = await fetch("/api/products")
-
-        if (!response.ok) {
-          console.log("API response not ok, using empty data")
-          setAllProducts([])
-          setFilteredProducts([])
-          return
-        }
-
-        const products = await response.json()
-        setAllProducts(products)
-        setFilteredProducts(products)
-
-        // Set price range based on actual product prices
-        if (products.length > 0) {
-          const prices = products.map((p: Product) => p.price)
-          const minPrice = Math.min(...prices)
-          const maxPrice = Math.max(...prices)
-          setPriceRange([minPrice, maxPrice])
-        }
-      } catch (error) {
-        console.log("Error fetching products, using empty data:", error)
-        setAllProducts([])
-        setFilteredProducts([])
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchProducts()
-  }, [])
+  // Remove fetchProducts and useEffect for fetching
 
   // Handle filter changes
   const applyFilters = () => {
@@ -79,8 +45,6 @@ export default function ProductsPage() {
       )
     }
 
-    // Apply price filter
-    result = result.filter((product) => product.price >= priceRange[0] && product.price <= priceRange[1])
 
     // Apply category filter
     if (selectedCategories.length > 0) {
@@ -102,12 +66,7 @@ export default function ProductsPage() {
 
     // Apply sorting
     switch (sortBy) {
-      case "price-low":
-        result.sort((a, b) => a.price - b.price)
-        break
-      case "price-high":
-        result.sort((a, b) => b.price - a.price)
-        break
+
       case "name":
         result.sort((a, b) => a.name.localeCompare(b.name))
         break
@@ -157,18 +116,7 @@ export default function ProductsPage() {
     })
   }
 
-  const addToCart = (product: Product) => {
-    dispatch({
-      type: "ADD_ITEM",
-      payload: {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image_url || "/placeholder.svg",
-        sku: product.sku,
-      },
-    })
-  }
+
 
   // Apply filters when any filter changes
   React.useEffect(() => {
@@ -250,22 +198,6 @@ export default function ProductsPage() {
               <div className="sticky top-20">
                 <h2 className="text-xl font-bold mb-6">Filters</h2>
 
-                <div className="mb-6">
-                  <h3 className="font-medium mb-3">Price Range</h3>
-                  <Slider
-                    defaultValue={priceRange}
-                    max={Math.max(...allProducts.map((p) => p.price)) || 1}
-                    min={Math.min(...allProducts.map((p) => p.price)) || 0}
-                    step={0.05}
-                    value={priceRange}
-                    onValueChange={setPriceRange}
-                    className="mb-2"
-                  />
-                  <div className="flex justify-between text-sm text-gray-600">
-                    <span>£{priceRange[0].toFixed(2)}</span>
-                    <span>£{priceRange[1].toFixed(2)}</span>
-                  </div>
-                </div>
 
                 <div className="mb-6">
                   <h3 className="font-medium mb-3">Category</h3>
@@ -326,8 +258,6 @@ export default function ProductsPage() {
                   className="w-full border-teal-600 text-teal-600 hover:bg-teal-50"
                   onClick={() => {
                     setSearchTerm("")
-                    const prices = allProducts.map((p) => p.price)
-                    setPriceRange([Math.min(...prices), Math.max(...prices)])
                     setSelectedCategories([])
                     setSelectedSizes([])
                     setSelectedMaterials([])
@@ -367,8 +297,6 @@ export default function ProductsPage() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="featured">Featured</SelectItem>
-                      <SelectItem value="price-low">Price: Low to High</SelectItem>
-                      <SelectItem value="price-high">Price: High to Low</SelectItem>
                       <SelectItem value="name">Name</SelectItem>
                     </SelectContent>
                   </Select>
@@ -399,23 +327,13 @@ export default function ProductsPage() {
                       <CardContent>
                         <p className="text-gray-600 mb-4">{product.description}</p>
                         <div className="flex justify-between items-center">
-                          <span className="text-lg font-bold">£{product.price.toFixed(2)}</span>
                           <div className="flex items-center gap-2">
                             <span className="text-sm bg-cream-100 px-2 py-1 rounded-full">{product.size}</span>
                             <span className="text-sm bg-cream-100 px-2 py-1 rounded-full">{product.material}</span>
                           </div>
                         </div>
                       </CardContent>
-                      <CardFooter>
-                        <Button
-                          className="w-full bg-teal-600 hover:bg-teal-700"
-                          onClick={() => addToCart(product)}
-                          disabled={product.stock_quantity === 0}
-                        >
-                          <ShoppingCart className="mr-2 h-4 w-4" />
-                          {product.stock_quantity === 0 ? "Out of Stock" : "Add to Cart"}
-                        </Button>
-                      </CardFooter>
+
                     </Card>
                   ))}
                 </div>
@@ -427,8 +345,6 @@ export default function ProductsPage() {
                     className="mt-4 border-teal-600 text-teal-600 hover:bg-teal-50"
                     onClick={() => {
                       setSearchTerm("")
-                      const prices = allProducts.map((p) => p.price)
-                      setPriceRange([Math.min(...prices), Math.max(...prices)])
                       setSelectedCategories([])
                       setSelectedSizes([])
                       setSelectedMaterials([])
@@ -440,12 +356,12 @@ export default function ProductsPage() {
                 </div>
               )}
 
-              {/* Product Suggestions */}
+              {/* Product Suggestions
               {filteredProducts.length > 0 && (
                 <div className="mt-12 border-t pt-8">
                   <ProductSuggestions category={selectedCategory} limit={3} title="You Might Also Like" />
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>
@@ -465,4 +381,19 @@ export default function ProductsPage() {
       </section>
     </div>
   )
+}
+
+export function ProductList() {
+  return (
+    <div>
+      <h1>Product List</h1>
+      <ul>
+        {productData.map(product => (
+          <li key={product.id}>
+            <strong>{product.name}</strong>: {product.description}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
