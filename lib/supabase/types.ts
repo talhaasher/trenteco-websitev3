@@ -58,3 +58,12 @@ export interface team_members {
   role: string
   image: string
 }
+
+export interface faq {
+  id: number
+  question: string
+  answer: string | null
+  answer_list: string[] | null
+  created_at: string
+  updated_at: string
+}

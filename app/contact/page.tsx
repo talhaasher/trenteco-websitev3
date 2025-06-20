@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { MapPin, Phone, Mail } from "lucide-react";
-import { contactDetails, faqs } from "@/app/data/data";
+import {  faqs } from "@/app/data/data";
 import { Send,Clock } from "lucide-react";
 
 const iconMap = {
@@ -21,6 +21,31 @@ const iconMap = {
 };
 
 export default function ContactPage() {
+  const contactDetails = [
+  {
+    icon: "map", // Use a string or key for the icon
+    title: "Visit Us",
+    lines: [
+      "TrentEco Packaging Ltd",
+      "Unit 32 Reddicap Trading Estate, Sutton Coldfield",
+      "B75 7BU, Birmingham, UK",
+    ],
+  },
+  {
+    icon: "phone",
+    title: "Call Us",
+    phone: "+44 7301 028484",
+    note: "Mon-Fri: 9AM–5PM",
+  },
+  {
+    icon: "mail",
+    title: "Email Us",
+    emails: [
+      "info@trenteco.co.uk",
+      "asel@thepackagingsolutions.co.uk",
+    ],
+  },
+];
   const [formData, setFormData] = useState({
     name: "",
     email: "",
