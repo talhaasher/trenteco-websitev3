@@ -5,7 +5,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import Image from "next/image"
-import CartSidebar from "./cart-sidebar"
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -43,8 +42,12 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-        
-          <Button className="bg-teal-600 hover:bg-teal-700">Request Quote</Button>
+          <Button
+            asChild
+            className="bg-teal-600 hover:bg-teal-700"
+          >
+            <Link href="/contact#enquiry-form">Request Quote</Link>
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}

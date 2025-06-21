@@ -182,7 +182,7 @@ const iconMap = {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <Card>
+            <Card id="enquiry-form">
               <CardHeader>
                 <CardTitle>Send us a Message</CardTitle>
                 <CardDescription>Fill out the form below and we'll get back to you within 24 hours.</CardDescription>

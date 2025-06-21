@@ -20,6 +20,7 @@ export async function getFeatures() {
   }
   return data
 }
+
 export async function getArticles() {
   const supabase = await createClient()
   const { data, error } = await supabase.from("articles").select("*")
@@ -29,6 +30,7 @@ export async function getArticles() {
   }
   return data
 }
+
 export async function searchArticles(query: string) {
   const q = query.trim().toLowerCase()
   try {
@@ -50,6 +52,7 @@ export async function searchArticles(query: string) {
   }
   return []
 }
+
 export async function searchProducts(query: string) {
   const q = query.trim().toLowerCase()
   const products = await getProductData()
@@ -61,6 +64,7 @@ export async function searchProducts(query: string) {
     (product.category && product.category.toLowerCase().includes(q))
   )
 }
+
 export async function getTeamMembers() {
   const supabase = await createClient()
   const { data, error } = await supabase.from("team_members").select("*")
@@ -70,6 +74,7 @@ export async function getTeamMembers() {
   }
   return data
 }
+
 export async function getFaqs() {
   const supabase = await createClient()
   const { data, error } = await supabase.from("faqs").select("*")
@@ -79,6 +84,7 @@ export async function getFaqs() {
   }
   return data
 }
+
 export async function submitEnquiry(enquiry: {
   name: string
   email: string

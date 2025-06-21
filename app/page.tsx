@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { ArrowRight, Leaf, Package, Recycle, TrendingUp } from "lucide-react"
 import { getProductData, getFeatures, getArticles } from './data/data';
 
-export default async function Home() {
+export default function Home() {
   const iconMap = {
     Leaf,
     Package,
@@ -15,9 +15,20 @@ export default async function Home() {
     Recycle,
   };
 
-  const productData = await getProductData() ?? [];
-  const features = await getFeatures() ?? [];
-  const articles = await getArticles() ?? [];
+  const [productData, setProductData] = useState<any[]>([]);
+  const [features, setFeatures] = useState<any[]>([]);
+  const [articles, setArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Fetch all data in parallel
+    Promise.all([getProductData(), getFeatures(), getArticles()]).then(
+      ([products, features, articles]) => {
+        setProductData(products ?? []);
+        setFeatures(features ?? []);
+        setArticles(articles ?? []);
+      }
+    );
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
