@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Search, Calendar, User, Tag } from "lucide-react"
-import { getArticles, searchArticles } from "@/app/data/data"
+import { getArticles, searchArticles, subscribeNewsletter } from "@/app/data/data"
 
 type Article = {
   id: string
@@ -29,6 +29,8 @@ export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [articles, setArticles] = useState<Article[]>([])
   const [searchedArticles, setSearchedArticles] = useState<Article[]>([])
+  const [newsletterEmail, setNewsletterEmail] = useState("")
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle"|"loading"|"success"|"error">("idle")
 
   useEffect(() => {
     getArticles().then((data) => setArticles(Array.isArray(data) ? data : []))
@@ -58,6 +60,18 @@ export default function BlogPage() {
 
   const featuredPost = filteredPosts[0]
   const otherPosts = filteredPosts.slice(1)
+
+  async function handleNewsletterSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setNewsletterStatus("loading")
+    const result = await subscribeNewsletter(newsletterEmail)
+    if (result) {
+      setNewsletterStatus("success")
+      setNewsletterEmail("")
+    } else {
+      setNewsletterStatus("error")
+    }
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -150,12 +164,33 @@ export default function BlogPage() {
             <p className="text-lg mb-8">
               Subscribe to our newsletter for the latest insights on sustainable packaging and industry trends.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <Input placeholder="Enter your email" className="bg-white text-gray-900" />
-              <Button variant="secondary" className="whitespace-nowrap">
-                Subscribe
+            <form
+              className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
+              onSubmit={handleNewsletterSubmit}
+            >
+              <Input
+                placeholder="Enter your email"
+                className="bg-white text-gray-900"
+                value={newsletterEmail}
+                onChange={e => setNewsletterEmail(e.target.value)}
+                type="email"
+                required
+              />
+              <Button
+                variant="secondary"
+                className="whitespace-nowrap"
+                type="submit"
+                disabled={newsletterStatus === "loading"}
+              >
+                {newsletterStatus === "loading" ? "Subscribing..." : "Subscribe"}
               </Button>
-            </div>
+            </form>
+            {newsletterStatus === "success" && (
+              <p className="text-green-200 mt-2">Thank you for subscribing!</p>
+            )}
+            {newsletterStatus === "error" && (
+              <p className="text-red-200 mt-2">There was an error. Please try again.</p>
+            )}
             <p className="text-sm mt-4 opacity-80">We respect your privacy. Unsubscribe at any time.</p>
           </div>
         </div>

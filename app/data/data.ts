@@ -121,6 +121,19 @@ export async function submitEnquiry(enquiry: {
   return data?.[0] || null
 }
 
+export async function subscribeNewsletter(email: string) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("newsletter")
+    .insert([{ email }])
+    .select()
+  if (error) {
+    console.error("Error subscribing to newsletter:", error.message)
+    return null
+  }
+  return data?.[0] || null
+}
+
 
 
 
