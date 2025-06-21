@@ -37,10 +37,22 @@ export default function BlogPage() {
   }, [])
 
   useEffect(() => {
-    searchArticles(searchTerm).then((data) => setSearchedArticles(Array.isArray(data) ? data : []))
-  }, [searchTerm])
+    if (!searchTerm) {
+      setSearchedArticles(articles)
+      return
+    }
+    const q = searchTerm.toLowerCase()
+    setSearchedArticles(
+      articles.filter(article =>
+        article.title.toLowerCase().includes(q) ||
+        article.tags.some(tag => tag.toLowerCase().includes(q))
+      )
+    )
+  }, [searchTerm, articles])
 
-  const filteredPosts = searchedArticles.filter((post) => {
+  const postsToShow = searchTerm ? searchedArticles : articles
+
+  const filteredPosts = postsToShow.filter((post) => {
     if (selectedCategory === "All") return true
     if (Array.isArray(post.category)) {
       return post.category.some((cat) => cat.toLowerCase() === selectedCategory.toLowerCase())
@@ -48,14 +60,6 @@ export default function BlogPage() {
       return post.category.toLowerCase() === selectedCategory.toLowerCase()
     }
     return false
-  })
-
-  const filteredArticles = articles.filter((article) => {
-    const q = searchTerm.toLowerCase()
-    return (
-      article.title.toLowerCase().includes(q) ||
-      article.tags.some((tag) => tag.toLowerCase().includes(q))
-    )
   })
 
   const featuredPost = filteredPosts[0]
@@ -104,7 +108,7 @@ export default function BlogPage() {
       <section className="py-12 bg-cream-50">
         <div className="container">
           <h2 className="text-2xl font-bold mb-8">Latest Articles</h2>
-          {otherPosts.length > 0 ? (
+          {filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredPosts.map((post) => (
                 <Card key={post.id} className="overflow-hidden">

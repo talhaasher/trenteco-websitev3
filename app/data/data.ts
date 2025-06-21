@@ -40,8 +40,6 @@ export async function searchArticles(query: string) {
       .select("*")
       .or([
         `title.ilike.%${q}%`,
-        `excerpt.ilike.%${q}%`,
-        `content.ilike.%${q}%`,
         `tags.cs.{${q}}`
       ].join(","))
     if (!error && data && data.length > 0) {
