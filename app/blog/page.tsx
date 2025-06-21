@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -8,34 +8,53 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Search, Calendar, User, Tag } from "lucide-react"
-import { articles, searchArticles } from "@/app/data/data" // <-- use searchArticles
+import { getArticles, searchArticles } from "@/app/data/data"
+
+type Article = {
+  id: string
+  title: string
+  excerpt: string
+  content: string
+  tags: string[]
+  category: string | string[]
+  author: string
+  created_at: string
+  read_time: string
+  image_url?: string
+  slug: string
+}
 
 export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
+  const [articles, setArticles] = useState<Article[]>([])
+  const [searchedArticles, setSearchedArticles] = useState<Article[]>([])
 
-  // Use the enhanced search function
-  const searchedArticles = searchArticles(searchTerm);
+  useEffect(() => {
+    getArticles().then((data) => setArticles(Array.isArray(data) ? data : []))
+  }, [])
+
+  useEffect(() => {
+    searchArticles(searchTerm).then((data) => setSearchedArticles(Array.isArray(data) ? data : []))
+  }, [searchTerm])
 
   const filteredPosts = searchedArticles.filter((post) => {
-    // Category match (array or string)
-    if (selectedCategory === "All") return true;
-
+    if (selectedCategory === "All") return true
     if (Array.isArray(post.category)) {
-      return post.category.some((cat: string) => cat.toLowerCase() === selectedCategory.toLowerCase());
+      return post.category.some((cat) => cat.toLowerCase() === selectedCategory.toLowerCase())
     } else if (typeof post.category === "string") {
-      return post.category.toLowerCase() === selectedCategory.toLowerCase();
+      return post.category.toLowerCase() === selectedCategory.toLowerCase()
     }
-    return false;
-  });
+    return false
+  })
 
   const filteredArticles = articles.filter((article) => {
-    const q = searchTerm.toLowerCase();
+    const q = searchTerm.toLowerCase()
     return (
       article.title.toLowerCase().includes(q) ||
       article.tags.some((tag) => tag.toLowerCase().includes(q))
-    );
-  });
+    )
+  })
 
   const featuredPost = filteredPosts[0]
   const otherPosts = filteredPosts.slice(1)

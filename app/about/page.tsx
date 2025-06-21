@@ -1,8 +1,10 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Factory, Leaf, Recycle } from "lucide-react"
-import {  teamMembers} from "../data/data" // Assuming you have this data in a separate file
-export default function AboutPage() {
+import { getTeamMembers } from "../data/data"
+
+export default async function AboutPage() {
+  const teamMembers = await getTeamMembers() ?? [];
   const ourstory=
 [                "TrentEco was founded in January 2025 as the specialist paper bag division of Imperial Packaging Solution — a trusted name in fast food packaging in the UK. While our parent company is known for rice bowls, food boxes, and trays, TrentEco focuses exclusively on UK-manufactured kraft paper bags for restaurants and takeaways.",
                 "With local production facilities in Sutton Coldfield, we eliminate the need for bulk storage by offering flexible monthly ordering and paper bag bulk orders in the UK with rapid turnaround times."];
@@ -127,19 +129,18 @@ Our modern facility is equipped to handle large volumes without compromising qua
               solutions.
             </p>
           </div>
-<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-  {teamMembers.map((member, idx) => (
-    <div key={idx} className="flex flex-col items-center text-center">
-      <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center">
-        {/* Placeholder for picture */}
-        {/* <img src={member.image} alt={member.name} className="w-full h-full object-cover rounded-full" /> */}
-      </div>
-      <div className="font-bold">{member.name}</div>
-      <div className="text-gray-600">{member.role}</div>
-    </div>
-  ))}
-</div>
-
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {teamMembers.map((member: any, idx: number) => (
+              <div key={idx} className="flex flex-col items-center text-center">
+                <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center">
+                  {/* Placeholder for picture */}
+                  {/* <img src={member.image} alt={member.name} className="w-full h-full object-cover rounded-full" /> */}
+                </div>
+                <div className="font-bold">{member.name}</div>
+                <div className="text-gray-600">{member.role}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

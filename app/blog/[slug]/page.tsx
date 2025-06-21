@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
@@ -7,15 +8,34 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Calendar, User, Tag, Clock, Share2, Facebook, Twitter, Linkedin } from "lucide-react"
-import { articles } from "../../data/data"
+import { getArticles } from "../../data/data"
+
+type Article = {
+  id: string
+  title: string
+  excerpt: string
+  content: string
+  tags: string[]
+  category: string | string[]
+  author: string
+  created_at: string
+  read_time: string
+  image_url?: string
+  slug: string
+}
 
 export default function BlogPostPage() {
+  const [articles, setArticles] = useState<Article[]>([])
   const params = useParams()
-  const slug = params.slug as string
+  const slug = typeof params?.slug === "string" ? params.slug : Array.isArray(params?.slug) ? params?.slug[0] : ""
 
-  const post = articles.find((p) => p.slug === slug) || null
+  useEffect(() => {
+    getArticles().then((data) => setArticles(Array.isArray(data) ? data : []))
+  }, [])
+
+  const post = articles.find((p: Article) => p.slug === slug) || null
   const relatedPosts = post
-    ? articles.filter((p) => p.id !== post.id && p.category === post.category).slice(0, 3)
+    ? articles.filter((p: Article) => p.id !== post.id && p.category === post.category).slice(0, 3)
     : []
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : ""
@@ -100,7 +120,7 @@ export default function BlogPostPage() {
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-8">
-                {post.tags.map((tag) => (
+                {post.tags.map((tag: string) => (
                   <Badge key={tag} variant="outline" className="text-sm">
                     <Tag className="mr-1 h-3 w-3" />
                     {tag}
@@ -189,7 +209,7 @@ export default function BlogPostPage() {
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold mb-8">Related Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {relatedPosts.map((relatedPost) => (
+                {relatedPosts.map((relatedPost: Article) => (
                   <Card key={relatedPost.id} className="overflow-hidden">
                     <div className="relative h-48">
                       <Image

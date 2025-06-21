@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { MapPin, Phone, Mail } from "lucide-react";
-import {  faqs } from "@/app/data/data";
+import {  getFaqs,submitEnquiry } from "@/app/data/data";
 import { Send,Clock } from "lucide-react";
 
 const iconMap = {
@@ -19,6 +19,7 @@ const iconMap = {
   phone: <Phone className="h-6 w-6 text-teal-600" />,
   mail: <Mail className="h-6 w-6 text-teal-600" />,
 };
+
 
 export default function ContactPage() {
   const contactDetails = [
@@ -62,30 +63,35 @@ const iconMap = {
   phone: <Phone className="h-6 w-6 text-teal-600" />,
   mail: <Mail className="h-6 w-6 text-teal-600" />,
 };
+  const [faqs, setFaqs] = useState<any[]>([])
 
+  useEffect(() => {
+    getFaqs().then((data) => setFaqs(Array.isArray(data) ? data : []))
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setSubmitMessage("")
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage("");
 
     try {
-      const response = await fetch("/api/enquiries", {
+      const response = await fetch("/api/enquiry", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone,
+          enquiry_type: formData.enquiryType,
+          message: formData.message,
+          newsletter_subscription: formData.newsletter,
+        }),
+      });
+      const result = await response.json();
 
-      if (!response.ok) {
-        throw new Error("Failed to submit enquiry")
-      }
-
-      const result = await response.json()
-
-      if (result.success) {
-        setSubmitMessage("Thank you for your enquiry! We'll get back to you within 24 hours.")
+      if (response.ok && result.data) {
+        setSubmitMessage("Thank you for your enquiry! We'll get back to you within 24 hours.");
         setFormData({
           name: "",
           email: "",
@@ -94,15 +100,15 @@ const iconMap = {
           enquiryType: "",
           message: "",
           newsletter: false,
-        })
+        });
       } else {
-        throw new Error("Failed to submit enquiry")
+        throw new Error(result.error?.message || "Failed to submit enquiry");
       }
     } catch (error) {
-      console.error("Error submitting enquiry:", error)
-      setSubmitMessage("Sorry, there was an error submitting your enquiry. Please try again.")
+      console.error("Error submitting enquiry:", error);
+      setSubmitMessage("Sorry, there was an error submitting your enquiry. Please try again.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
   }
 
@@ -382,7 +388,10 @@ const iconMap = {
     <div className="max-w-3xl mx-auto">
       <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
       <div className="space-y-6">
-        {faqs.map((faq, idx) => (
+        {faqs.length === 0 ? (
+  <p className="text-center text-gray-500">Loading FAQs...</p>
+) : (
+  faqs.map((faq, idx) => (
           <Card key={idx}>
             <CardHeader>
               <CardTitle className="text-lg">{faq.question}</CardTitle>
@@ -391,9 +400,9 @@ const iconMap = {
               <div className="text-gray-600">
                 {faq.answerList ? (
                   <ul className="list-disc pl-5">
-                    {faq.answerList.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
+                    {faq.answerList.map((item: string, i: number) => (
+  <li key={i}>{item}</li>
+))}
                   </ul>
                 ) : (
                   <p>{faq.answer}</p>
@@ -401,7 +410,8 @@ const iconMap = {
               </div>
             </CardContent>
           </Card>
-        ))}
+        ))
+)}
       </div>
     </div>
   </div>

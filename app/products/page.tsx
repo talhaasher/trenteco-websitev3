@@ -1,7 +1,6 @@
 "use client"
 
-import React from "react"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -11,13 +10,12 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ShoppingCart, Filter, Search } from "lucide-react"
-import { productData } from '../data/data';
+import { getProductData } from '../data/data';
 
 export default function ProductsPage() {
-  
-  const [allProducts, setAllProducts] = useState(() => [...productData])
-  const [filteredProducts, setFilteredProducts] = useState(() => [...productData])
-  const [loading, setLoading] = useState(false)
+  const [allProducts, setAllProducts] = useState<any[]>([])
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [priceRange, setPriceRange] = useState([0, 1])
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
@@ -27,7 +25,16 @@ export default function ProductsPage() {
   const [showFilters, setShowFilters] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined)
 
-  // Remove fetchProducts and useEffect for fetching
+  // Fetch products on mount
+  useEffect(() => {
+    setLoading(true)
+    getProductData().then((data) => {
+      const products = data ?? []
+      setAllProducts(products)
+      setFilteredProducts(products)
+      setLoading(false)
+    })
+  }, [])
 
   // Handle filter changes
   const applyFilters = () => {
@@ -375,6 +382,14 @@ export default function ProductsPage() {
 }
 
 export function ProductList() {
+  const [productData, setProductData] = useState<any[]>([])
+
+  useEffect(() => {
+    getProductData().then((data) => {
+      setProductData(data ?? [])
+    })
+  }, [])
+
   return (
     <div>
       <h1>Product List</h1>

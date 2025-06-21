@@ -16,47 +16,25 @@ export async function getFeatures() {
   const { data, error } = await supabase.from("features").select("*")
   if (error || !data) {
     console.error("Error fetching features:", error)
-    return null
+    return []
   }
   return data
 }
-
-export async function getTeamMembers() {
-  const supabase = await createClient()
-  const { data, error } = await supabase.from("team_members").select("*")
-  if (error || !data) {
-    console.error("Error fetching team members:", error)
-    return null
-  }
-  return data
-}
-
-export async function getFaqs() {
-  const supabase = await createClient()
-  const { data, error } = await supabase.from("faq").select("*")
-  if (error || !data) {
-    console.error("Error fetching faqs:", error)
-    return null
-  }
-  return data
-}
-
 export async function getArticles() {
   const supabase = await createClient()
-  const { data, error } = await supabase.from("article").select("*")
+  const { data, error } = await supabase.from("articles").select("*")
   if (error || !data) {
     console.error("Error fetching articles:", error)
     return null
   }
   return data
 }
-
 export async function searchArticles(query: string) {
   const q = query.trim().toLowerCase()
   try {
     const supabase = await createClient()
     const { data, error } = await supabase
-      .from("article")
+      .from("articles")
       .select("*")
       .or([
         `title.ilike.%${q}%`,
@@ -72,7 +50,6 @@ export async function searchArticles(query: string) {
   }
   return []
 }
-
 export async function searchProducts(query: string) {
   const q = query.trim().toLowerCase()
   const products = await getProductData()
@@ -84,5 +61,60 @@ export async function searchProducts(query: string) {
     (product.category && product.category.toLowerCase().includes(q))
   )
 }
+export async function getTeamMembers() {
+  const supabase = await createClient()
+  const { data, error } = await supabase.from("team_members").select("*")
+  if (error || !data) {
+    console.error("Error fetching team members:", error)
+    return null
+  }
+  return data
+}
+export async function getFaqs() {
+  const supabase = await createClient()
+  const { data, error } = await supabase.from("faqs").select("*")
+  if (error || !data) {
+    console.error("Error fetching faqs:", error)
+    return null
+  }
+  return data
+}
+export async function submitEnquiry(enquiry: {
+  name: string
+  email: string
+  company?: string
+  phone?: string
+  enquiry_type?: string
+  message: string
+  newsletter_subscription?: boolean
+  status?: string
+  priority?: string
+}) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("enquiries")
+    .insert([
+      {
+        name: enquiry.name,
+        email: enquiry.email,
+        company: enquiry.company || null,
+        phone: enquiry.phone || null,
+        enquiry_type: enquiry.enquiry_type || null,
+        message: enquiry.message,
+        newsletter_subscription: enquiry.newsletter_subscription ?? false,
+        status: enquiry.status || "new",
+        priority: enquiry.priority || "normal",
+      }
+    ])
+    .select()
+  if (error) {
+    // Improved error logging
+    console.error("Error submitting enquiry:", error.message, error.details, error.hint, error.code)
+    return null
+  }
+  return data?.[0] || null
+}
+
+
 
 
