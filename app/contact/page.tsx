@@ -74,23 +74,25 @@ const iconMap = {
     setIsSubmitting(true);
     setSubmitMessage("");
 
-    try {
-      const response = await fetch("/api/enquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          company: formData.company,
-          phone: formData.phone,
-          enquiry_type: formData.enquiryType,
-          message: formData.message,
-          newsletter_subscription: formData.newsletter,
-        }),
-      });
-      const result = await response.json();
+    // Add this validation
+    if (!formData.enquiryType) {
+      setSubmitMessage("Please select an enquiry type.");
+      setIsSubmitting(false);
+      return;
+    }
 
-      if (response.ok && result.data) {
+    try {
+      const result = await submitEnquiry({
+        name: formData.name,
+        email: formData.email,
+        company: formData.company,
+        phone: formData.phone,
+        enquiry_type: formData.enquiryType,
+        message: formData.message,
+        newsletter_subscription: formData.newsletter,
+      });
+
+      if (result) {
         setSubmitMessage("Thank you for your enquiry! We'll get back to you within 24 hours.");
         setFormData({
           name: "",
@@ -102,7 +104,7 @@ const iconMap = {
           newsletter: false,
         });
       } else {
-        throw new Error(result.error?.message || "Failed to submit enquiry");
+        throw new Error("Failed to submit enquiry");
       }
     } catch (error) {
       console.error("Error submitting enquiry:", error);

@@ -92,14 +92,14 @@ export async function submitEnquiry(enquiry: {
 }) {
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from("enquiries")
+    .from("enquiry")
     .insert([
       {
         name: enquiry.name,
         email: enquiry.email,
         company: enquiry.company || null,
         phone: enquiry.phone || null,
-        enquiry_type: enquiry.enquiry_type || null,
+        enquiry_type: enquiry.enquiry_type && enquiry.enquiry_type !== "" ? enquiry.enquiry_type : "other",
         message: enquiry.message,
         newsletter_subscription: enquiry.newsletter_subscription ?? false,
         status: enquiry.status || "new",
