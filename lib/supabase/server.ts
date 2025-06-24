@@ -1,6 +1,9 @@
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
 
+// ⚠️ Only use this client on the server (API routes, server actions, server components)
+// ❌ Never expose service role keys or use this client for frontend code
+// For admin-only or sensitive operations, always check user session and permissions on the server
 export async function createClient() {
   const cookieStore = await cookies()
 

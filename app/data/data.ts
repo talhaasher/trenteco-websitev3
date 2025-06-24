@@ -1,3 +1,7 @@
+// ⚠️ SECURITY NOTE:
+// This file should only contain functions for public data (public SELECT, public INSERT as allowed by RLS).
+// ❌ Do NOT add any admin-only or sensitive data fetching/managing logic here.
+// For admin-only data, use the server Supabase client in API routes or server actions and check user permissions.
 import { ArrowRight } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 
