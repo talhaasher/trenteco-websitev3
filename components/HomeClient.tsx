@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Leaf, Package, Recycle, TrendingUp } from "lucide-react";
-import { getProductData, getFeatures, getArticles } from '../app/data/data';
+import { getProductData, getArticles } from '../app/data/data';
 
 export default function HomeClient() {
   const iconMap = {
@@ -15,15 +15,37 @@ export default function HomeClient() {
     Recycle,
   };
 
-  const [productData, setProductData] = useState<any[]>([]);
-  const [features, setFeatures] = useState<any[]>([]);
-  const [articles, setArticles] = useState<any[]>([]);
+  // Replace features state with static array
+  const features = [
+    {
+      icon: "Leaf",
+      title: "Eco-Friendly",
+      description: "Our recyclable kraft paper bags are strong, high-quality, and sustainably sourced.",
+    },
+    {
+      icon: "Package",
+      title: "UK Manufactured",
+      description: "Made locally in Sutton Coldfield, Birmingham — cutting lead times and carbon emissions.",
+    },
+    {
+      icon: "TrendingUp",
+      title: "Custom Solutions",
+      description: "Get printed food packaging in the UK that’s branded to reflect your identity.",
+    },
+    {
+      icon: "Recycle",
+      title: "Sustainable",
+      description: "We use eco-friendly materials and methods — ideal for brands seeking eco-friendly paper bags in the UK.",
+    },
+  ];
 
+  const [productData, setProductData] = useState<any[]>([]);
+  // Remove setFeatures and getFeatures
+  const [articles, setArticles] = useState<any[]>([]);
   useEffect(() => {
-    Promise.all([getProductData(), getFeatures(), getArticles()]).then(
-      ([products, features, articles]) => {
+    Promise.all([getProductData(), getArticles()]).then(
+      ([products, articles]) => {
         setProductData(products ?? []);
-        setFeatures(features ?? []);
         setArticles(articles ?? []);
       }
     );

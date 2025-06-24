@@ -15,15 +15,6 @@ export async function getProductData() {
   return data
 }
 
-export async function getFeatures() {
-  const supabase = await createClient()
-  const { data, error } = await supabase.from("features").select("*")
-  if (error || !data) {
-    console.error("Error fetching features:", error)
-    return []
-  }
-  return data
-}
 
 export async function getArticles() {
   const supabase = await createClient()
