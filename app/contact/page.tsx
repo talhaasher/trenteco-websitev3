@@ -383,10 +383,7 @@ const iconMap = {
                       <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                       <span className="text-sm">Sample requests: 2-3 business days</span>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                      <span className="text-sm">Live chat: Instant during business hours</span>
-                    </div>
+
                   </div>
                 </CardContent>
               </Card>
