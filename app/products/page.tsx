@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ShoppingCart, Filter, Search } from "lucide-react"
 import { getProductData } from '../data/data';
+import Link from "next/link"
 
 export default function ProductsPage() {
   const [allProducts, setAllProducts] = useState<any[]>([])
@@ -336,7 +337,13 @@ export default function ProductsPage() {
                           </div>
                         </div>
                       </CardContent>
-
+                      <CardFooter>
+                        <a href="/contact#enquiry-form" className="w-full">
+                          <Button className="w-full bg-teal-600 hover:bg-teal-700" variant="default">
+                            Request a Sample
+                          </Button>
+                        </a>
+                      </CardFooter>
                     </Card>
                   ))}
                 </div>
@@ -373,7 +380,11 @@ export default function ProductsPage() {
             <p className="text-gray-600 mb-6">
               We offer custom printing, sizes, and designs to match your brand perfectly.
             </p>
-            <Button className="bg-teal-600 hover:bg-teal-700">Request a Custom Quote</Button>
+            <Link href="/contact#enquiry-form">
+              <Button className="bg-teal-600 hover:bg-teal-700">
+                Request a Custom Quote
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

@@ -1,5 +1,4 @@
 "use client"
-
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -12,7 +11,6 @@ export default function Navbar() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
-
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -21,7 +19,6 @@ export default function Navbar() {
             <Image src="/logo.svg" alt="TrentEco Logo" width={40} height={40} className="h-10 w-auto" />
           </Link>
         </div>
-
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           <Link href="/" className="text-sm font-medium hover:text-teal-600 transition-colors">
@@ -88,7 +85,11 @@ export default function Navbar() {
               Contact
             </Link>
             <div className="flex flex-col gap-2 mt-2">
-              <Button className="bg-teal-600 hover:bg-teal-700 w-full">Request Quote</Button>
+              <Button asChild className="bg-teal-600 hover:bg-teal-700 w-full">
+                <Link href="/contact#enquiry-form" onClick={() => setIsMenuOpen(false)}>
+                  Request Quote
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
