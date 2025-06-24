@@ -308,23 +308,34 @@ const iconMap = {
               <Card>
                 <CardHeader>
                   <CardTitle>Find Our Factory</CardTitle>
-                  <CardDescription>Located in the heart of Stoke-on-Trent</CardDescription>
+                  <CardDescription>Located in Unit 32 Reddicap Trading Estate, Sutton Coldfield</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="relative h-64 bg-gray-200 rounded-lg overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-2" />
-                        <p className="text-gray-500">Interactive Map</p>
-                        <p className="text-sm text-gray-400">123 Eco Way, Trentham</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
-                      Get Directions
-                    </Button>
-                  </div>
+                  <div className="w-full rounded-lg overflow-hidden mb-2" style={{ height: 256 }}>
+    <iframe
+      title="TrentEco Factory Location"
+      src="https://www.google.com/maps?q=Unit+32+Reddicap+Trading+Estate,+Sutton+Coldfield+B75+7BU&output=embed"
+      width="100%"
+      height="100%"
+      style={{ border: 0, minHeight: 256 }}
+      allowFullScreen
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </div>
+  <p className="text-sm text-gray-400 text-center mb-2">
+    Unit 32 Reddicap Trading Estate, Sutton Coldfield, B75 7BU, Birmingham, UK
+  </p>
+  <a
+    href="https://www.google.com/maps?q=Unit+32+Reddicap+Trading+Estate,+Sutton+Coldfield+B75+7BU"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-full block"
+  >
+    <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
+      Get Directions
+    </Button>
+  </a>
                 </CardContent>
               </Card>
 
