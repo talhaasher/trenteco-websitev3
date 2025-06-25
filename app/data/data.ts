@@ -86,8 +86,8 @@ export async function submitEnquiry(enquiry: {
   enquiry_type?: string
   message: string
   newsletter_subscription?: boolean
-  status?: string
-  priority?: string
+  status?: "new" | "in_progress" | "resolved" | "closed"
+  priority?: "low" | "medium" | "high"
 }) {
   const supabase = await createClient()
   const { data, error } = await supabase
@@ -102,12 +102,11 @@ export async function submitEnquiry(enquiry: {
         message: enquiry.message,
         newsletter_subscription: enquiry.newsletter_subscription ?? false,
         status: enquiry.status || "new",
-        priority: enquiry.priority || "normal",
+        priority: enquiry.priority || "medium", // default is now "medium"
       }
     ])
     .select()
   if (error) {
-    // Improved error logging
     console.error("Error submitting enquiry:", error.message, error.details, error.hint, error.code)
     return null
   }
@@ -121,6 +120,11 @@ export async function subscribeNewsletter(email: string) {
     .insert([{ email }])
     .select()
   if (error) {
+    // Handle unique constraint violation gracefully
+    if (error.code === "23505") {
+      console.warn("Email already subscribed to newsletter.")
+      return null
+    }
     console.error("Error subscribing to newsletter:", error.message)
     return null
   }

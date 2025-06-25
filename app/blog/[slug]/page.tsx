@@ -11,17 +11,17 @@ import { ArrowLeft, Calendar, User, Tag, Clock, Share2, Facebook, Twitter, Linke
 import { getArticles } from "../../data/data"
 
 type Article = {
-  id: string
-  title: string
-  excerpt: string
-  content: string
-  tags: string[]
-  category: string | string[]
-  author: string
-  created_at: string
-  read_time: string
-  image_url?: string
-  slug: string
+  id: string | number
+  title: string | null
+  excerpt: string | null
+  content: string | null
+  tags: string[] | null
+  category: string | null
+  author: string | null
+  created_at: string | null
+  read_time: string | null
+  image_url?: string | null
+  slug: string | null
 }
 
 export default function BlogPostPage() {
@@ -35,7 +35,13 @@ export default function BlogPostPage() {
 
   const post = articles.find((p: Article) => p.slug === slug) || null
   const relatedPosts = post
-    ? articles.filter((p: Article) => p.id !== post.id && p.category === post.category).slice(0, 3)
+    ? articles.filter(
+        (p: Article) =>
+          p.id !== post.id &&
+          p.category &&
+          post.category &&
+          p.category === post.category
+      ).slice(0, 3)
     : []
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : ""
@@ -74,23 +80,29 @@ export default function BlogPostPage() {
 
             {/* Article Meta */}
             <div className="flex flex-wrap items-center gap-4 mb-6">
-              <Badge variant="secondary">{post.category}</Badge>
-              <div className="flex items-center text-sm text-gray-500">
-                <Clock className="mr-1 h-4 w-4" />
-                {post.read_time}
-              </div>
-              <div className="flex items-center text-sm text-gray-500">
-                <Calendar className="mr-1 h-4 w-4" />
-                {new Date(post.created_at).toLocaleDateString("en-GB", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </div>
-              <div className="flex items-center text-sm text-gray-500">
-                <User className="mr-1 h-4 w-4" />
-                {post.author}
-              </div>
+              {post.category && <Badge variant="secondary">{post.category}</Badge>}
+              {post.read_time && (
+                <div className="flex items-center text-sm text-gray-500">
+                  <Clock className="mr-1 h-4 w-4" />
+                  {post.read_time}
+                </div>
+              )}
+              {post.created_at && (
+                <div className="flex items-center text-sm text-gray-500">
+                  <Calendar className="mr-1 h-4 w-4" />
+                  {new Date(post.created_at).toLocaleDateString("en-GB", {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                  })}
+                </div>
+              )}
+              {post.author && (
+                <div className="flex items-center text-sm text-gray-500">
+                  <User className="mr-1 h-4 w-4" />
+                  {post.author}
+                </div>
+              )}
             </div>
 
             {/* Article Title */}
@@ -104,7 +116,7 @@ export default function BlogPostPage() {
               <div className="relative h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
                 <Image
                   src={post.image_url || "/placeholder.svg"}
-                  alt={post.title}
+                  alt={post.title || "Article image"}
                   fill
                   className="object-cover"
                   priority
@@ -214,15 +226,17 @@ export default function BlogPostPage() {
                     <div className="relative h-48">
                       <Image
                         src={relatedPost.image_url || "/placeholder.svg"}
-                        alt={relatedPost.title}
+                        alt={relatedPost.title || "Related article image"}
                         fill
                         className="object-cover"
                       />
                     </div>
                     <CardHeader>
                       <div className="flex items-center gap-2 mb-2">
-                        <Badge variant="outline">{relatedPost.category}</Badge>
-                        <span className="text-xs text-gray-500">{relatedPost.read_time}</span>
+                        {relatedPost.category && <Badge variant="outline">{relatedPost.category}</Badge>}
+                        {relatedPost.read_time && (
+                          <span className="text-xs text-gray-500">{relatedPost.read_time}</span>
+                        )}
                       </div>
                       <CardTitle className="text-lg line-clamp-2">{relatedPost.title}</CardTitle>
                     </CardHeader>

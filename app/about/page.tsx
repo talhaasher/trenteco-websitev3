@@ -130,11 +130,20 @@ Our modern facility is equipped to handle large volumes without compromising qua
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {teamMembers.map((member: any, idx: number) => (
-              <div key={idx} className="flex flex-col items-center text-center">
-                <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center">
-                  {/* Placeholder for picture */}
-                  {/* <img src={member.image} alt={member.name} className="w-full h-full object-cover rounded-full" /> */}
+            {teamMembers.map((member: any) => (
+              <div key={member.id} className="flex flex-col items-center text-center">
+                <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center overflow-hidden">
+                  {member.image ? (
+                    <Image
+                      src={member.image}
+                      alt={member.name || "Team member"}
+                      width={96}
+                      height={96}
+                      className="object-cover rounded-full"
+                    />
+                  ) : (
+                    <span className="text-gray-400 text-2xl">?</span>
+                  )}
                 </div>
                 <div className="font-bold">{member.name}</div>
                 <div className="text-gray-600">{member.role}</div>

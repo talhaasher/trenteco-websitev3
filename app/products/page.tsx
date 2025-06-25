@@ -5,7 +5,6 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Slider } from "@/components/ui/slider"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -13,18 +12,30 @@ import { ShoppingCart, Filter, Search } from "lucide-react"
 import { getProductData } from '../data/data';
 import Link from "next/link"
 
+type Product = {
+  id: string | number
+  name: string
+  category: string | null
+  size: string | null
+  material: string | null
+  image_url: string | null
+  description: string | null
+  sku: string | null
+  is_featured: boolean | null
+  created_at?: string | null
+  updated_at?: string | null
+}
+
 export default function ProductsPage() {
-  const [allProducts, setAllProducts] = useState<any[]>([])
-  const [filteredProducts, setFilteredProducts] = useState<any[]>([])
+  const [allProducts, setAllProducts] = useState<Product[]>([])
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
-  const [priceRange, setPriceRange] = useState([0, 1])
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedSizes, setSelectedSizes] = useState<string[]>([])
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([])
   const [sortBy, setSortBy] = useState("featured")
   const [showFilters, setShowFilters] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined)
 
   // Fetch products on mount
   useEffect(() => {
@@ -46,32 +57,27 @@ export default function ProductsPage() {
       result = result.filter(
         (product) =>
           product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase())),
+          (product.description && product.description.toLowerCase().includes(searchTerm.toLowerCase()))
       )
     }
 
-
     // Apply category filter
     if (selectedCategories.length > 0) {
-      result = result.filter((product) => selectedCategories.includes(product.category))
-      setSelectedCategory(selectedCategories[0])
-    } else {
-      setSelectedCategory(undefined)
+      result = result.filter((product) => product.category && selectedCategories.includes(product.category))
     }
 
     // Apply size filter
     if (selectedSizes.length > 0) {
-      result = result.filter((product) => selectedSizes.includes(product.size))
+      result = result.filter((product) => product.size && selectedSizes.includes(product.size))
     }
 
     // Apply material filter
     if (selectedMaterials.length > 0) {
-      result = result.filter((product) => selectedMaterials.includes(product.material))
+      result = result.filter((product) => product.material && selectedMaterials.includes(product.material))
     }
 
     // Apply sorting
     switch (sortBy) {
-
       case "name":
         result.sort((a, b) => a.name.localeCompare(b.name))
         break
@@ -121,19 +127,17 @@ export default function ProductsPage() {
     })
   }
 
-
-
   // Apply filters when any filter changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (allProducts.length > 0) {
       applyFilters()
     }
-  }, [searchTerm, priceRange, selectedCategories, selectedSizes, selectedMaterials, sortBy, allProducts])
+  }, [searchTerm, selectedCategories, selectedSizes, selectedMaterials, sortBy, allProducts])
 
   // Get unique values for filter options
-  const categories = [...new Set(allProducts.map((p) => p.category))]
-  const sizes = [...new Set(allProducts.map((p) => p.size))]
-  const materials = [...new Set(allProducts.map((p) => p.material))]
+  const categories = [...new Set(allProducts.map((p) => p.category).filter(Boolean))]
+  const sizes = [...new Set(allProducts.map((p) => p.size).filter(Boolean))]
+  const materials = [...new Set(allProducts.map((p) => p.material).filter(Boolean))]
 
   if (loading) {
     return (
@@ -203,16 +207,15 @@ export default function ProductsPage() {
               <div className="sticky top-20">
                 <h2 className="text-xl font-bold mb-6">Filters</h2>
 
-
-                {/* <div className="mb-6">
+                <div className="mb-6">
                   <h3 className="font-medium mb-3">Category</h3>
                   <div className="space-y-2">
                     {categories.map((category) => (
                       <div key={category} className="flex items-center">
                         <Checkbox
                           id={category}
-                          checked={selectedCategories.includes(category)}
-                          onCheckedChange={() => handleCategoryChange(category)}
+                          checked={selectedCategories.includes(category!)}
+                          onCheckedChange={() => handleCategoryChange(category!)}
                         />
                         <Label htmlFor={category} className="ml-2 capitalize">
                           {category}
@@ -229,8 +232,8 @@ export default function ProductsPage() {
                       <div key={size} className="flex items-center">
                         <Checkbox
                           id={size}
-                          checked={selectedSizes.includes(size)}
-                          onCheckedChange={() => handleSizeChange(size)}
+                          checked={selectedSizes.includes(size!)}
+                          onCheckedChange={() => handleSizeChange(size!)}
                         />
                         <Label htmlFor={size} className="ml-2 capitalize">
                           {size}
@@ -238,7 +241,7 @@ export default function ProductsPage() {
                       </div>
                     ))}
                   </div>
-                </div> */}
+                </div>
 
                 <div className="mb-6">
                   <h3 className="font-medium mb-3">Material</h3>
@@ -247,8 +250,8 @@ export default function ProductsPage() {
                       <div key={material} className="flex items-center">
                         <Checkbox
                           id={material}
-                          checked={selectedMaterials.includes(material)}
-                          onCheckedChange={() => handleMaterialChange(material)}
+                          checked={selectedMaterials.includes(material!)}
+                          onCheckedChange={() => handleMaterialChange(material!)}
                         />
                         <Label htmlFor={material} className="ml-2 capitalize">
                           {material}
@@ -332,8 +335,12 @@ export default function ProductsPage() {
                         <p className="text-gray-600 mb-4">{product.description}</p>
                         <div className="flex justify-between items-center">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm bg-cream-100 px-2 py-1 rounded-full">{product.size}</span>
-                            <span className="text-sm bg-cream-100 px-2 py-1 rounded-full">{product.material}</span>
+                            {product.size && (
+                              <span className="text-sm bg-cream-100 px-2 py-1 rounded-full">{product.size}</span>
+                            )}
+                            {product.material && (
+                              <span className="text-sm bg-cream-100 px-2 py-1 rounded-full">{product.material}</span>
+                            )}
                           </div>
                         </div>
                       </CardContent>
@@ -365,8 +372,6 @@ export default function ProductsPage() {
                   </Button>
                 </div>
               )}
-
-   
             </div>
           </div>
         </div>

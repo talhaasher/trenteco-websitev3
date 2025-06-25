@@ -9,7 +9,7 @@ export const metadata = {
     siteName: "TrentEco",
     images: [
       {
-        url: "/logo.svg", // or a relevant image
+        url: "/logo.svg",
         width: 800,
         height: 600,
         alt: "TrentEco Logo",

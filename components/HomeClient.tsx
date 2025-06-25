@@ -15,7 +15,6 @@ export default function HomeClient() {
     Recycle,
   };
 
-  // Replace features state with static array
   const features = [
     {
       icon: "Leaf",
@@ -40,13 +39,12 @@ export default function HomeClient() {
   ];
 
   const [productData, setProductData] = useState<any[]>([]);
-  // Remove setFeatures and getFeatures
   const [articles, setArticles] = useState<any[]>([]);
   useEffect(() => {
     Promise.all([getProductData(), getArticles()]).then(
       ([products, articles]) => {
-        setProductData(products ?? []);
-        setArticles(articles ?? []);
+        setProductData(Array.isArray(products) ? products : []);
+        setArticles(Array.isArray(articles) ? articles : []);
       }
     );
   }, []);
@@ -106,15 +104,6 @@ export default function HomeClient() {
               </Button>
             </div>
           </div>
-          {/* <div className="relative h-[300px] md:h-[400px]">
-            <Image
-              src="/placeholder.svg?height=400&width=500"
-              alt="Eco-friendly paper bags"
-              fill
-              className="object-contain drop-shadow-2xl"
-              priority
-            />
-          </div> */}
         </div>
       </section>
 
@@ -162,7 +151,7 @@ export default function HomeClient() {
                 <div className="relative h-48">
                   <Image
                     src={product.image_url || "/placeholder.svg?height=200&width=400"}
-                    alt={product.name}
+                    alt={product.name || "Product"}
                     fill
                     className="object-cover"
                   />
@@ -209,18 +198,20 @@ export default function HomeClient() {
                   <div className="relative h-48 -mx-6 -mt-6 mb-4">
                     <Image
                       src={article.image_url || "/placeholder.svg?height=200&width=400"}
-                      alt={article.title}
+                      alt={article.title || "Article"}
                       fill
                       className="object-cover rounded-t-lg"
                     />
                   </div>
                   <CardTitle>{article.title}</CardTitle>
                   <CardDescription>
-                    {new Date(article.created_at).toLocaleDateString("en-GB", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    {article.created_at
+                      ? new Date(article.created_at).toLocaleDateString("en-GB", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })
+                      : ""}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>

@@ -8,20 +8,20 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Search, Calendar, User, Tag } from "lucide-react"
-import { getArticles, searchArticles, subscribeNewsletter } from "@/app/data/data"
+import { getArticles, subscribeNewsletter } from "@/app/data/data"
 
 type Article = {
-  id: string
-  title: string
-  excerpt: string
-  content: string
-  tags: string[]
-  category: string | string[]
-  author: string
-  created_at: string
-  read_time: string
-  image_url?: string
-  slug: string
+  id: string | number
+  title: string | null
+  excerpt: string | null
+  content: string | null
+  tags: string[] | null
+  category: string | null
+  author: string | null
+  created_at: string | null
+  read_time: string | null
+  image_url?: string | null
+  slug: string | null
 }
 
 export default function BlogPage() {
@@ -44,8 +44,10 @@ export default function BlogPage() {
     const q = searchTerm.toLowerCase()
     setSearchedArticles(
       articles.filter(article =>
-        article.title.toLowerCase().includes(q) ||
-        article.tags.some(tag => tag.toLowerCase().includes(q))
+        (article.title?.toLowerCase().includes(q) ?? false) ||
+        (article.tags?.some(tag => tag.toLowerCase().includes(q)) ?? false) ||
+        (article.excerpt?.toLowerCase().includes(q) ?? false) ||
+        (article.category?.toLowerCase().includes(q) ?? false)
       )
     )
   }, [searchTerm, articles])
@@ -54,16 +56,11 @@ export default function BlogPage() {
 
   const filteredPosts = postsToShow.filter((post) => {
     if (selectedCategory === "All") return true
-    if (Array.isArray(post.category)) {
-      return post.category.some((cat) => cat.toLowerCase() === selectedCategory.toLowerCase())
-    } else if (typeof post.category === "string") {
+    if (typeof post.category === "string") {
       return post.category.toLowerCase() === selectedCategory.toLowerCase()
     }
     return false
   })
-
-  const featuredPost = filteredPosts[0]
-  const otherPosts = filteredPosts.slice(1)
 
   async function handleNewsletterSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -102,8 +99,6 @@ export default function BlogPage() {
         </div>
       </section>
 
-
-
       {/* Blog Posts Grid */}
       <section className="py-12 bg-cream-50">
         <div className="container">
@@ -113,11 +108,13 @@ export default function BlogPage() {
               {filteredPosts.map((post) => (
                 <Card key={post.id} className="overflow-hidden">
                   <div className="relative h-48">
-                    <Image src={post.image_url || "/placeholder.svg"} alt={post.title} fill className="object-cover" />
+                    <Image src={post.image_url || "/placeholder.svg"} alt={post.title || "Article image"} fill className="object-cover" />
                   </div>
                   <CardHeader>
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs text-gray-500">{post.read_time}</span>
+                      {post.read_time && (
+                        <span className="text-xs text-gray-500">{post.read_time}</span>
+                      )}
                     </div>
                     <CardTitle className="line-clamp-2">{post.title}</CardTitle>
                     <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
@@ -130,7 +127,7 @@ export default function BlogPage() {
                       </div>
                       <div className="flex items-center">
                         <Calendar size={14} className="mr-1" />
-                        {new Date(post.created_at).toLocaleDateString()}
+                        {post.created_at ? new Date(post.created_at).toLocaleDateString() : ""}
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-1">

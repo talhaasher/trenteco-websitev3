@@ -393,39 +393,40 @@ const iconMap = {
       </section>
 
       {/* FAQ Section */}
-<section className="py-12 bg-white">
-  <div className="container">
-    <div className="max-w-3xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-      <div className="space-y-6">
-        {faqs.length === 0 ? (
-  <p className="text-center text-gray-500">Loading FAQs...</p>
-) : (
-  faqs.map((faq, idx) => (
-          <Card key={idx}>
-            <CardHeader>
-              <CardTitle className="text-lg">{faq.question}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-gray-600">
-                {faq.answerList ? (
-                  <ul className="list-disc pl-5">
-                    {faq.answerList.map((item: string, i: number) => (
-  <li key={i}>{item}</li>
-))}
-                  </ul>
-                ) : (
-                  <p>{faq.answer}</p>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))
-)}
-      </div>
-    </div>
-  </div>
-</section>
+      <section className="py-12 bg-white">
+        <div className="container">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+            <div className="space-y-6">
+              {faqs.length === 0 ? (
+                <p className="text-center text-gray-500">Loading FAQs...</p>
+              ) : (
+                faqs.map((faq, idx) => (
+                  <Card key={idx}>
+                    <CardHeader>
+                      <CardTitle className="text-lg">{faq.question}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-gray-600">
+                        {Array.isArray(faq.answer_list) && faq.answer_list.length > 0 ? (
+                          <ul className="list-disc pl-5">
+                            {faq.answer_list.map((item: string, i: number) => (
+                              <li key={i}>{item}</li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p>{faq.answer}</p>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-16 bg-teal-600 text-white">
         <div className="container">
