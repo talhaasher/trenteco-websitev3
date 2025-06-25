@@ -16,7 +16,7 @@ export default function Navbar() {
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center">
-            <Image src="/logo.svg" alt="TrentEco Logo" width={40} height={40} className="h-10 w-auto" />
+            <Image src="/logo.svg" alt="TrentEco Logo" width={128} height={128} className="h-32 w-32" />
           </Link>
         </div>
         {/* Desktop Navigation */}

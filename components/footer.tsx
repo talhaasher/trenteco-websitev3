@@ -1,7 +1,18 @@
+"use client"
 import Link from "next/link"
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react"
+import { useEffect, useState } from "react"
+import { getProductData } from "@/app/data/data"
 
 export default function Footer() {
+  const [products, setProducts] = useState<any[]>([])
+
+  useEffect(() => {
+    getProductData().then((data) => {
+      if (data) setProducts(data.slice(0, 5))
+    })
+  }, [])
+
   return (
     <footer className="bg-cream-100 border-t">
       <div className="container py-12 md:py-16">
@@ -65,31 +76,20 @@ export default function Footer() {
           <div>
             <h3 className="text-md font-bold mb-4">Products</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/products?category=retail" className="text-gray-600 hover:text-teal-600">
-                  Retail Bags
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?category=food" className="text-gray-600 hover:text-teal-600">
-                  Food Packaging
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?category=luxury" className="text-gray-600 hover:text-teal-600">
-                  Luxury Bags
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?category=custom" className="text-gray-600 hover:text-teal-600">
-                  Custom Solutions
-                </Link>
-              </li>
-              <li>
-                <Link href="/products?category=wholesale" className="text-gray-600 hover:text-teal-600">
-                  Wholesale
-                </Link>
-              </li>
+              {products.length === 0 ? (
+                <li className="text-gray-400">Loading...</li>
+              ) : (
+                products.map((product) => (
+                  <li key={product.id}>
+                    <Link
+                      href={`/products/${product.id}`}
+                      className="text-gray-600 hover:text-teal-600"
+                    >
+                      {product.name}
+                    </Link>
+                  </li>
+                ))
+              )}
             </ul>
           </div>
 

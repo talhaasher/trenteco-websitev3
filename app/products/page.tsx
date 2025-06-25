@@ -16,7 +16,7 @@ type Product = {
   id: string | number
   name: string
   category: string | null
-  size: string | null
+  // size: string | null
   material: string | null
   image_url: string | null
   description: string | null
@@ -61,15 +61,15 @@ export default function ProductsPage() {
       )
     }
 
-    // Apply category filter
-    if (selectedCategories.length > 0) {
-      result = result.filter((product) => product.category && selectedCategories.includes(product.category))
-    }
+    // // Apply category filter
+    // if (selectedCategories.length > 0) {
+    //   result = result.filter((product) => product.category && selectedCategories.includes(product.category))
+    // }
 
     // Apply size filter
-    if (selectedSizes.length > 0) {
-      result = result.filter((product) => product.size && selectedSizes.includes(product.size))
-    }
+    // if (selectedSizes.length > 0) {
+    //   result = result.filter((product) => product.size && selectedSizes.includes(product.size))
+    // }
 
     // Apply material filter
     if (selectedMaterials.length > 0) {
@@ -95,26 +95,26 @@ export default function ProductsPage() {
   }
 
   // Handle category checkbox changes
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategories((prev) => {
-      if (prev.includes(category)) {
-        return prev.filter((c) => c !== category)
-      } else {
-        return [...prev, category]
-      }
-    })
-  }
+  // const handleCategoryChange = (category: string) => {
+  //   setSelectedCategories((prev) => {
+  //     if (prev.includes(category)) {
+  //       return prev.filter((c) => c !== category)
+  //     } else {
+  //       return [...prev, category]
+  //     }
+  //   })
+  // }
 
   // Handle size checkbox changes
-  const handleSizeChange = (size: string) => {
-    setSelectedSizes((prev) => {
-      if (prev.includes(size)) {
-        return prev.filter((s) => s !== size)
-      } else {
-        return [...prev, size]
-      }
-    })
-  }
+  // const handleSizeChange = (size: string) => {
+  //   setSelectedSizes((prev) => {
+  //     if (prev.includes(size)) {
+  //       return prev.filter((s) => s !== size)
+  //     } else {
+  //       return [...prev, size]
+  //     }
+  //   })
+  // }
 
   // Handle material checkbox changes
   const handleMaterialChange = (material: string) => {
@@ -135,9 +135,9 @@ export default function ProductsPage() {
   }, [searchTerm, selectedCategories, selectedSizes, selectedMaterials, sortBy, allProducts])
 
   // Get unique values for filter options
-  const categories = [...new Set(allProducts.map((p) => p.category).filter(Boolean))]
-  const sizes = [...new Set(allProducts.map((p) => p.size).filter(Boolean))]
-  const materials = [...new Set(allProducts.map((p) => p.material).filter(Boolean))]
+  // const categories = [...new Set(allProducts.map((p) => p.category).filter((v): v is string => !!v))]
+  // const sizes = [...new Set(allProducts.map((p) => p.size).filter((v): v is string => !!v))]
+  const materials = [...new Set(allProducts.map((p) => p.material).filter((v): v is string => !!v))]
 
   if (loading) {
     return (
@@ -207,41 +207,41 @@ export default function ProductsPage() {
               <div className="sticky top-20">
                 <h2 className="text-xl font-bold mb-6">Filters</h2>
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <h3 className="font-medium mb-3">Category</h3>
-                  <div className="space-y-2">
+                  {/* <div className="space-y-2">
                     {categories.map((category) => (
                       <div key={category} className="flex items-center">
                         <Checkbox
                           id={category}
-                          checked={selectedCategories.includes(category!)}
-                          onCheckedChange={() => handleCategoryChange(category!)}
+                          checked={selectedCategories.includes(category)}
+                          onCheckedChange={() => handleCategoryChange(category)}
                         />
                         <Label htmlFor={category} className="ml-2 capitalize">
                           {category}
                         </Label>
                       </div>
                     ))}
-                  </div>
-                </div>
+                  </div> */}
+                {/* </div> */}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <h3 className="font-medium mb-3">Size</h3>
-                  <div className="space-y-2">
+                  {/* <div className="space-y-2">
                     {sizes.map((size) => (
                       <div key={size} className="flex items-center">
                         <Checkbox
                           id={size}
-                          checked={selectedSizes.includes(size!)}
-                          onCheckedChange={() => handleSizeChange(size!)}
+                          checked={selectedSizes.includes(size)}
+                          onCheckedChange={() => handleSizeChange(size)}
                         />
                         <Label htmlFor={size} className="ml-2 capitalize">
                           {size}
                         </Label>
                       </div>
                     ))}
-                  </div>
-                </div>
+                  </div> */}
+                {/* </div>  */}
 
                 <div className="mb-6">
                   <h3 className="font-medium mb-3">Material</h3>
@@ -250,8 +250,8 @@ export default function ProductsPage() {
                       <div key={material} className="flex items-center">
                         <Checkbox
                           id={material}
-                          checked={selectedMaterials.includes(material!)}
-                          onCheckedChange={() => handleMaterialChange(material!)}
+                          checked={selectedMaterials.includes(material)}
+                          onCheckedChange={() => handleMaterialChange(material)}
                         />
                         <Label htmlFor={material} className="ml-2 capitalize">
                           {material}
@@ -334,14 +334,14 @@ export default function ProductsPage() {
                       <CardContent>
                         <p className="text-gray-600 mb-4">{product.description}</p>
                         <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
+                          {/* <div className="flex items-center gap-2">
                             {product.size && (
                               <span className="text-sm bg-cream-100 px-2 py-1 rounded-full">{product.size}</span>
                             )}
                             {product.material && (
                               <span className="text-sm bg-cream-100 px-2 py-1 rounded-full">{product.material}</span>
                             )}
-                          </div>
+                          </div> */}
                         </div>
                       </CardContent>
                       <CardFooter>
