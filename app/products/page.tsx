@@ -9,8 +9,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ShoppingCart, Filter, Search } from "lucide-react"
-import { getProductData } from '../data/data';
+import { getProductData as getProductDataRaw } from '../data/data';
+import { useCachedFetch } from "@/hooks/useCachedFetch"
 import Link from "next/link"
+
+function getProductDataSafe() {
+  return getProductDataRaw().then(res => res ?? [])
+}
 
 type Product = {
   id: string | number
@@ -27,9 +32,6 @@ type Product = {
 }
 
 export default function ProductsPage() {
-  const [allProducts, setAllProducts] = useState<Product[]>([])
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedSizes, setSelectedSizes] = useState<string[]>([])
@@ -37,20 +39,16 @@ export default function ProductsPage() {
   const [sortBy, setSortBy] = useState("featured")
   const [showFilters, setShowFilters] = useState(false)
 
-  // Fetch products on mount
+  const { data: allProducts = [], loading } = useCachedFetch<Product[]>("products", getProductDataSafe)
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
+
   useEffect(() => {
-    setLoading(true)
-    getProductData().then((data) => {
-      const products = data ?? []
-      setAllProducts(products)
-      setFilteredProducts(products)
-      setLoading(false)
-    })
-  }, [])
+    setFilteredProducts(allProducts ?? [])
+  }, [allProducts])
 
   // Handle filter changes
   const applyFilters = () => {
-    let result = [...allProducts]
+    let result = [...(allProducts ?? [])]
 
     // Apply search filter
     if (searchTerm) {
@@ -129,7 +127,7 @@ export default function ProductsPage() {
 
   // Apply filters when any filter changes
   useEffect(() => {
-    if (allProducts.length > 0) {
+    if ((allProducts ?? []).length > 0) {
       applyFilters()
     }
   }, [searchTerm, selectedCategories, selectedSizes, selectedMaterials, sortBy, allProducts])
@@ -137,7 +135,7 @@ export default function ProductsPage() {
   // Get unique values for filter options
   // const categories = [...new Set(allProducts.map((p) => p.category).filter((v): v is string => !!v))]
   // const sizes = [...new Set(allProducts.map((p) => p.size).filter((v): v is string => !!v))]
-  const materials = [...new Set(allProducts.map((p) => p.material).filter((v): v is string => !!v))]
+  const materials = [...new Set((allProducts ?? []).map((p) => p.material).filter((v): v is string => !!v))]
 
   if (loading) {
     return (
@@ -401,7 +399,7 @@ export function ProductList() {
   const [productData, setProductData] = useState<any[]>([])
 
   useEffect(() => {
-    getProductData().then((data) => {
+    getProductDataSafe().then((data: Product[]) => {
       setProductData(data ?? [])
     })
   }, [])

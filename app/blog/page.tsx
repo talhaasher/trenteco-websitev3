@@ -8,7 +8,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Search, Calendar, User, Tag } from "lucide-react"
-import { getArticles, subscribeNewsletter } from "@/app/data/data"
+import { getArticles as getArticlesRaw, subscribeNewsletter } from "@/app/data/data"
+import { useCachedFetch } from "@/hooks/useCachedFetch"
 
 type Article = {
   id: string | number
@@ -24,26 +25,31 @@ type Article = {
   slug: string | null
 }
 
+function getArticlesSafe() {
+  return getArticlesRaw().then(res => res ?? [])
+}
+
 export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("All")
-  const [articles, setArticles] = useState<Article[]>([])
-  const [searchedArticles, setSearchedArticles] = useState<Article[]>([])
   const [newsletterEmail, setNewsletterEmail] = useState("")
   const [newsletterStatus, setNewsletterStatus] = useState<"idle"|"loading"|"success"|"error">("idle")
 
+  const { data: articles = [], loading } = useCachedFetch<Article[]>("articles", getArticlesSafe)
+  const [searchedArticles, setSearchedArticles] = useState<Article[]>([])
+
   useEffect(() => {
-    getArticles().then((data) => setArticles(Array.isArray(data) ? data : []))
-  }, [])
+    setSearchedArticles(articles ?? [])
+  }, [articles])
 
   useEffect(() => {
     if (!searchTerm) {
-      setSearchedArticles(articles)
+      setSearchedArticles(articles ?? [])
       return
     }
     const q = searchTerm.toLowerCase()
     setSearchedArticles(
-      articles.filter(article =>
+      (articles ?? []).filter(article =>
         (article.title?.toLowerCase().includes(q) ?? false) ||
         (article.tags?.some(tag => tag.toLowerCase().includes(q)) ?? false) ||
         (article.excerpt?.toLowerCase().includes(q) ?? false) ||
@@ -52,7 +58,7 @@ export default function BlogPage() {
     )
   }, [searchTerm, articles])
 
-  const postsToShow = searchTerm ? searchedArticles : articles
+  const postsToShow = Array.isArray(searchedArticles) ? searchedArticles : []
 
   const filteredPosts = postsToShow.filter((post) => {
     if (selectedCategory === "All") return true

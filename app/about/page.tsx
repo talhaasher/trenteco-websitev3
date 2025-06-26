@@ -1,32 +1,40 @@
+"use client"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, Factory, Leaf, Recycle } from "lucide-react"
-import { getTeamMembers } from "../data/data"
+import { getTeamMembers as getTeamMembersRaw } from "../data/data"
+import { useCachedFetch } from "@/hooks/useCachedFetch"
 
-export default async function AboutPage() {
-  const teamMembers = await getTeamMembers() ?? [];
-  const ourstory=
-[                "TrentEco was founded in January 2025 as the specialist paper bag division of Imperial Packaging Solution — a trusted name in fast food packaging in the UK. While our parent company is known for rice bowls, food boxes, and trays, TrentEco focuses exclusively on UK-manufactured kraft paper bags for restaurants and takeaways.",
-                "With local production facilities in Sutton Coldfield, we eliminate the need for bulk storage by offering flexible monthly ordering and paper bag bulk orders in the UK with rapid turnaround times."];
-const profuction = [
-  {
-    title: "High-Volume Output:",
-    description: "Over 2 million bags per month"
-  },
-  {
-    title: "Custom Printing:",
-    description: "High-resolution printing for branded paper bags"
-  },
-  {
-    title: "Quality Control:",
-    description: "Each batch is rigorously tested"
-  },
-  {
-    title: "Materials:",
-    description: "White and recycled kraft paper options available"
-  }
-];
-                return (
+function getTeamMembersSafe() {
+  return getTeamMembersRaw().then(res => res ?? [])
+}
+
+export default function AboutPage() {
+  const { data } = useCachedFetch<any[]>("team_members", getTeamMembersSafe)
+  const teamMembers = Array.isArray(data) ? data : []
+  const ourstory = [
+    "TrentEco was founded in January 2025 as the specialist paper bag division of Imperial Packaging Solution — a trusted name in fast food packaging in the UK. While our parent company is known for rice bowls, food boxes, and trays, TrentEco focuses exclusively on UK-manufactured kraft paper bags for restaurants and takeaways.",
+    "With local production facilities in Sutton Coldfield, we eliminate the need for bulk storage by offering flexible monthly ordering and paper bag bulk orders in the UK with rapid turnaround times."
+  ];
+  const profuction = [
+    {
+      title: "High-Volume Output:",
+      description: "Over 2 million bags per month"
+    },
+    {
+      title: "Custom Printing:",
+      description: "High-resolution printing for branded paper bags"
+    },
+    {
+      title: "Quality Control:",
+      description: "Each batch is rigorously tested"
+    },
+    {
+      title: "Materials:",
+      description: "White and recycled kraft paper options available"
+    }
+  ];
+  return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-cream-50 to-cream-100 py-16 md:py-24">
@@ -57,14 +65,12 @@ const profuction = [
             </div>
             <div>
               <h2 className="text-3xl font-bold mb-6">Our Story</h2>
-
               {/* Mapping over an array of paragraph texts */}
               {ourstory.map((text, idx) => (
                 <p className="text-gray-600 mb-4" key={idx}>
                   {text}
                 </p>
               ))}
-
             </div>
           </div>
         </div>
@@ -76,11 +82,9 @@ const profuction = [
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Mission</h2>
             <p className="text-gray-600">
-To redefine fast food and custom takeaway packaging in the UK through flexible solutions, UK production, and unmatched customer care.
+              To redefine fast food and custom takeaway packaging in the UK through flexible solutions, UK production, and unmatched customer care.
             </p>
           </div>
-
-
         </div>
       </section>
 
@@ -91,21 +95,18 @@ To redefine fast food and custom takeaway packaging in the UK through flexible s
             <div>
               <h2 className="text-3xl font-bold mb-6">Production Capabilities</h2>
               <p className="text-gray-600 mb-6">
-                
-Our modern facility is equipped to handle large volumes without compromising quality — ideal for businesses looking for where to buy custom takeaway paper bags in the UK.
-
+                Our modern facility is equipped to handle large volumes without compromising quality — ideal for businesses looking for where to buy custom takeaway paper bags in the UK.
               </p>
-
-        <ul className="space-y-4">
-          {profuction.map((feature, idx) => (
-            <li className="flex items-start" key={idx}>
-              <CheckCircle className="h-6 w-6 text-teal-600 mr-2 flex-shrink-0 mt-0.5" />
-              <span>
-                <span className="font-bold">{feature.title}</span> {feature.description}
-              </span>
-            </li>
-          ))}
-        </ul>
+              <ul className="space-y-4">
+                {profuction.map((feature, idx) => (
+                  <li className="flex items-start" key={idx}>
+                    <CheckCircle className="h-6 w-6 text-teal-600 mr-2 flex-shrink-0 mt-0.5" />
+                    <span>
+                      <span className="font-bold">{feature.title}</span> {feature.description}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className="relative h-[400px]">
               <Image

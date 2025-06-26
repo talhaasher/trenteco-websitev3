@@ -11,8 +11,13 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { MapPin, Phone, Mail } from "lucide-react";
-import {  getFaqs,submitEnquiry } from "@/app/data/data";
-import { Send,Clock } from "lucide-react";
+import {  getFaqs as getFaqsRaw,submitEnquiry } from "@/app/data/data";
+import { useCachedFetch } from "@/hooks/useCachedFetch"
+import { Send, Clock } from "lucide-react";
+
+function getFaqsSafe() {
+  return getFaqsRaw().then(res => res ?? [])
+}
 
 const iconMap = {
   map: <MapPin className="h-6 w-6 text-teal-600" />,
@@ -63,11 +68,8 @@ const iconMap = {
   phone: <Phone className="h-6 w-6 text-teal-600" />,
   mail: <Mail className="h-6 w-6 text-teal-600" />,
 };
-  const [faqs, setFaqs] = useState<any[]>([])
-
-  useEffect(() => {
-    getFaqs().then((data) => setFaqs(Array.isArray(data) ? data : []))
-  }, [])
+  const { data } = useCachedFetch<any[]>("faqs", getFaqsSafe)
+  const faqs = Array.isArray(data) ? data : []
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
