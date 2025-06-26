@@ -326,7 +326,6 @@ export default function ProductsPage() {
               {filteredProducts.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredProducts.map((product) => {
-                    console.log('Product:', product.name, 'image_urls raw:', product.image_urls);
                     // Parse images from comma-separated string or array
                     let images: string[] = [];
                     const rawImages = (product as any).image_urls;
