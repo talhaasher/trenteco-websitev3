@@ -24,12 +24,25 @@ type Product = {
   // size: string | null
   material: string | null
   image_url: string | null
+  image_urls: string | null // <-- add this line for Supabase images array
   description: string | null
   sku: string | null
   is_featured: boolean | null
   slug?: string | null // <-- add slug for dynamic product pages
   created_at?: string | null
   updated_at?: string | null
+}
+
+// Helper to get public Supabase image URL
+function getSupabaseImageUrl(path: string) {
+  if (!path) return "/placeholder.svg";
+  // If already a full URL, return as is
+  if (/^https?:\/\//i.test(path)) return path;
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const bucket = process.env.NEXT_PUBLIC_SUPABASE_BUCKET;
+  if (!base || !bucket) return "/placeholder.svg";
+  let cleanPath = path.replace(/^pictues[\/]+/, "").replace(/^\/+/, "");
+  return `${base}/storage/v1/object/public/${bucket}/${cleanPath}`;
 }
 
 export default function ProductsPage() {
@@ -312,28 +325,60 @@ export default function ProductsPage() {
               {/* Product Grid */}
               {filteredProducts.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredProducts.map((product) => (
-                    <Card key={product.id} className="overflow-hidden">
-                      <div className="relative h-64">
-                        <Image
-                          src={product.image_url || "/placeholder.svg"}
-                          alt={product.name}
-                          fill
-                          className="object-cover"
-                        />
-                        {product.is_featured && (
-                          <div className="absolute top-2 left-2 bg-teal-600 text-white px-2 py-1 rounded-full text-xs font-medium">
-                            Featured
-                          </div>
-                        )}
-                      </div>
-                      <CardHeader>
-                        <CardTitle>{product.name}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 mb-4">{product.description}</p>
-                        <div className="flex justify-between items-center">
-                          {/* <div className="flex items-center gap-2">
+                  {filteredProducts.map((product) => {
+                    console.log('Product:', product.name, 'image_urls raw:', product.image_urls);
+                    // Parse images from comma-separated string or array
+                    let images: string[] = [];
+                    const rawImages = (product as any).image_urls;
+                    if (Array.isArray(rawImages)) {
+                      images = rawImages;
+                    } else if (typeof rawImages === 'string') {
+                      try {
+                        // Try to parse as JSON array
+                        const parsed = JSON.parse(rawImages);
+                        if (Array.isArray(parsed)) {
+                          images = parsed;
+                        } else {
+                          images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                        }
+                      } catch {
+                        images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                      }
+                    } else if (product.image_url) {
+                      images = [product.image_url];
+                    }
+                    const mainImage = getSupabaseImageUrl((images[0] as string) || "");
+                    return (
+                      <Card key={product.id} className="overflow-hidden">
+                        <div className="relative h-64 w-full">
+                          {mainImage ? (
+                            <Image
+                              src={mainImage}
+                              alt={product.name}
+                              fill
+                              className="object-cover"
+                              style={{ objectFit: 'cover' }}
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              priority={true}
+                            />
+                          ) : (
+                            <div className="h-full w-full bg-gray-200 flex items-center justify-center text-gray-400">
+                              No Image
+                            </div>
+                          )}
+                          {product.is_featured && (
+                            <div className="absolute top-2 left-2 bg-teal-600 text-white px-2 py-1 rounded-full text-xs font-medium">
+                              Featured
+                            </div>
+                          )}
+                        </div>
+                        <CardHeader>
+                          <CardTitle>{product.name}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-gray-600 mb-4">{product.description}</p>
+                          <div className="flex justify-between items-center">
+                            {/* <div className="flex items-center gap-2">
                             {product.size && (
                               <span className="text-sm bg-cream-100 px-2 py-1 rounded-full">{product.size}</span>
                             )}
@@ -341,24 +386,25 @@ export default function ProductsPage() {
                               <span className="text-sm bg-cream-100 px-2 py-1 rounded-full">{product.material}</span>
                             )}
                           </div> */}
-                        </div>
-                      </CardContent>
-                      <CardFooter>
-                        <div className="flex gap-2 w-full">
-                          <Link href={`/products/${product.slug || product.id}`} className="w-full">
-                            <Button className="w-full bg-teal-600 hover:bg-teal-700" variant="default">
-                              View Details
-                            </Button>
-                          </Link>
-                          <a href="/contact#enquiry-form" className="w-full">
-                            <Button className="w-full bg-white text-teal-600 border border-teal-600 hover:bg-teal-50" variant="outline">
-                              Request a Sample
-                            </Button>
-                          </a>
-                        </div>
-                      </CardFooter>
-                    </Card>
-                  ))}
+                          </div>
+                        </CardContent>
+                        <CardFooter>
+                          <div className="flex gap-2 w-full">
+                            <Link href={`/products/${product.slug || product.id}`} className="w-full">
+                              <Button className="w-full bg-teal-600 hover:bg-teal-700" variant="default">
+                                View Details
+                              </Button>
+                            </Link>
+                            <a href="/contact#enquiry-form" className="w-full">
+                              <Button className="w-full bg-white text-teal-600 border border-teal-600 hover:bg-teal-50" variant="outline">
+                                Request a Sample
+                              </Button>
+                            </a>
+                          </div>
+                        </CardFooter>
+                      </Card>
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="text-center py-12">

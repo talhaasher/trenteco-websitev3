@@ -22,6 +22,7 @@ type Article = {
   created_at: string | null
   read_time: string | null
   image_url?: string | null
+  image_urls?: string[] | string | null
   slug: string | null
 }
 
@@ -111,49 +112,71 @@ export default function BlogPage() {
           <h2 className="text-2xl font-bold mb-8">Latest Articles</h2>
           {filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredPosts.map((post) => (
-                <Card key={post.id} className="overflow-hidden">
-                  <div className="relative h-48">
-                    <Image src={post.image_url || "/placeholder.svg"} alt={post.title || "Article image"} fill className="object-cover" />
-                  </div>
-                  <CardHeader>
-                    <div className="flex items-center gap-2 mb-2">
-                      {post.read_time && (
-                        <span className="text-xs text-gray-500">{post.read_time}</span>
-                      )}
+              {filteredPosts.map((post) => {
+                // Robust image parsing for blog posts
+                let images: string[] = [];
+                const rawImages = post.image_urls;
+                if (typeof rawImages === 'string') {
+                  try {
+                    const parsed = JSON.parse(rawImages);
+                    if (Array.isArray(parsed)) {
+                      images = parsed;
+                    } else {
+                      images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                    }
+                  } catch {
+                    images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                  }
+                } else if (Array.isArray(rawImages)) {
+                  images = rawImages;
+                } else if (post.image_url) {
+                  images = [post.image_url];
+                }
+                const mainImage = images[0] || post.image_url || "/placeholder.svg";
+                return (
+                  <Card key={post.id} className="overflow-hidden">
+                    <div className="relative h-48">
+                      <Image src={/^https?:\/\//.test(mainImage) ? mainImage : "/placeholder.svg"} alt={post.title || "Article image"} fill className="object-cover" />
                     </div>
-                    <CardTitle className="line-clamp-2">{post.title}</CardTitle>
-                    <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
-                      <div className="flex items-center">
-                        <User size={14} className="mr-1" />
-                        {post.author}
+                    <CardHeader>
+                      <div className="flex items-center gap-2 mb-2">
+                        {post.read_time && (
+                          <span className="text-xs text-gray-500">{post.read_time}</span>
+                        )}
                       </div>
-                      <div className="flex items-center">
-                        <Calendar size={14} className="mr-1" />
-                        {post.created_at ? new Date(post.created_at).toLocaleDateString() : ""}
+                      <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+                      <CardDescription className="line-clamp-3">{post.excerpt}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                        <div className="flex items-center">
+                          <User size={14} className="mr-1" />
+                          {post.author}
+                        </div>
+                        <div className="flex items-center">
+                          <Calendar size={14} className="mr-1" />
+                          {post.created_at ? new Date(post.created_at).toLocaleDateString() : ""}
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex flex-wrap gap-1">
-                      {post.tags?.slice(0, 2).map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          <Tag size={10} className="mr-1" />
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Link href={`/blog/${post.slug}`} className="w-full">
-                      <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
-                        Read More <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              ))}
+                      <div className="flex flex-wrap gap-1">
+                        {post.tags?.slice(0, 2).map((tag) => (
+                          <Badge key={tag} variant="secondary" className="text-xs">
+                            <Tag size={10} className="mr-1" />
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Link href={`/blog/${post.slug}`} className="w-full">
+                        <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
+                          Read More <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </CardFooter>
+                  </Card>
+                );
+              })}
             </div>
           ) : (
             <div className="text-center py-12">

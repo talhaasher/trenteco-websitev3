@@ -13,6 +13,16 @@ function isPromise<T>(value: any): value is Promise<T> {
   return typeof value === 'object' && value !== null && typeof value.then === 'function';
 }
 
+// Helper to get public Supabase image URL
+function getSupabaseImageUrl(path: string) {
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const bucket = process.env.NEXT_PUBLIC_SUPABASE_BUCKET;
+  if (!base || !bucket || !path) return "/placeholder.svg";
+  // Remove leading slashes, bucket prefix, and double slashes
+  let cleanPath = path.replace(/^pictues[\/]+/, "").replace(/^\/+/, "");
+  return `${base}/storage/v1/object/public/${bucket}/${cleanPath}`;
+}
+
 export default function ProductSlugPage({ params }: { params: { slug: string } }) {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,6 +47,29 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
   const relatedProducts = product
     ? products.filter((p: any) => p.id !== product.id && p.category && product.category && p.category === product.category).slice(0, 3)
     : [];
+
+  // Ensure product.image_urls is an array, even if it's a comma-separated string
+  let images: string[] = [];
+  if (product) {
+    const rawImages = product.image_urls;
+    console.log('Product detail:', product.name, 'image_urls raw:', rawImages);
+    if (typeof rawImages === 'string') {
+      try {
+        const parsed = JSON.parse(rawImages);
+        if (Array.isArray(parsed)) {
+          images = parsed;
+        } else {
+          images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+        }
+      } catch {
+        images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+      }
+    } else if (Array.isArray(rawImages)) {
+      images = rawImages;
+    } else if (product.image_url) {
+      images = [product.image_url];
+    }
+  }
 
   if (loading) return <div>Loading...</div>;
   if (!product) return (
@@ -70,20 +103,20 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 items-center w-full px-8">
               {/* Thumbnails */}
               <div className="flex md:flex-col gap-4 justify-center items-center w-full">
-                {(product.images || [product.image_url]).slice(0, 4).map((img: string, idx: number) => (
+                {images.slice(0, 4).map((img: string, idx: number) => (
                   <button
                     key={idx}
                     className={`border rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-teal-600 ${selectedIdx === idx ? 'ring-2 ring-teal-600' : ''}`}
                     onClick={() => setSelectedIdx(idx)}
                   >
-                    <Image src={img || "/placeholder.svg"} alt={product.name + ' thumbnail'} width={100} height={100} className="object-cover" />
+                    <Image src={/^https?:\/\//.test(img) ? img : getSupabaseImageUrl(img) || "/placeholder.svg"} alt={product.name + ' thumbnail'} width={100} height={100} className="object-cover" />
                   </button>
                 ))}
               </div>
               {/* Main Image */}
               <div className="flex justify-center items-center w-full">
                 <Image
-                  src={(product.images && product.images[selectedIdx]) || product.image_url || "/placeholder.svg"}
+                  src={/^https?:\/\//.test(images[selectedIdx]) ? images[selectedIdx] : getSupabaseImageUrl(images[selectedIdx] || product.image_url) || "/placeholder.svg"}
                   alt={product.name}
                   width={600}
                   height={600}

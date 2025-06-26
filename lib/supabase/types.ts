@@ -5,7 +5,7 @@ export interface products {
   price: number
   size: string
   material: string
-  image_url: string | null
+  image_urls: string | null
   description: string | null
   sku: string
   stock_quantity: number

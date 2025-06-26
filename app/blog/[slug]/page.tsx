@@ -21,6 +21,7 @@ type Article = {
   created_at: string | null
   read_time: string | null
   image_url?: string | null
+  image_urls?: string[] | string | null
   slug: string | null
 }
 
@@ -46,6 +47,27 @@ export default function BlogPostPage() {
 
   const shareUrl = typeof window !== "undefined" ? window.location.href : ""
   const shareTitle = post?.title || ""
+
+  // Robust image parsing for blog post (null-safe)
+  let images: string[] = [];
+  const rawImages = post?.image_urls;
+  if (typeof rawImages === 'string') {
+    try {
+      const parsed = JSON.parse(rawImages);
+      if (Array.isArray(parsed)) {
+        images = parsed;
+      } else {
+        images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+      }
+    } catch {
+      images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+    }
+  } else if (Array.isArray(rawImages)) {
+    images = rawImages;
+  } else if (post?.image_url) {
+    images = [post.image_url];
+  }
+  const mainImage = images[0] || post?.image_url || "/placeholder.svg"
 
   if (!post) {
     return (
@@ -112,11 +134,11 @@ export default function BlogPostPage() {
             {post.excerpt && <p className="text-xl text-gray-600 mb-8 leading-relaxed">{post.excerpt}</p>}
 
             {/* Featured Image */}
-            {post.image_url && (
+            {(mainImage) && (
               <div className="relative h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
                 <Image
-                  src={post.image_url || "/placeholder.svg"}
-                  alt={post.title || "Article image"}
+                  src={/^https?:\/\//.test(mainImage) ? mainImage : "/placeholder.svg"}
+                  alt={post?.title || "Article image"}
                   fill
                   className="object-cover"
                   priority

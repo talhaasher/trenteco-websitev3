@@ -146,29 +146,51 @@ export default function HomeClient() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {productData.slice(0, 3).map((product: any) => (
-              <Card className="overflow-hidden" key={product.id}>
-                <div className="relative h-48">
-                  <Image
-                    src={product.image_url || "/placeholder.svg?height=200&width=400"}
-                    alt={product.name || "Product"}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <CardHeader>
-                  <CardTitle>{product.name}</CardTitle>
-                  <CardDescription>{product.description}</CardDescription>
-                </CardHeader>
-                <CardFooter>
-                  <Link href={`/products/${product.slug || product.id}`} className="w-full">
-                    <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
-                      View Details
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-            ))}
+            {productData.slice(0, 3).map((product: any) => {
+              // Robust image parsing for home page
+              let images: string[] = [];
+              const rawImages = product.image_urls;
+              if (typeof rawImages === 'string') {
+                try {
+                  const parsed = JSON.parse(rawImages);
+                  if (Array.isArray(parsed)) {
+                    images = parsed;
+                  } else {
+                    images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                  }
+                } catch {
+                  images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                }
+              } else if (Array.isArray(rawImages)) {
+                images = rawImages;
+              } else if (product.image_url) {
+                images = [product.image_url];
+              }
+              const mainImage = images[0] || product.image_url || "/placeholder.svg";
+              return (
+                <Card className="overflow-hidden" key={product.id}>
+                  <div className="relative h-48">
+                    <Image
+                      src={/^https?:\/\//.test(mainImage) ? mainImage : "/placeholder.svg"}
+                      alt={product.name || "Product"}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <CardHeader>
+                    <CardTitle>{product.name}</CardTitle>
+                    <CardDescription>{product.description}</CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <Link href={`/products/${product.slug || product.id}`} className="w-full">
+                      <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
+                        View Details
+                      </Button>
+                    </Link>
+                  </CardFooter>
+                </Card>
+              );
+            })}
           </div>
 
           <div className="text-center mt-8">
@@ -190,41 +212,63 @@ export default function HomeClient() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {articles.slice(0, 3).map((article: any) => (
-              <Card key={article.id}>
-                <CardHeader>
-                  <div className="relative h-48 -mx-6 -mt-6 mb-4">
-                    <Image
-                      src={article.image_url || "/placeholder.svg?height=200&width=400"}
-                      alt={article.title || "Article"}
-                      fill
-                      className="object-cover rounded-t-lg"
-                    />
-                  </div>
-                  <CardTitle>{article.title}</CardTitle>
-                  <CardDescription>
-                    {article.created_at
-                      ? new Date(article.created_at).toLocaleDateString("en-GB", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })
-                      : ""}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">{article.excerpt}</p>
-                </CardContent>
-                <CardFooter>
-                  <Link
-                    href={`/blog/${article.slug}`}
-                    className="text-teal-600 hover:underline flex items-center"
-                  >
-                    Read More <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </CardFooter>
-              </Card>
-            ))}
+            {articles.slice(0, 3).map((article: any) => {
+              // Robust image parsing for articles
+              let images: string[] = [];
+              const rawImages = article.image_urls;
+              if (typeof rawImages === 'string') {
+                try {
+                  const parsed = JSON.parse(rawImages);
+                  if (Array.isArray(parsed)) {
+                    images = parsed;
+                  } else {
+                    images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                  }
+                } catch {
+                  images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                }
+              } else if (Array.isArray(rawImages)) {
+                images = rawImages;
+              } else if (article.image_url) {
+                images = [article.image_url];
+              }
+              const mainImage = images[0] || article.image_url || "/placeholder.svg?height=200&width=400";
+              return (
+                <Card key={article.id}>
+                  <CardHeader>
+                    <div className="relative h-48 -mx-6 -mt-6 mb-4">
+                      <Image
+                        src={/^https?:\/\//.test(mainImage) ? mainImage : "/placeholder.svg?height=200&width=400"}
+                        alt={article.title || "Article"}
+                        fill
+                        className="object-cover rounded-t-lg"
+                      />
+                    </div>
+                    <CardTitle>{article.title}</CardTitle>
+                    <CardDescription>
+                      {article.created_at
+                        ? new Date(article.created_at).toLocaleDateString("en-GB", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })
+                        : ""}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600">{article.excerpt}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Link
+                      href={`/blog/${article.slug}`}
+                      className="text-teal-600 hover:underline flex items-center"
+                    >
+                      Read More <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </CardFooter>
+                </Card>
+              );
+            })}
           </div>
 
           <div className="text-center mt-8">
