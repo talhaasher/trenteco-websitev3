@@ -161,13 +161,11 @@ export default function HomeClient() {
                   <CardDescription>{product.description}</CardDescription>
                 </CardHeader>
                 <CardFooter>
-                  <Button
-                    variant="outline"
-                    className="w-full border-teal-600 text-teal-600 hover:bg-teal-50"
-                    onClick={() => { window.location.href = "/products"; }}
-                  >
-                    View Collection
-                  </Button>
+                  <Link href={`/products/${product.slug || product.id}`} className="w-full">
+                    <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
+                      View Details
+                    </Button>
+                  </Link>
                 </CardFooter>
               </Card>
             ))}

@@ -27,6 +27,7 @@ type Product = {
   description: string | null
   sku: string | null
   is_featured: boolean | null
+  slug?: string | null // <-- add slug for dynamic product pages
   created_at?: string | null
   updated_at?: string | null
 }
@@ -343,11 +344,18 @@ export default function ProductsPage() {
                         </div>
                       </CardContent>
                       <CardFooter>
-                        <a href="/contact#enquiry-form" className="w-full">
-                          <Button className="w-full bg-teal-600 hover:bg-teal-700" variant="default">
-                            Request a Sample
-                          </Button>
-                        </a>
+                        <div className="flex gap-2 w-full">
+                          <Link href={`/products/${product.slug || product.id}`} className="w-full">
+                            <Button className="w-full bg-teal-600 hover:bg-teal-700" variant="default">
+                              View Details
+                            </Button>
+                          </Link>
+                          <a href="/contact#enquiry-form" className="w-full">
+                            <Button className="w-full bg-white text-teal-600 border border-teal-600 hover:bg-teal-50" variant="outline">
+                              Request a Sample
+                            </Button>
+                          </a>
+                        </div>
                       </CardFooter>
                     </Card>
                   ))}
