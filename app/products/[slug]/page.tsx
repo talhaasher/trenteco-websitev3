@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, use } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -8,11 +8,23 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Tag, ShoppingCart } from "lucide-react";
 import { getProductData } from "../../data/data";
 
+// Helper to check if params is a real Promise (not just has a 'then' property)
+function isPromise<T>(value: any): value is Promise<T> {
+  return typeof value === 'object' && value !== null && typeof value.then === 'function';
+}
+
 export default function ProductSlugPage({ params }: { params: { slug: string } }) {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const slug = params?.slug;
+  // Unwrap params if it's a real Promise (Next.js 14+)
+  let slug: string | undefined;
+  if (isPromise(params)) {
+    const unwrapped = use(params);
+    slug = (unwrapped as { slug: string }).slug;
+  } else {
+    slug = params?.slug;
+  }
 
   useEffect(() => {
     getProductData().then((data) => {
@@ -92,9 +104,11 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
                     {product.sku && <li><b>SKU:</b> {product.sku}</li>}
                   </ul>
                 </div>
-                <Button className="w-full bg-teal-600 hover:bg-teal-700 mt-4" size="lg">
-                  Request a Sample
-                </Button>
+                <a href="/contact#enquiry-form" className="w-full">
+                  <Button className="w-full bg-teal-600 hover:bg-teal-700 mt-4" size="lg">
+                    Request a Sample
+                  </Button>
+                </a>
               </div>
             </div>
           </div>
