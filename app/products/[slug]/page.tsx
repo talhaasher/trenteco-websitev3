@@ -103,7 +103,7 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 items-center w-full px-8">
               {/* Thumbnails */}
               <div className="flex md:flex-col gap-4 justify-center items-center w-full">
-                {images.slice(0, 4).map((img: string, idx: number) => (
+                {images.slice(0, 8).map((img: string, idx: number) => (
                   <button
                     key={idx}
                     className={`border rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-teal-600 ${selectedIdx === idx ? 'ring-2 ring-teal-600' : ''}`}
