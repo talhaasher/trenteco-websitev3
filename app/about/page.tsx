@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { CheckCircle, Factory, Leaf, Recycle } from "lucide-react"
 import { getTeamMembers as getTeamMembersRaw } from "../data/data"
 import { useCachedFetch } from "@/hooks/useCachedFetch"
+import Link from "next/link"
 
 function getTeamMembersSafe() {
   return getTeamMembersRaw().then(res => res ?? [])
@@ -162,9 +163,11 @@ export default function AboutPage() {
             <p className="text-lg mb-8">
               Partner with TrentEco for eco-friendly packaging solutions that align with your brand values.
             </p>
-            <Button size="lg" variant="secondary">
-              Get in Touch
-            </Button>
+            <Link href="/contact">
+              <Button size="lg" variant="secondary">
+                Get in Touch
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
