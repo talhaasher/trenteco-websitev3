@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, Factory, Leaf, Recycle } from "lucide-react"
+import { CheckCircle } from "lucide-react"
 import { getTeamMembers as getTeamMembersRaw } from "../data/data"
 import { useCachedFetch } from "@/hooks/useCachedFetch"
 import Link from "next/link"

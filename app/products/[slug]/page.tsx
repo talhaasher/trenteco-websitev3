@@ -4,8 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Tag, ShoppingCart } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { getProductData } from "../../data/data";
 
 // Helper to check if params is a real Promise (not just has a 'then' property)

@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ShoppingCart, Filter, Search } from "lucide-react"
+import {  Filter, Search } from "lucide-react"
 import { getProductData as getProductDataRaw } from '../data/data';
 import { useCachedFetch } from "@/hooks/useCachedFetch"
 import Link from "next/link"
