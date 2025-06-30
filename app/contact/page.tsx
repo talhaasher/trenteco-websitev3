@@ -261,11 +261,8 @@ const iconMap = {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="quote">Request a Quote</SelectItem>
-                        <SelectItem value="samples">Request Samples</SelectItem>
-                        <SelectItem value="bulk-pricing">Bulk Pricing Inquiry</SelectItem>
                         <SelectItem value="custom-design">Custom Design</SelectItem>
                         <SelectItem value="partnership">Partnership Opportunity</SelectItem>
-                        <SelectItem value="support">Customer Support</SelectItem>
                         <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
