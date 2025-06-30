@@ -187,7 +187,7 @@ export default function BlogPage() {
       </section>
 
       {/* Newsletter Signup */}
-      <section className="py-16 bg-teal-600 text-white">
+      {/* <section className="py-16 bg-teal-600 text-white">
         <div className="container">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
@@ -224,7 +224,7 @@ export default function BlogPage() {
             <p className="text-sm mt-4 opacity-80">We respect your privacy. Unsubscribe at any time.</p>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   )
 }
