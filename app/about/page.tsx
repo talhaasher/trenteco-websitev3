@@ -35,6 +35,11 @@ export default function AboutPage() {
       description: "White and recycled kraft paper options available"
     }
   ];
+  // Helper to get public URL for Supabase storage images
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const getImageUrl = (path: string) =>
+    path?.startsWith("http") ? path : `${supabaseUrl}/storage/v1/object/public/team/${path}`;
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -137,7 +142,7 @@ export default function AboutPage() {
                 <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center overflow-hidden">
                   {member.image ? (
                     <Image
-                      src={member.image}
+                      src={getImageUrl(member.image)}
                       alt={member.name || "Team member"}
                       width={96}
                       height={96}
@@ -147,7 +152,11 @@ export default function AboutPage() {
                     <span className="text-gray-400 text-2xl">?</span>
                   )}
                 </div>
-                <div className="font-bold">{member.name}</div>
+                <div className="font-bold">
+                  <a href={getImageUrl(member.image)} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    {member.name}
+                  </a>
+                </div>
                 <div className="text-gray-600">{member.role}</div>
               </div>
             ))}
