@@ -81,6 +81,11 @@ export default function BlogPage() {
     }
   }
 
+  // Helper to get public URL for Supabase storage images
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const getBlogImageUrl = (path: string) =>
+    path && /^https?:\/\//.test(path) ? path : path ? `${supabaseUrl}/storage/v1/object/public/blog/${path}` : "/placeholder.svg";
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -136,7 +141,7 @@ export default function BlogPage() {
                 return (
                   <Card key={post.id} className="overflow-hidden">
                     <div className="relative h-48">
-                      <Image src={/^https?:\/\//.test(mainImage) ? mainImage : "/placeholder.svg"} alt={post.title || "Article image"} fill className="object-cover" />
+                      <Image src={getBlogImageUrl(mainImage)} alt={post.title || "Article image"} fill className="object-cover" />
                     </div>
                     <CardHeader>
                       <div className="flex items-center gap-2 mb-2">

@@ -69,6 +69,11 @@ export default function BlogPostPage() {
   }
   const mainImage = images[0] || post?.image_url || "/placeholder.svg"
 
+  // Helper to get public URL for Supabase storage images
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const getBlogImageUrl = (path: string) =>
+    path && /^https?:\/\//.test(path) ? path : path ? `${supabaseUrl}/storage/v1/object/public/blog/${path}` : "/placeholder.svg";
+
   if (!post) {
     return (
       <div className="flex flex-col min-h-screen">
@@ -137,7 +142,7 @@ export default function BlogPostPage() {
             {(mainImage) && (
               <div className="relative h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
                 <Image
-                  src={/^https?:\/\//.test(mainImage) ? mainImage : "/placeholder.svg"}
+                  src={getBlogImageUrl(mainImage)}
                   alt={post?.title || "Article image"}
                   fill
                   className="object-cover"
@@ -224,13 +229,7 @@ export default function BlogPostPage() {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="text-gray-700">
-                  {post.author} is passionate about sustainable packaging solutions and helping businesses make
-                  environmentally conscious choices. With years of experience in the packaging industry, they provide
-                  valuable insights into eco-friendly practices and trends.
-                </p>
-              </CardContent>
+ 
             </Card>
           </div>
         </div>
