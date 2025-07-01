@@ -127,7 +127,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Team */}
-      <section className="py-16 bg-cream-50">
+<section className="py-16 bg-cream-50 flex justify-center items-center">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Our Team</h2>
@@ -136,11 +136,11 @@ export default function AboutPage() {
               solutions.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 place-items-center">
             {teamMembers.map((member: any) => (
               <div key={member.id} className="flex flex-col items-center text-center">
-                <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center overflow-hidden">
-                  {member.image ? (
+                {/* <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center overflow-hidden"> */}
+                  {/* {member.image ? (
                     <Image
                       src={getImageUrl(member.image)}
                       alt={member.name || "Team member"}
@@ -150,12 +150,11 @@ export default function AboutPage() {
                     />
                   ) : (
                     <span className="text-gray-400 text-2xl">?</span>
-                  )}
-                </div>
+                  )} */}
+                {/* </div> */}
                 <div className="font-bold">
-                  <a href={getImageUrl(member.image)} target="_blank" rel="noopener noreferrer" className="hover:underline">
                     {member.name}
-                  </a>
+                  
                 </div>
                 <div className="text-gray-600">{member.role}</div>
               </div>
