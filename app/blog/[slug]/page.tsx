@@ -23,6 +23,7 @@ type Article = {
   image_url?: string | null
   image_urls?: string[] | string | null
   slug: string | null
+  author_image?: string | null
 }
 
 export default function BlogPostPage() {
@@ -220,8 +221,18 @@ export default function BlogPostPage() {
             <Card className="mb-8">
               <CardHeader>
                 <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center">
-                    <User className="h-8 w-8 text-teal-600" />
+                  <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center overflow-hidden">
+                    {post.author_image ? (
+                      <Image
+                        src={getBlogImageUrl(post.author_image)}
+                        alt={post.author || "Author"}
+                        width={64}
+                        height={64}
+                        className="object-cover rounded-full"
+                      />
+                    ) : (
+                      <span className="text-2xl font-bold text-teal-600">{post.author?.charAt(0) || "A"}</span>
+                    )}
                   </div>
                   <div>
                     <CardTitle className="text-xl">{post.author}</CardTitle>
@@ -229,7 +240,6 @@ export default function BlogPostPage() {
                   </div>
                 </div>
               </CardHeader>
- 
             </Card>
           </div>
         </div>
