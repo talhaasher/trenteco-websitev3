@@ -23,7 +23,7 @@ export default function Footer() {
               UK-based eco paper bag manufacturing company committed to sustainable packaging solutions.
             </p>
             <div className="flex space-x-4">
-              <Link href="https://www.instagram.com/trentecopackaging/" className="text-gray-600 hover:text-teal-600">
+              <Link href="https://www.instagram.com/trentecouk?igsh=ZThjaDloc3Fqb2lh" className="text-gray-600 hover:text-teal-600">
                 <Instagram size={20} />
                 <span className="sr-only">Instagram</span>
               </Link>
@@ -94,7 +94,7 @@ export default function Footer() {
               </p>
               <p>
                 <a href="mailto:info@trenteco.co.uk" className="hover:text-teal-600">
-                   info@trenteco.co.uk
+                  info@trenteco.co.uk
 
                 </a>
               </p>
