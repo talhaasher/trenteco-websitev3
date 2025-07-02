@@ -138,7 +138,7 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
                 </div>
                 <a href="/contact#enquiry-form" className="w-full">
                   <Button className="w-full bg-teal-600 hover:bg-teal-700 mt-4" size="lg">
-                    Request a Sample
+                    Contact Us
                   </Button>
                 </a>
               </div>

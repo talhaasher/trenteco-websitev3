@@ -394,11 +394,6 @@ export default function ProductsPage() {
                                 View Details
                               </Button>
                             </Link>
-                            <a href="/contact#enquiry-form" className="w-full">
-                              <Button className="w-full bg-white text-teal-600 border border-teal-600 hover:bg-teal-50" variant="outline">
-                                Request a Sample
-                              </Button>
-                            </a>
                           </div>
                         </CardFooter>
                       </Card>

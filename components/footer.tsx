@@ -23,21 +23,9 @@ export default function Footer() {
               UK-based eco paper bag manufacturing company committed to sustainable packaging solutions.
             </p>
             <div className="flex space-x-4">
-              <Link href="#" className="text-gray-600 hover:text-teal-600">
-                <Facebook size={20} />
-                <span className="sr-only">Facebook</span>
-              </Link>
-              <Link href="#" className="text-gray-600 hover:text-teal-600">
-                <Twitter size={20} />
-                <span className="sr-only">Twitter</span>
-              </Link>
-              <Link href="#" className="text-gray-600 hover:text-teal-600">
+              <Link href="https://www.instagram.com/trentecopackaging/" className="text-gray-600 hover:text-teal-600">
                 <Instagram size={20} />
                 <span className="sr-only">Instagram</span>
-              </Link>
-              <Link href="#" className="text-gray-600 hover:text-teal-600">
-                <Linkedin size={20} />
-                <span className="sr-only">LinkedIn</span>
               </Link>
             </div>
           </div>
