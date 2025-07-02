@@ -154,7 +154,11 @@ export default function BlogPostPage() {
 
             {/* Article Content */}
             <div className="prose prose-lg max-w-none mb-8">
-              <div className="text-gray-700 leading-relaxed whitespace-pre-line">{post.content}</div>
+              {/* Render HTML content safely */}
+              <div
+                className="text-gray-700 leading-relaxed whitespace-pre-line"
+                dangerouslySetInnerHTML={{ __html: post.content || "" }}
+              />
             </div>
 
             {/* Tags */}
