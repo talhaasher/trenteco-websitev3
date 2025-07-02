@@ -63,7 +63,7 @@ export default function HomeClient() {
             playsInline
             poster="/placeholder.svg?height=800&width=1200"
           >
-            <source src="/videos/vid1.mp4" type="video/mp4" />
+            <source src="/videos/vid.mp4" type="video/mp4" />
             {/* Fallback for browsers that don't support video */}
             <Image
               src="/placeholder.svg?height=600&width=1200"
