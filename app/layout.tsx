@@ -11,7 +11,10 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "TrentEco - UK-Made, Eco-Smart Bags",
   description: "UK-based eco paper bag manufacturing company",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  icons: {
+    icon: "/logo.svg"
+  }
 }
 
 export default function RootLayout({
