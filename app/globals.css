@@ -1,3 +1,6 @@
+html.light {
+  color-scheme: light;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,7 +11,8 @@ body {
 
 @layer utilities {
   .text-balance {
-    text-wrap: balance;
+    /* text-wrap: balance; */
+    text-wrap: balance; /* Not supported in Chrome < 114, Safari on iOS < 17.4. Consider using word-break or overflow-wrap for better compatibility. */
   }
 }
 
