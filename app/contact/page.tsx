@@ -47,8 +47,7 @@ export default function ContactPage() {
     icon: "mail",
     title: "Email Us",
     emails: [
-      "info@trenteco.co.uk",
-      "asel@thepackagingsolutions.co.uk",
+      "info@trentecopackaging.co.uk",
     ],
   },
 ];
