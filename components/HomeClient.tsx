@@ -2,10 +2,20 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Leaf, Package, Recycle, TrendingUp } from "lucide-react";
 import { getProductData, getArticles } from '../app/data/data';
+import ScrollReveal from "@/components/ScrollReveal";
+import { 
+  fadeInUp, 
+  staggerContainer, 
+  staggerItem, 
+  iconAnimation,
+  heroAnimation,
+  textReveal 
+} from "@/lib/animations";
 
 export default function HomeClient() {
   const iconMap = {
@@ -29,7 +39,7 @@ export default function HomeClient() {
     {
       icon: "TrendingUp",
       title: "Custom Solutions",
-      description: "Get printed food packaging in the UK that’s branded to reflect your identity.",
+      description: "Get printed food packaging in the UK that's branded to reflect your identity.",
     },
     {
       icon: "Recycle",
@@ -79,232 +89,324 @@ export default function HomeClient() {
 
         {/* Content */}
         <div className="container relative z-10 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-white drop-shadow-lg">
+          <motion.div
+            variants={heroAnimation}
+            initial="initial"
+            animate="animate"
+          >
+            <motion.h1 
+              className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-white drop-shadow-lg"
+              variants={textReveal}
+            >
               Custom Eco-Friendly Paper Bags — Fast & UK-Made
-            </h1>
-            <p className="text-lg text-cream-100 mb-8 drop-shadow">
+            </motion.h1>
+            <motion.p 
+              className="text-lg text-cream-100 mb-8 drop-shadow"
+              variants={textReveal}
+            >
               Sustainable food & retail packaging, proudly manufactured in the UK with rapid turnaround and tailored branding.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                size="lg"
-                className="bg-teal-600 hover:bg-teal-700 shadow-lg"
-                onClick={() => { window.location.href = "/products"; }}
-              >
-                View Products
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-black hover:bg-white hover:text-teal-600 shadow-lg backdrop-blur-sm"
-                onClick={() => { window.location.href = "/contact"; }}
-              >
-                Request a Quote
-              </Button>
-            </div>
-          </div>
+            </motion.p>
+            <motion.div 
+              className="flex flex-col sm:flex-row gap-4"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+            >
+              <motion.div variants={staggerItem}>
+                <Button
+                  size="lg"
+                  className="bg-teal-600 hover:bg-teal-700 shadow-lg"
+                  onClick={() => { window.location.href = "/products"; }}
+                >
+                  View Products
+                </Button>
+              </motion.div>
+              <motion.div variants={staggerItem}>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white text-black hover:bg-white hover:text-teal-600 shadow-lg backdrop-blur-sm"
+                  onClick={() => { window.location.href = "/contact"; }}
+                >
+                  Request a Quote
+                </Button>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-16 bg-white">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Choose TrentEco?</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              UK paper bag specialists delivering fast, sustainable packaging with custom options and local production.
-            </p>
-          </div>
+      <ScrollReveal>
+        <section className="py-16 bg-white">
+          <div className="container">
+            <motion.div 
+              className="text-center mb-12"
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+            >
+              <h2 className="text-3xl font-bold mb-4">Why Choose TrentEco?</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                UK paper bag specialists delivering fast, sustainable packaging with custom options and local production.
+              </p>
+            </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature: any, idx: number) => (
-              <div key={idx} className="flex flex-col items-center text-center">
-                <div className="bg-cream-100 p-4 rounded-full mb-4">
-                  {iconMap[feature.icon as keyof typeof iconMap] &&
-                    React.createElement(iconMap[feature.icon as keyof typeof iconMap], {
-                      className: "h-8 w-8 text-teal-600",
-                    })
-                  }
-                </div>
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
-            ))}
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+            >
+              {features.map((feature: any, idx: number) => (
+                <motion.div 
+                  key={idx} 
+                  className="flex flex-col items-center text-center"
+                  variants={staggerItem}
+                >
+                  <motion.div 
+                    className="bg-cream-100 p-4 rounded-full mb-4"
+                    variants={iconAnimation}
+                  >
+                    {iconMap[feature.icon as keyof typeof iconMap] &&
+                      React.createElement(iconMap[feature.icon as keyof typeof iconMap], {
+                        className: "h-8 w-8 text-teal-600",
+                      })
+                    }
+                  </motion.div>
+                  <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                  <p className="text-gray-600">{feature.description}</p>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
 
       {/* Product Categories */}
-      <section className="py-16 bg-cream-50">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Our Product Range</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Explore our wide range of eco-friendly paper bags for various industries and uses.
-            </p>
-          </div>
+      <ScrollReveal>
+        <section className="py-16 bg-cream-50">
+          <div className="container">
+            <motion.div 
+              className="text-center mb-12"
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+            >
+              <h2 className="text-3xl font-bold mb-4">Our Product Range</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Explore our wide range of eco-friendly paper bags for various industries and uses.
+              </p>
+            </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {productData.slice(0, 3).map((product: any) => {
-              // Robust image parsing for home page
-              let images: string[] = [];
-              const rawImages = product.image_urls;
-              if (typeof rawImages === 'string') {
-                try {
-                  const parsed = JSON.parse(rawImages);
-                  if (Array.isArray(parsed)) {
-                    images = parsed;
-                  } else {
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+            >
+              {productData.slice(0, 3).map((product: any, idx: number) => {
+                // Robust image parsing for home page
+                let images: string[] = [];
+                const rawImages = product.image_urls;
+                if (typeof rawImages === 'string') {
+                  try {
+                    const parsed = JSON.parse(rawImages);
+                    if (Array.isArray(parsed)) {
+                      images = parsed;
+                    } else {
+                      images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                    }
+                  } catch {
                     images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
                   }
-                } catch {
-                  images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                } else if (Array.isArray(rawImages)) {
+                  images = rawImages;
+                } else if (product.image_url) {
+                  images = [product.image_url];
                 }
-              } else if (Array.isArray(rawImages)) {
-                images = rawImages;
-              } else if (product.image_url) {
-                images = [product.image_url];
-              }
-              const mainImage = images[0] || product.image_url || "/placeholder.svg";
-              return (
-                <Card className="overflow-hidden" key={product.id}>
-                  <div className="relative h-48">
-                    <Image
-                      src={/^https?:\/\//.test(mainImage) ? mainImage : "/placeholder.svg"}
-                      alt={product.name || "Product"}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <CardHeader>
-                    <CardTitle>{product.name}</CardTitle>
-                    <CardDescription>{product.description}</CardDescription>
-                  </CardHeader>
-                  <CardFooter>
-                    <Link href={`/products/${product.slug || product.id}`} className="w-full">
-                      <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
-                        View Details
-                      </Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              );
-            })}
-          </div>
+                const mainImage = images[0] || product.image_url || "/placeholder.svg";
+                return (
+                  <motion.div key={product.id} variants={staggerItem}>
+                    <Card className="overflow-hidden">
+                      <div className="relative h-48">
+                        <Image
+                          src={/^https?:\/\//.test(mainImage) ? mainImage : "/placeholder.svg"}
+                          alt={product.name || "Product"}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <CardHeader>
+                        <CardTitle>{product.name}</CardTitle>
+                        <CardDescription>{product.description}</CardDescription>
+                      </CardHeader>
+                      <CardFooter>
+                        <Link href={`/products/${product.slug || product.id}`} className="w-full">
+                          <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
+                            View Details
+                          </Button>
+                        </Link>
+                      </CardFooter>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
 
-          <div className="text-center mt-8">
-            <Button className="bg-teal-600 hover:bg-teal-700" onClick={() => { window.location.href = "/products"; }}>
-              View All Products <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <motion.div 
+              className="text-center mt-8"
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+            >
+              <Button className="bg-teal-600 hover:bg-teal-700" onClick={() => { window.location.href = "/products"; }}>
+                View All Products <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
 
       {/* Blog Teaser */}
-      <section className="py-16 bg-cream-50">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Latest from Our Blog</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Stay updated with the latest trends and insights in sustainable packaging.
-            </p>
-          </div>
+      <ScrollReveal>
+        <section className="py-16 bg-cream-50">
+          <div className="container">
+            <motion.div 
+              className="text-center mb-12"
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+            >
+              <h2 className="text-3xl font-bold mb-4">Latest from Our Blog</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Stay updated with the latest trends and insights in sustainable packaging.
+              </p>
+            </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {articles.slice(0, 3).map((article: any) => {
-              // Robust image parsing for articles
-              let images: string[] = [];
-              const rawImages = article.image_urls;
-              if (typeof rawImages === 'string') {
-                try {
-                  const parsed = JSON.parse(rawImages);
-                  if (Array.isArray(parsed)) {
-                    images = parsed;
-                  } else {
+            <motion.div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+            >
+              {articles.slice(0, 3).map((article: any, idx: number) => {
+                // Robust image parsing for articles
+                let images: string[] = [];
+                const rawImages = article.image_urls;
+                if (typeof rawImages === 'string') {
+                  try {
+                    const parsed = JSON.parse(rawImages);
+                    if (Array.isArray(parsed)) {
+                      images = parsed;
+                    } else {
+                      images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                    }
+                  } catch {
                     images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
                   }
-                } catch {
-                  images = rawImages.split(',').map((s: string) => s.trim()).filter(Boolean);
+                } else if (Array.isArray(rawImages)) {
+                  images = rawImages;
+                } else if (article.image_url) {
+                  images = [article.image_url];
                 }
-              } else if (Array.isArray(rawImages)) {
-                images = rawImages;
-              } else if (article.image_url) {
-                images = [article.image_url];
-              }
-              const mainImage = images[0] || article.image_url || "/placeholder.svg?height=200&width=400";
-              return (
-                <Card key={article.id}>
-                  <CardHeader>
-                    <div className="relative h-48 -mx-6 -mt-6 mb-4">
-                      <Image
-                        src={/^https?:\/\//.test(mainImage) ? mainImage : "/placeholder.svg?height=200&width=400"}
-                        alt={article.title || "Article"}
-                        fill
-                        className="object-cover rounded-t-lg"
-                      />
-                    </div>
-                    <CardTitle>{article.title}</CardTitle>
-                    <CardDescription>
-                      {article.created_at
-                        ? new Date(article.created_at).toLocaleDateString("en-GB", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })
-                        : ""}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600">{article.excerpt}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <Link
-                      href={`/blog/${article.slug}`}
-                      className="text-teal-600 hover:underline flex items-center"
-                    >
-                      Read More <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </CardFooter>
-                </Card>
-              );
-            })}
-          </div>
+                const mainImage = images[0] || article.image_url || "/placeholder.svg?height=200&width=400";
+                return (
+                  <motion.div key={article.id} variants={staggerItem}>
+                    <Card>
+                      <CardHeader>
+                        <div className="relative h-48 -mx-6 -mt-6 mb-4">
+                          <Image
+                            src={/^https?:\/\//.test(mainImage) ? mainImage : "/placeholder.svg?height=200&width=400"}
+                            alt={article.title || "Article"}
+                            fill
+                            className="object-cover rounded-t-lg"
+                          />
+                        </div>
+                        <CardTitle>{article.title}</CardTitle>
+                        <CardDescription>
+                          {article.created_at
+                            ? new Date(article.created_at).toLocaleDateString("en-GB", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })
+                            : ""}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-gray-600">{article.excerpt}</p>
+                      </CardContent>
+                      <CardFooter>
+                        <Link
+                          href={`/blog/${article.slug}`}
+                          className="text-teal-600 hover:underline flex items-center"
+                        >
+                          Read More <ArrowRight className="ml-2 h-4 w-4" />
+                        </Link>
+                      </CardFooter>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
 
-          <div className="text-center mt-8">
-            <Button
-              variant="outline"
-              className="border-teal-600 text-teal-600 hover:bg-teal-50"
-              onClick={() => { window.location.href = "/blog"; }}
+            <motion.div 
+              className="text-center mt-8"
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
             >
-              View All Articles <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+              <Button
+                variant="outline"
+                className="border-teal-600 text-teal-600 hover:bg-teal-50"
+                onClick={() => { window.location.href = "/blog"; }}
+              >
+                View All Articles <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
 
       {/* CTA Section */}
-      <section className="py-16 bg-teal-600 text-white">
-        <div className="container">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to Make the Switch to Eco-Friendly Packaging?</h2>
-            <p className="text-lg mb-8">Contact our team today to discuss your requirements and get a custom quote.</p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button size="lg" variant="secondary" onClick={() => { window.location.href = "/contact"; }}>
-                Contact Us
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white text-black hover:bg-teal-700"
-                onClick={() => { window.location.href = "/contact"; }}
+      <ScrollReveal>
+        <section className="py-16 bg-teal-600 text-white">
+          <div className="container">
+            <motion.div 
+              className="max-w-3xl mx-auto text-center"
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+            >
+              <h2 className="text-3xl font-bold mb-4">Ready to Make the Switch to Eco-Friendly Packaging?</h2>
+              <p className="text-lg mb-8">Contact our team today to discuss your requirements and get a custom quote.</p>
+              <motion.div 
+                className="flex flex-col sm:flex-row justify-center gap-4"
+                variants={staggerContainer}
+                initial="initial"
+                animate="animate"
               >
-                Request a Sample
-              </Button>
-            </div>
+                <motion.div variants={staggerItem}>
+                  <Button size="lg" variant="secondary" onClick={() => { window.location.href = "/contact"; }}>
+                    Contact Us
+                  </Button>
+                </motion.div>
+                <motion.div variants={staggerItem}>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white text-black hover:bg-teal-700"
+                    onClick={() => { window.location.href = "/contact"; }}
+                  >
+                    Request a Sample
+                  </Button>
+                </motion.div>
+              </motion.div>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
     </div>
   );
 }

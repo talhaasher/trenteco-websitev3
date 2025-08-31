@@ -4,11 +4,22 @@ import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Calendar, User, Tag, Clock, Share2, Facebook, Twitter, Linkedin } from "lucide-react"
 import { getArticles } from "../../data/data"
+import ScrollReveal from "@/components/ScrollReveal"
+import { 
+  fadeInUp, 
+  staggerContainer, 
+  staggerItem, 
+  textReveal,
+  scaleIn,
+  fadeInLeft,
+  fadeInRight
+} from "@/lib/animations"
 
 type Article = {
   id: string | number
@@ -78,7 +89,12 @@ export default function BlogPostPage() {
   if (!post) {
     return (
       <div className="flex flex-col min-h-screen">
-        <div className="container py-12">
+        <motion.div 
+          className="container py-12"
+          variants={fadeInUp}
+          initial="initial"
+          animate="animate"
+        >
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl font-bold mb-4">Article Not Found</h1>
             <p className="text-gray-600 mb-8">The article you're looking for doesn't exist or has been moved.</p>
@@ -89,7 +105,7 @@ export default function BlogPostPage() {
               </Button>
             </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
     )
   }
@@ -97,51 +113,97 @@ export default function BlogPostPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Article Header */}
-      <article className="py-12 bg-white">
+      <motion.article 
+        className="py-12 bg-white"
+        variants={fadeInUp}
+        initial="initial"
+        animate="animate"
+      >
         <div className="container">
           <div className="max-w-4xl mx-auto">
             {/* Back Button */}
-            <Link href="/blog" className="inline-flex items-center text-teal-600 hover:text-teal-700 mb-8">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Blog
-            </Link>
+            <motion.div
+              variants={fadeInLeft}
+              initial="initial"
+              animate="animate"
+            >
+              <Link href="/blog" className="inline-flex items-center text-teal-600 hover:text-teal-700 mb-8">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Blog
+              </Link>
+            </motion.div>
 
             {/* Article Meta */}
-            <div className="flex flex-wrap items-center gap-4 mb-6">
-              {post.category && <Badge variant="secondary">{post.category}</Badge>}
+            <motion.div 
+              className="flex flex-wrap items-center gap-4 mb-6"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+            >
+              {post.category && (
+                <motion.div variants={staggerItem}>
+                  <Badge variant="secondary">{post.category}</Badge>
+                </motion.div>
+              )}
               {post.read_time && (
-                <div className="flex items-center text-sm text-gray-500">
+                <motion.div 
+                  className="flex items-center text-sm text-gray-500"
+                  variants={staggerItem}
+                >
                   <Clock className="mr-1 h-4 w-4" />
                   {post.read_time}
-                </div>
+                </motion.div>
               )}
               {post.created_at && (
-                <div className="flex items-center text-sm text-gray-500">
+                <motion.div 
+                  className="flex items-center text-sm text-gray-500"
+                  variants={staggerItem}
+                >
                   <Calendar className="mr-1 h-4 w-4" />
                   {new Date(post.created_at).toLocaleDateString("en-GB", {
                     day: "numeric",
                     month: "long",
                     year: "numeric",
                   })}
-                </div>
+                </motion.div>
               )}
               {post.author && (
-                <div className="flex items-center text-sm text-gray-500">
+                <motion.div 
+                  className="flex items-center text-sm text-gray-500"
+                  variants={staggerItem}
+                >
                   <User className="mr-1 h-4 w-4" />
                   {post.author}
-                </div>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
 
             {/* Article Title */}
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">{post.title}</h1>
+            <motion.h1 
+              className="text-4xl md:text-5xl font-bold tracking-tight mb-6"
+              variants={textReveal}
+            >
+              {post.title}
+            </motion.h1>
 
             {/* Article Excerpt */}
-            {post.excerpt && <p className="text-xl text-gray-600 mb-8 leading-relaxed">{post.excerpt}</p>}
+            {post.excerpt && (
+              <motion.p 
+                className="text-xl text-gray-600 mb-8 leading-relaxed"
+                variants={textReveal}
+              >
+                {post.excerpt}
+              </motion.p>
+            )}
 
             {/* Featured Image */}
             {(mainImage) && (
-              <div className="relative h-64 md:h-96 mb-8 rounded-lg overflow-hidden">
+              <motion.div 
+                className="relative h-64 md:h-96 mb-8 rounded-lg overflow-hidden"
+                variants={scaleIn}
+                initial="initial"
+                animate="animate"
+              >
                 <Image
                   src={getBlogImageUrl(mainImage)}
                   alt={post?.title || "Article image"}
@@ -149,170 +211,272 @@ export default function BlogPostPage() {
                   className="object-cover"
                   priority
                 />
-              </div>
+              </motion.div>
             )}
 
             {/* Article Content */}
-            <div className="prose prose-lg max-w-none mb-8">
+            <motion.div 
+              className="prose prose-lg max-w-none mb-8"
+              variants={fadeInUp}
+              initial="initial"
+              animate="animate"
+            >
               {/* Render HTML content safely */}
               <div
                 className="text-gray-700 leading-relaxed whitespace-pre-line"
                 dangerouslySetInnerHTML={{ __html: post.content || "" }}
               />
-            </div>
+            </motion.div>
 
             {/* Tags */}
             {post.tags && post.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-8">
-                {post.tags.map((tag: string) => (
-                  <Badge key={tag} variant="outline" className="text-sm">
-                    <Tag className="mr-1 h-3 w-3" />
-                    {tag}
-                  </Badge>
+              <motion.div 
+                className="flex flex-wrap gap-2 mb-8"
+                variants={staggerContainer}
+                initial="initial"
+                animate="animate"
+              >
+                {post.tags.map((tag: string, idx: number) => (
+                  <motion.div key={tag} variants={staggerItem}>
+                    <Badge variant="outline" className="text-sm">
+                      <Tag className="mr-1 h-3 w-3" />
+                      {tag}
+                    </Badge>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             )}
 
             {/* Share Buttons */}
-            <div className="border-t border-b py-6 mb-8">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">Share this article</h3>
-                <div className="flex items-center gap-3">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      window.open(
-                        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
-                        "_blank",
-                      )
-                    }
+            <ScrollReveal>
+              <div className="border-t border-b py-6 mb-8">
+                <motion.div 
+                  className="flex items-center justify-between"
+                  variants={staggerContainer}
+                  initial="initial"
+                  animate="animate"
+                >
+                  <motion.h3 
+                    className="text-lg font-semibold"
+                    variants={fadeInUp}
                   >
-                    <Facebook className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      window.open(
-                        `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`,
-                        "_blank",
-                      )
-                    }
+                    Share this article
+                  </motion.h3>
+                  <motion.div 
+                    className="flex items-center gap-3"
+                    variants={staggerContainer}
+                    initial="initial"
+                    animate="animate"
                   >
-                    <Twitter className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() =>
-                      window.open(
-                        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
-                        "_blank",
-                      )
-                    }
-                  >
-                    <Linkedin className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(shareUrl)}>
-                    <Share2 className="h-4 w-4" />
-                  </Button>
-                </div>
+                    <motion.div variants={staggerItem}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          window.open(
+                            `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`,
+                            "_blank",
+                          )
+                        }
+                      >
+                        <Facebook className="h-4 w-4" />
+                      </Button>
+                    </motion.div>
+                    <motion.div variants={staggerItem}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          window.open(
+                            `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`,
+                            "_blank",
+                          )
+                        }
+                      >
+                        <Twitter className="h-4 w-4" />
+                      </Button>
+                    </motion.div>
+                    <motion.div variants={staggerItem}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          window.open(
+                            `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`,
+                            "_blank",
+                          )
+                        }
+                      >
+                        <Linkedin className="h-4 w-4" />
+                      </Button>
+                    </motion.div>
+                    <motion.div variants={staggerItem}>
+                      <Button variant="outline" size="sm" onClick={() => navigator.clipboard.writeText(shareUrl)}>
+                        <Share2 className="h-4 w-4" />
+                      </Button>
+                    </motion.div>
+                  </motion.div>
+                </motion.div>
               </div>
-            </div>
+            </ScrollReveal>
 
             {/* Author Bio */}
-            <Card className="mb-8">
-              <CardHeader>
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center overflow-hidden">
-                    {post.author_image ? (
-                      <Image
-                        src={getBlogImageUrl(post.author_image)}
-                        alt={post.author || "Author"}
-                        width={64}
-                        height={64}
-                        className="object-cover rounded-full"
-                      />
-                    ) : (
-                      <span className="text-2xl font-bold text-teal-600">{post.author?.charAt(0) || "A"}</span>
-                    )}
-                  </div>
-                  <div>
-                    <CardTitle className="text-xl">{post.author}</CardTitle>
-                    <p className="text-gray-600">Content Writer at TrentEco</p>
-                  </div>
-                </div>
-              </CardHeader>
-            </Card>
+            <ScrollReveal>
+              <motion.div variants={fadeInUp}>
+                <Card className="mb-8">
+                  <CardHeader>
+                    <div className="flex items-center space-x-4">
+                      <motion.div 
+                        className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center overflow-hidden"
+                        variants={scaleIn}
+                        initial="initial"
+                        animate="animate"
+                      >
+                        {post.author_image ? (
+                          <Image
+                            src={getBlogImageUrl(post.author_image)}
+                            alt={post.author || "Author"}
+                            width={64}
+                            height={64}
+                            className="object-cover rounded-full"
+                          />
+                        ) : (
+                          <span className="text-2xl font-bold text-teal-600">{post.author?.charAt(0) || "A"}</span>
+                        )}
+                      </motion.div>
+                      <motion.div
+                        variants={staggerContainer}
+                        initial="initial"
+                        animate="animate"
+                      >
+                        <motion.div variants={staggerItem}>
+                          <CardTitle className="text-xl">{post.author}</CardTitle>
+                        </motion.div>
+                        <motion.p 
+                          className="text-gray-600"
+                          variants={staggerItem}
+                        >
+                          Content Writer at TrentEco
+                        </motion.p>
+                      </motion.div>
+                    </div>
+                  </CardHeader>
+                </Card>
+              </motion.div>
+            </ScrollReveal>
           </div>
         </div>
-      </article>
+      </motion.article>
 
       {/* Related Articles */}
       {relatedPosts.length > 0 && (
-        <section className="py-12 bg-cream-50">
-          <div className="container">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold mb-8">Related Articles</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {relatedPosts.map((relatedPost: Article) => (
-                  <Card key={relatedPost.id} className="overflow-hidden">
-                    <div className="relative h-48">
-                      <Image
-                        src={relatedPost.image_url || "/placeholder.svg"}
-                        alt={relatedPost.title || "Related article image"}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <CardHeader>
-                      <div className="flex items-center gap-2 mb-2">
-                        {relatedPost.category && <Badge variant="outline">{relatedPost.category}</Badge>}
-                        {relatedPost.read_time && (
-                          <span className="text-xs text-gray-500">{relatedPost.read_time}</span>
-                        )}
-                      </div>
-                      <CardTitle className="text-lg line-clamp-2">{relatedPost.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600 text-sm line-clamp-3">{relatedPost.excerpt}</p>
-                      <Link href={`/blog/${relatedPost.slug}`} className="mt-4 inline-block">
-                        <Button variant="outline" size="sm" className="border-teal-600 text-teal-600 hover:bg-teal-50">
-                          Read More
-                        </Button>
-                      </Link>
-                    </CardContent>
-                  </Card>
-                ))}
+        <ScrollReveal>
+          <section className="py-12 bg-cream-50">
+            <div className="container">
+              <div className="max-w-4xl mx-auto">
+                <motion.h2 
+                  className="text-3xl font-bold mb-8"
+                  variants={fadeInUp}
+                  initial="initial"
+                  animate="animate"
+                >
+                  Related Articles
+                </motion.h2>
+                <motion.div 
+                  className="grid grid-cols-1 md:grid-cols-3 gap-6"
+                  variants={staggerContainer}
+                  initial="initial"
+                  animate="animate"
+                >
+                  {relatedPosts.map((relatedPost: Article, idx: number) => (
+                    <motion.div key={relatedPost.id} variants={staggerItem}>
+                      <Card className="overflow-hidden">
+                        <div className="relative h-48">
+                          <Image
+                            src={relatedPost.image_url || "/placeholder.svg"}
+                            alt={relatedPost.title || "Related article image"}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <CardHeader>
+                          <div className="flex items-center gap-2 mb-2">
+                            {relatedPost.category && <Badge variant="outline">{relatedPost.category}</Badge>}
+                            {relatedPost.read_time && (
+                              <span className="text-xs text-gray-500">{relatedPost.read_time}</span>
+                            )}
+                          </div>
+                          <CardTitle className="text-lg line-clamp-2">{relatedPost.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-gray-600 text-sm line-clamp-3">{relatedPost.excerpt}</p>
+                          <Link href={`/blog/${relatedPost.slug}`} className="mt-4 inline-block">
+                            <Button variant="outline" size="sm" className="border-teal-600 text-teal-600 hover:bg-teal-50">
+                              Read More
+                            </Button>
+                          </Link>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </ScrollReveal>
       )}
 
       {/* Newsletter CTA */}
-      <section className="py-12 bg-teal-600 text-white">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
-            <p className="text-lg mb-8">
-              Subscribe to our newsletter for more insights on sustainable packaging and industry trends.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-md text-gray-900"
-              />
-              <Button variant="secondary" className="whitespace-nowrap">
-                Subscribe
-              </Button>
-            </div>
-            <p className="text-sm mt-4 opacity-80">We respect your privacy. Unsubscribe at any time.</p>
+      <ScrollReveal>
+        <section className="py-12 bg-teal-600 text-white">
+          <div className="container">
+            <motion.div 
+              className="max-w-2xl mx-auto text-center"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
+            >
+              <motion.h2 
+                className="text-3xl font-bold mb-4"
+                variants={fadeInUp}
+              >
+                Stay Updated
+              </motion.h2>
+              <motion.p 
+                className="text-lg mb-8"
+                variants={staggerItem}
+              >
+                Subscribe to our newsletter for more insights on sustainable packaging and industry trends.
+              </motion.p>
+              <motion.div 
+                className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
+                variants={staggerContainer}
+                initial="initial"
+                animate="animate"
+              >
+                <motion.div variants={staggerItem} className="flex-1">
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className="w-full px-4 py-2 rounded-md text-gray-900"
+                  />
+                </motion.div>
+                <motion.div variants={staggerItem}>
+                  <Button variant="secondary" className="whitespace-nowrap">
+                    Subscribe
+                  </Button>
+                </motion.div>
+              </motion.div>
+              <motion.p 
+                className="text-sm mt-4 opacity-80"
+                variants={staggerItem}
+              >
+                We respect your privacy. Unsubscribe at any time.
+              </motion.p>
+            </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
     </div>
   )
 }
