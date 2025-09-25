@@ -29,16 +29,31 @@ export async function searchArticles(query: string) {
   const q = query.trim().toLowerCase()
   try {
     const supabase = await createClient()
-    const { data, error } = await supabase
+
+    // Search by title using parameterized ilike
+    const { data: titleResults, error: titleError } = await supabase
       .from("articles")
       .select("*")
-      .or([
-        `title.ilike.%${q}%`,
-        `tags.cs.{${q}}`
-      ].join(","))
-    if (!error && data && data.length > 0) {
-      return data
+      .ilike("title", `%${q}%`)
+
+    // Search by tags using parameterized contains
+    const { data: tagResults, error: tagError } = await supabase
+      .from("articles")
+      .select("*")
+      .contains("tags", [q])
+
+    if (titleError && tagError) {
+      console.error("Error searching articles:", titleError, tagError)
+      return []
     }
+
+    // Combine results and remove duplicates
+    const allResults = [...(titleResults || []), ...(tagResults || [])]
+    const uniqueResults = allResults.filter((article, index, self) =>
+      index === self.findIndex(a => a.id === article.id)
+    )
+
+    return uniqueResults
   } catch (e) {
     console.error("Error searching articles:", e)
   }

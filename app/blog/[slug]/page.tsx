@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Calendar, User, Tag, Clock, Share2, Facebook, Twitter, Linkedin } from "lucide-react"
 import { getArticles } from "../../data/data"
 import ScrollReveal from "@/components/ScrollReveal"
+import DOMPurify from "dompurify"
 import { 
   fadeInUp, 
   staggerContainer, 
@@ -41,6 +42,22 @@ export default function BlogPostPage() {
   const [articles, setArticles] = useState<Article[]>([])
   const params = useParams()
   const slug = typeof params?.slug === "string" ? params.slug : Array.isArray(params?.slug) ? params?.slug[0] : ""
+
+  // Sanitize HTML content to prevent XSS attacks
+  const sanitizeContent = (content: string | null): string => {
+    if (!content) return ""
+
+    // Configure DOMPurify to allow safe HTML tags and attributes
+    const cleanHTML = DOMPurify.sanitize(content, {
+      ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'ol', 'li', 'a', 'img', 'blockquote', 'code', 'pre'],
+      ALLOWED_ATTR: ['href', 'src', 'alt', 'title', 'target'],
+      ALLOW_DATA_ATTR: false,
+      ADD_ATTR: ['target'],
+      FORBID_ATTR: ['style', 'onload', 'onerror', 'onclick'],
+    })
+
+    return cleanHTML
+  }
 
   useEffect(() => {
     getArticles().then((data) => setArticles(Array.isArray(data) ? data : []))
@@ -221,10 +238,10 @@ export default function BlogPostPage() {
               initial="initial"
               animate="animate"
             >
-              {/* Render HTML content safely */}
+              {/* Render HTML content safely with DOMPurify sanitization */}
               <div
                 className="text-gray-700 leading-relaxed whitespace-pre-line"
-                dangerouslySetInnerHTML={{ __html: post.content || "" }}
+                dangerouslySetInnerHTML={{ __html: sanitizeContent(post.content) }}
               />
             </motion.div>
 

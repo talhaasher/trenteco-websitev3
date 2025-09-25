@@ -4,7 +4,12 @@
       "Bash(npm run build:*)",
       "Bash(node:*)",
       "Bash(npm run dev:*)",
-      "Bash(psql:*)"
+      "Bash(psql:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(NODE_ENV=production npm run build)",
+      "Bash(NODE_ENV=development npm run build)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

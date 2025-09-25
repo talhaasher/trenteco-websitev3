@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Leaf, Package, Recycle, TrendingUp } from "lucide-react";
@@ -18,6 +19,8 @@ import {
 } from "@/lib/animations";
 
 export default function HomeClient() {
+  const router = useRouter();
+
   const iconMap = {
     Leaf,
     Package,
@@ -116,7 +119,7 @@ export default function HomeClient() {
                 <Button
                   size="lg"
                   className="bg-teal-600 hover:bg-teal-700 shadow-lg"
-                  onClick={() => { window.location.href = "/products"; }}
+                  onClick={() => router.push("/products")}
                 >
                   View Products
                 </Button>
@@ -126,7 +129,7 @@ export default function HomeClient() {
                   size="lg"
                   variant="outline"
                   className="border-white text-black hover:bg-white hover:text-teal-600 shadow-lg backdrop-blur-sm"
-                  onClick={() => { window.location.href = "/contact"; }}
+                  onClick={() => router.push("/contact")}
                 >
                   Request a Quote
                 </Button>
@@ -260,7 +263,7 @@ export default function HomeClient() {
               initial="initial"
               animate="animate"
             >
-              <Button className="bg-teal-600 hover:bg-teal-700" onClick={() => { window.location.href = "/products"; }}>
+              <Button className="bg-teal-600 hover:bg-teal-700" onClick={() => router.push("/products")}>
                 View All Products <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </motion.div>
@@ -360,7 +363,7 @@ export default function HomeClient() {
               <Button
                 variant="outline"
                 className="border-teal-600 text-teal-600 hover:bg-teal-50"
-                onClick={() => { window.location.href = "/blog"; }}
+                onClick={() => router.push("/blog")}
               >
                 View All Articles <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -388,7 +391,7 @@ export default function HomeClient() {
                 animate="animate"
               >
                 <motion.div variants={staggerItem}>
-                  <Button size="lg" variant="secondary" onClick={() => { window.location.href = "/contact"; }}>
+                  <Button size="lg" variant="secondary" onClick={() => router.push("/contact")}>
                     Contact Us
                   </Button>
                 </motion.div>
@@ -397,7 +400,7 @@ export default function HomeClient() {
                     size="lg"
                     variant="outline"
                     className="border-white text-black hover:bg-teal-700"
-                    onClick={() => { window.location.href = "/contact"; }}
+                    onClick={() => router.push("/contact")}
                   >
                     Request a Sample
                   </Button>
