@@ -18,7 +18,7 @@ yarn-error.log*
 
 # env files
 .env*
-
+.scripts\md
 # vercel
 .vercel
 
@@ -26,3 +26,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .claude/
+scripts/md/CLAUDE.md
+scripts/md
