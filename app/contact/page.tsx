@@ -376,17 +376,20 @@ export default function ContactPage() {
                     <CardDescription>Located in Unit 32 Reddicap Trading Estate, Sutton Coldfield</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="w-full rounded-lg overflow-hidden mb-2" style={{ height: 256 }}>
-        <iframe
-          title="TrentEco Factory Location"
-          src="https://www.google.com/maps?q=Unit+32+Reddicap+Trading+Estate,+Sutton+Coldfield+B75+7BU&output=embed"
-          width="100%"
-          height="100%"
-          style={{ border: 0, minHeight: 256 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
+                    <div className="w-full rounded-lg overflow-hidden mb-2 bg-gray-100 flex items-center justify-center" style={{ height: 256 }}>
+        <a
+          href="https://www.google.com/maps/place/32+Reddicap+Trading+Estate,+The+Royal+Town+of+Sutton+Coldfield,+Birmingham,+Sutton+Coldfield+B75+7BU/@52.56113007207206,-1.8109267234149606,15z"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full h-full relative group"
+        >
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-teal-50 group-hover:bg-teal-100 transition-colors">
+            <MapPin className="h-12 w-12 text-teal-600 mb-2" />
+            <p className="text-teal-700 font-medium">Click to View on Google Maps</p>
+            <p className="text-sm text-gray-600 mt-1">Unit 32 Reddicap Trading Estate</p>
+            <p className="text-sm text-gray-600">Sutton Coldfield, B75 7BU</p>
+          </div>
+        </a>
       </div>
       <p className="text-sm text-gray-400 text-center mb-2">
         Unit 32 Reddicap Trading Estate, Sutton Coldfield, B75 7BU, Birmingham, UK
