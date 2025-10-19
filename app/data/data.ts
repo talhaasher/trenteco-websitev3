@@ -105,7 +105,7 @@ export async function submitEnquiry(enquiry: {
 }) {
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from("enquiry")
+    .from("enquiries")
     .insert([
       {
         name: enquiry.name,

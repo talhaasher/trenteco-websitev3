@@ -93,8 +93,8 @@ export default function Footer() {
                 </a>
               </p>
               <p>
-                <a href="mailto:info@trenteco.co.uk" className="hover:text-teal-600">
-                  info@trenteco.co.uk
+                <a href="mailto:info@trentecopackaging.co.uk" className="hover:text-teal-600">
+                  info@trentecopackaging.co.uk
 
                 </a>
               </p>
