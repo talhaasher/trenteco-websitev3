@@ -11,7 +11,12 @@
       "Bash(NODE_ENV=development npm run build)",
       "Bash(curl:*)",
       "Bash(pnpm install:*)",
-      "Bash(pnpm:*)"
+      "Bash(pnpm:*)",
+      "Bash(npx fix-react2shell-next)",
+      "Bash(npx fix-react2shell-next:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
