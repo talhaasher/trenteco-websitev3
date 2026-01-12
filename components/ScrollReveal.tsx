@@ -10,14 +10,14 @@ interface ScrollRevealProps {
   threshold?: number;
 }
 
-export default function ScrollReveal({ 
-  children, 
-  className = "", 
+export default function ScrollReveal({
+  children,
+  className = "",
   delay = 0,
-  threshold = 0.1 
+  threshold = 0.1
 }: ScrollRevealProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { threshold });
+  const isInView = useInView(ref, { amount: threshold, once: true });
 
   return (
     <motion.div
