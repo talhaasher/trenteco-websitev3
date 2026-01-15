@@ -77,6 +77,19 @@ const nextConfig = {
               'gyroscope=()',
               'accelerometer=()'
             ].join(', ')
+          },
+          // CORS Headers - Control cross-origin requests
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: process.env.NEXT_PUBLIC_SITE_URL || '*' // Replace * with your domain in production
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET, POST, OPTIONS'
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value: 'Content-Type, Authorization'
           }
         ]
       }

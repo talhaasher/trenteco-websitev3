@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { motion } from "framer-motion"
+import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -12,19 +13,32 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { MapPin, Phone, Mail } from "lucide-react";
-import {  getFaqs as getFaqsRaw,submitEnquiry } from "@/app/data/data";
+import { getFaqs as getFaqsRaw, submitEnquiry } from "@/app/data/data";
 import { useCachedFetch } from "@/hooks/useCachedFetch"
 import { Send, Clock } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal"
-import { 
-  fadeInUp, 
-  staggerContainer, 
-  staggerItem, 
+import {
+  fadeInUp,
+  staggerContainer,
+  staggerItem,
   textReveal,
   scaleIn,
   fadeInLeft,
   fadeInRight
 } from "@/lib/animations"
+
+// Zod validation schema for contact form
+const enquirySchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(100, "Name is too long"),
+  email: z.string().email("Please enter a valid email address"),
+  company: z.string().max(200, "Company name is too long").optional(),
+  phone: z.string().regex(/^\+?[1-9]\d{1,14}$/, "Please enter a valid phone number").optional().or(z.literal("")),
+  enquiryType: z.enum(["quote", "custom-design", "partnership", "other"], {
+    errorMap: () => ({ message: "Please select an enquiry type" })
+  }),
+  message: z.string().min(10, "Message must be at least 10 characters").max(2000, "Message is too long"),
+  newsletter: z.boolean(),
+});
 
 function getFaqsSafe() {
   return getFaqsRaw().then(res => res ?? [])
@@ -38,30 +52,30 @@ const iconMap = {
 
 export default function ContactPage() {
   const contactDetails = [
-  {
-    icon: "map", // Use a string or key for the icon
-    title: "Visit Us",
-    lines: [
-      "TrentEco Packaging Ltd",
-      "Unit 32 Reddicap Trading Estate, Sutton Coldfield",
-      "B75 7BU, Birmingham, UK",
-    ],
-  },
-  {
-    icon: "phone",
-    title: "Call Us",
-    phone: "+44 7301 028484",
-    note: "Mon-Fri: 9AM–5PM",
-  },
-  {
-    icon: "mail",
-    title: "Email Us",
-    emails: [
-      "info@trentecopackaging.co.uk",
-      
-    ],
-  },
-];
+    {
+      icon: "map", // Use a string or key for the icon
+      title: "Visit Us",
+      lines: [
+        "TrentEco Packaging Ltd",
+        "Unit 32 Reddicap Trading Estate, Sutton Coldfield",
+        "B75 7BU, Birmingham, UK",
+      ],
+    },
+    {
+      icon: "phone",
+      title: "Call Us",
+      phone: "+44 7301 028484",
+      note: "Mon-Fri: 9AM–5PM",
+    },
+    {
+      icon: "mail",
+      title: "Email Us",
+      emails: [
+        "info@trentecopackaging.co.uk",
+
+      ],
+    },
+  ];
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -81,9 +95,20 @@ export default function ContactPage() {
     setIsSubmitting(true);
     setSubmitMessage("");
 
-    // Add this validation
-    if (!formData.enquiryType) {
-      setSubmitMessage("Please select an enquiry type.");
+    // Validate form data with Zod
+    const validation = enquirySchema.safeParse({
+      name: formData.name,
+      email: formData.email,
+      company: formData.company || undefined,
+      phone: formData.phone || "",
+      enquiryType: formData.enquiryType as "quote" | "custom-design" | "partnership" | "other",
+      message: formData.message,
+      newsletter: formData.newsletter,
+    });
+
+    if (!validation.success) {
+      const firstError = validation.error.errors[0];
+      setSubmitMessage(firstError.message);
       setIsSubmitting(false);
       return;
     }
@@ -114,7 +139,9 @@ export default function ContactPage() {
         throw new Error("Failed to submit enquiry");
       }
     } catch (error) {
-      console.error("Error submitting enquiry:", error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error("Error submitting enquiry:", error);
+      }
       setSubmitMessage("Sorry, there was an error submitting your enquiry. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -128,26 +155,26 @@ export default function ContactPage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <motion.section 
+      <motion.section
         className="bg-gradient-to-r from-cream-50 to-cream-100 py-16 md:py-24"
         variants={fadeInUp}
         initial="initial"
         animate="animate"
       >
         <div className="container">
-          <motion.div 
+          <motion.div
             className="max-w-3xl mx-auto text-center"
             variants={staggerContainer}
             initial="initial"
             animate="animate"
           >
-            <motion.h1 
+            <motion.h1
               className="text-4xl md:text-5xl font-bold tracking-tight mb-4"
               variants={textReveal}
             >
               Get in <span className="text-teal-600">Touch</span>
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-lg text-gray-600 mb-8"
               variants={textReveal}
             >
@@ -162,7 +189,7 @@ export default function ContactPage() {
       <ScrollReveal>
         <section className="py-12 bg-white">
           <div className="container">
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
               variants={staggerContainer}
               initial="initial"
@@ -172,7 +199,7 @@ export default function ContactPage() {
                 <motion.div key={idx} variants={staggerItem}>
                   <Card className="text-center">
                     <CardHeader>
-                      <motion.div 
+                      <motion.div
                         className="mx-auto w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center mb-4"
                         variants={scaleIn}
                         initial="initial"
@@ -234,11 +261,10 @@ export default function ContactPage() {
                   <CardContent>
                     {submitMessage && (
                       <motion.div
-                        className={`mb-6 p-4 rounded-lg ${
-                          submitMessage.includes("Thank you")
-                            ? "bg-green-50 text-green-800 border border-green-200"
-                            : "bg-red-50 text-red-800 border border-red-200"
-                        }`}
+                        className={`mb-6 p-4 rounded-lg ${submitMessage.includes("Thank you")
+                          ? "bg-green-50 text-green-800 border border-green-200"
+                          : "bg-red-50 text-red-800 border border-red-200"
+                          }`}
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
@@ -248,7 +274,7 @@ export default function ContactPage() {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-6">
-                      <motion.div 
+                      <motion.div
                         className="grid grid-cols-1 md:grid-cols-2 gap-4"
                         variants={staggerContainer}
                         initial="initial"
@@ -277,7 +303,7 @@ export default function ContactPage() {
                         </motion.div>
                       </motion.div>
 
-                      <motion.div 
+                      <motion.div
                         className="grid grid-cols-1 md:grid-cols-2 gap-4"
                         variants={staggerContainer}
                         initial="initial"
@@ -336,7 +362,7 @@ export default function ContactPage() {
                         />
                       </motion.div>
 
-                      <motion.div 
+                      <motion.div
                         className="flex items-center space-x-2"
                         variants={staggerItem}
                       >
@@ -363,7 +389,7 @@ export default function ContactPage() {
               </motion.div>
 
               {/* Map and Additional Info */}
-              <motion.div 
+              <motion.div
                 className="space-y-6"
                 variants={fadeInRight}
                 initial="initial"
@@ -377,33 +403,33 @@ export default function ContactPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="w-full rounded-lg overflow-hidden mb-2 bg-gray-100 flex items-center justify-center" style={{ height: 256 }}>
-        <a
-          href="https://www.google.com/maps/place/32+Reddicap+Trading+Estate,+The+Royal+Town+of+Sutton+Coldfield,+Birmingham,+Sutton+Coldfield+B75+7BU/@52.56113007207206,-1.8109267234149606,15z"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="w-full h-full relative group"
-        >
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-teal-50 group-hover:bg-teal-100 transition-colors">
-            <MapPin className="h-12 w-12 text-teal-600 mb-2" />
-            <p className="text-teal-700 font-medium">Click to View on Google Maps</p>
-            <p className="text-sm text-gray-600 mt-1">Unit 32 Reddicap Trading Estate</p>
-            <p className="text-sm text-gray-600">Sutton Coldfield, B75 7BU</p>
-          </div>
-        </a>
-      </div>
-      <p className="text-sm text-gray-400 text-center mb-2">
-        Unit 32 Reddicap Trading Estate, Sutton Coldfield, B75 7BU, Birmingham, UK
-      </p>
-      <a
-        href="https://www.google.com/maps?q=Unit+32+Reddicap+Trading+Estate,+Sutton+Coldfield+B75+7BU"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="w-full block"
-      >
-        <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
-          Get Directions
-        </Button>
-      </a>
+                      <a
+                        href="https://www.google.com/maps/place/32+Reddicap+Trading+Estate,+The+Royal+Town+of+Sutton+Coldfield,+Birmingham,+Sutton+Coldfield+B75+7BU/@52.56113007207206,-1.8109267234149606,15z"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full h-full relative group"
+                      >
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-teal-50 group-hover:bg-teal-100 transition-colors">
+                          <MapPin className="h-12 w-12 text-teal-600 mb-2" />
+                          <p className="text-teal-700 font-medium">Click to View on Google Maps</p>
+                          <p className="text-sm text-gray-600 mt-1">Unit 32 Reddicap Trading Estate</p>
+                          <p className="text-sm text-gray-600">Sutton Coldfield, B75 7BU</p>
+                        </div>
+                      </a>
+                    </div>
+                    <p className="text-sm text-gray-400 text-center mb-2">
+                      Unit 32 Reddicap Trading Estate, Sutton Coldfield, B75 7BU, Birmingham, UK
+                    </p>
+                    <a
+                      href="https://www.google.com/maps?q=Unit+32+Reddicap+Trading+Estate,+Sutton+Coldfield+B75+7BU"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full block"
+                    >
+                      <Button variant="outline" className="w-full border-teal-600 text-teal-600 hover:bg-teal-50">
+                        Get Directions
+                      </Button>
+                    </a>
                   </CardContent>
                 </Card>
 
@@ -438,27 +464,27 @@ export default function ContactPage() {
                     <CardTitle>Quick Response Guarantee</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <motion.div 
+                    <motion.div
                       className="space-y-3"
                       variants={staggerContainer}
                       initial="initial"
                       animate="animate"
                     >
-                      <motion.div 
+                      <motion.div
                         className="flex items-center space-x-3"
                         variants={staggerItem}
                       >
                         <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                         <span className="text-sm">Email enquiries: Within 4 hours</span>
                       </motion.div>
-                      <motion.div 
+                      <motion.div
                         className="flex items-center space-x-3"
                         variants={staggerItem}
                       >
                         <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                         <span className="text-sm">Quote requests: Within 24 hours</span>
                       </motion.div>
-                      <motion.div 
+                      <motion.div
                         className="flex items-center space-x-3"
                         variants={staggerItem}
                       >
@@ -479,14 +505,14 @@ export default function ContactPage() {
       <ScrollReveal>
         <section className="py-12 bg-white">
           <div className="container">
-            <motion.div 
+            <motion.div
               className="max-w-3xl mx-auto"
               variants={fadeInUp}
               initial="initial"
               animate="animate"
             >
               <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-              <motion.div 
+              <motion.div
                 className="space-y-6"
                 variants={staggerContainer}
                 initial="initial"
@@ -528,25 +554,25 @@ export default function ContactPage() {
       <ScrollReveal>
         <section className="py-16 bg-teal-600 text-white">
           <div className="container">
-            <motion.div 
+            <motion.div
               className="max-w-3xl mx-auto text-center"
               variants={staggerContainer}
               initial="initial"
               animate="animate"
             >
-              <motion.h2 
+              <motion.h2
                 className="text-3xl font-bold mb-4"
                 variants={fadeInUp}
               >
                 Ready to Get Started?
               </motion.h2>
-              <motion.p 
+              <motion.p
                 className="text-lg mb-8"
                 variants={staggerItem}
               >
                 Join hundreds of businesses who trust TrentEco for their sustainable packaging needs.
               </motion.p>
-              <motion.div 
+              <motion.div
                 className="flex flex-col sm:flex-row justify-center gap-4"
                 variants={staggerContainer}
                 initial="initial"

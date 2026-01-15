@@ -28,7 +28,7 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedIdx, setSelectedIdx] = useState(0);
-  
+
   // Unwrap params if it's a real Promise (Next.js 14+)
   let slug: string | undefined;
   if (isPromise(params)) {
@@ -54,7 +54,6 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
   let images: string[] = [];
   if (product) {
     const rawImages = product.image_urls;
-    console.log('Product detail:', product.name, 'image_urls raw:', rawImages);
     if (typeof rawImages === 'string') {
       try {
         const parsed = JSON.parse(rawImages);
@@ -74,7 +73,7 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
   }
 
   if (loading) return <div>Loading...</div>;
-  
+
   if (!product) return (
     <div className="flex flex-col min-h-screen">
       <div className="container py-12">
@@ -94,7 +93,7 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <motion.article 
+      <motion.article
         className="flex-1 flex items-center justify-center"
         variants={fadeInUp}
         initial="initial"
@@ -113,14 +112,14 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
                 Back to Products
               </Link>
             </motion.div>
-            
-            <motion.h1 
+
+            <motion.h1
               className="text-4xl md:text-5xl font-bold tracking-tight mb-6"
               variants={textReveal}
             >
               {product.name}
             </motion.h1>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 items-center w-full px-8">
               {/* Thumbnails */}
               <div className="flex md:flex-col gap-4 justify-center items-center w-full">
@@ -130,17 +129,17 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
                     className={`border rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-teal-600 ${selectedIdx === idx ? 'ring-2 ring-teal-600' : ''}`}
                     onClick={() => setSelectedIdx(idx)}
                   >
-                    <Image 
-                      src={/^https?:\/\//.test(img) ? img : getSupabaseImageUrl(img) || "/placeholder.svg"} 
-                      alt={product.name + ' thumbnail'} 
-                      width={100} 
-                      height={100} 
-                      className="object-cover" 
+                    <Image
+                      src={/^https?:\/\//.test(img) ? img : getSupabaseImageUrl(img) || "/placeholder.svg"}
+                      alt={product.name + ' thumbnail'}
+                      width={100}
+                      height={100}
+                      className="object-cover"
                     />
                   </button>
                 ))}
               </div>
-              
+
               {/* Main Image */}
               <div className="flex justify-center items-center w-full">
                 <Image
@@ -152,17 +151,17 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
                   priority
                 />
               </div>
-              
+
               {/* Details */}
               <div className="flex flex-col justify-between h-full w-full">
                 <div>
-                  <motion.h2 
+                  <motion.h2
                     className="text-2xl font-semibold mb-4"
                     variants={textReveal}
                   >
                     Description
                   </motion.h2>
-                  <motion.p 
+                  <motion.p
                     className="text-gray-700 mb-4"
                     variants={textReveal}
                   >
@@ -186,10 +185,10 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
           </div>
         </div>
       </motion.article>
-      
+
       {/* Related Products */}
       {relatedProducts.length > 0 && (
-        <motion.section 
+        <motion.section
           className="py-12 bg-cream-50"
           variants={fadeInUp}
           initial="initial"
@@ -197,13 +196,13 @@ export default function ProductSlugPage({ params }: { params: { slug: string } }
         >
           <div className="container">
             <div className="max-w-4xl mx-auto">
-              <motion.h2 
+              <motion.h2
                 className="text-3xl font-bold mb-8"
                 variants={textReveal}
               >
                 Related Products
               </motion.h2>
-              <motion.div 
+              <motion.div
                 className="grid grid-cols-1 md:grid-cols-3 gap-6"
                 variants={staggerContainer}
                 initial="initial"

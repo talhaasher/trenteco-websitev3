@@ -8,7 +8,9 @@ export async function getProductData() {
   const supabase = await createClient()
   const { data, error } = await supabase.from("products").select("*")
   if (error || !data) {
-    console.error("Error fetching products:", error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error fetching products:", error)
+    }
     return null
   }
   return data
@@ -19,7 +21,9 @@ export async function getArticles() {
   const supabase = await createClient()
   const { data, error } = await supabase.from("articles").select("*")
   if (error || !data) {
-    console.error("Error fetching articles:", error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error fetching articles:", error)
+    }
     return null
   }
   return data
@@ -43,7 +47,9 @@ export async function searchArticles(query: string) {
       .contains("tags", [q])
 
     if (titleError && tagError) {
-      console.error("Error searching articles:", titleError, tagError)
+      if (process.env.NODE_ENV === 'development') {
+        console.error("Error searching articles:", titleError, tagError)
+      }
       return []
     }
 
@@ -55,7 +61,9 @@ export async function searchArticles(query: string) {
 
     return uniqueResults
   } catch (e) {
-    console.error("Error searching articles:", e)
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error searching articles:", e)
+    }
   }
   return []
 }
@@ -76,7 +84,9 @@ export async function getTeamMembers() {
   const supabase = await createClient()
   const { data, error } = await supabase.from("team_members").select("*")
   if (error || !data) {
-    console.error("Error fetching team members:", error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error fetching team members:", error)
+    }
     return null
   }
   return data
@@ -86,7 +96,9 @@ export async function getFaqs() {
   const supabase = await createClient()
   const { data, error } = await supabase.from("faqs").select("*")
   if (error || !data) {
-    console.error("Error fetching faqs:", error)
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error fetching faqs:", error)
+    }
     return null
   }
   return data
@@ -121,7 +133,11 @@ export async function submitEnquiry(enquiry: {
     ])
     .select()
   if (error) {
-    console.error("Error submitting enquiry:", error.message, error.details, error.hint, error.code)
+    // Log detailed errors only in development
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error submitting enquiry:", error.message, error.details, error.hint, error.code)
+    }
+    // In production, log to server-side monitoring (e.g., Sentry) instead
     return null
   }
   return data?.[0] || null
@@ -136,10 +152,14 @@ export async function subscribeNewsletter(email: string) {
   if (error) {
     // Handle unique constraint violation gracefully
     if (error.code === "23505") {
-      console.warn("Email already subscribed to newsletter.")
+      if (process.env.NODE_ENV === 'development') {
+        console.warn("Email already subscribed to newsletter.")
+      }
       return null
     }
-    console.error("Error subscribing to newsletter:", error.message)
+    if (process.env.NODE_ENV === 'development') {
+      console.error("Error subscribing to newsletter:", error.message)
+    }
     return null
   }
   return data?.[0] || null
